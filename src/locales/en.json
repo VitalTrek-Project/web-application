@@ -1,0 +1,29 @@
+
+{
+  "option": {
+    "home": "Home",
+    "about": "About"
+
+  },
+  "authoring-phrase": {
+    "intro": "Made ",
+    "use": "using",
+    "author": "by NexumDev Development Team"
+  },
+  "about": {
+    "title": "About Us",
+    "content": "VitalTrek."
+  },
+  "home": {
+    "title": "Welcome",
+    "content": "Welcome to VitalTrek."
+  },
+  "page-not-found": {
+    "title": "Page Not Found",
+    "content": "The path {unavailable-route} is not available.",
+    "go-home": "Go Home"
+  },
+  "errors": {
+    "occurred": "Errors occurred"
+  }
+}

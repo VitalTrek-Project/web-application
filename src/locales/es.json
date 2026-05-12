@@ -1,0 +1,28 @@
+{
+  "option": {
+    "home": "Inicio",
+    "about": "Acerca de"
+
+  },
+  "authoring-phrase": {
+    "intro": "Hecho ",
+    "use": "utilizando",
+    "author": "por el Equipo de Desarrollo de NexumDevs"
+  },
+  "about": {
+    "title": "Acerca de Nosotros",
+    "content": "VitalTrek."
+  },
+  "home": {
+    "title": "Inicio",
+    "content": "Bienvenido a VitalTrek."
+  },
+  "page-not-found": {
+    "title": "Página no encontrada",
+    "content": "La ruta {unavailable-route} no está disponible.",
+    "go-home": "Ir al Inicio"
+  },
+  "errors": {
+    "occurred": "Ocurrieron errores"
+  }
+}
