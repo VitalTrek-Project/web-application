@@ -2,8 +2,8 @@
 {
   "option": {
     "home": "Home",
-    "about": "About"
-
+    "about": "About",
+    "signs": "Signs"
   },
   "authoring-phrase": {
     "intro": "Made ",
@@ -26,7 +26,13 @@
   "signs": {
     "title": "Signs",
     "id": "ID",
-    "name": "Name",
+    "expedition-id": "Expedition ID",
+    "tourist-id": "Tourist ID",
+    "heart-rate": "Hear Rate",
+    "blood-oxygen": "Blood Oxygen",
+    "body-temperature": "Body Temperature",
+    "steps": "Steps",
+    "recorded-at": "Recorded AT",
     "actions": "Actions",
     "new": "New Sign",
     "confirm-delete": "Are you sure you want to delete {name}?",

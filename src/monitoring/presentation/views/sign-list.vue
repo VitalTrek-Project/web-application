@@ -27,7 +27,7 @@ const navigateToEdit = (id) => router.push({ name: 'monitoring-sign-edit', param
  */
 const confirmDelete = (sign) => {
   confirm.require({
-    message: t('signs.confirm-delete', { name: sign.recordedAt }),
+    message: t('signs.confirm-delete', { name: sign.touristId }),
     header: t('signs.delete-header'),
     icon: 'pi pi-exclamation-triangle',
     accept: () => deleteSign(sign)
@@ -55,9 +55,14 @@ onMounted(() => {
         paginator
         striped-rows
         table-style="min-width: 50rem">
-      <pv-column :header="t('signs.id')" field="id" sortable/>
-      <pv-column :header="t('signs.name')" field="name" sortable/>
+      <pv-column :header="t('signs.expedition-id')" field="expeditionId" sortable/>
+      <pv-column :header="t('signs.tourist-id')" field="touristId" sortable/>
+      <pv-column :header="t('signs.heart-rate')" field="heartRate" sortable/>
+      <pv-column :header="t('signs.blood-oxygen')" field="bloodOxygen" sortable/>
+      <pv-column :header="t('signs.body-temperature')" field="bodyTemperature" sortable/>
       <pv-column :header="t('signs.steps')" field="steps" sortable/>
+      <pv-column :header="t('signs.recorded-at')" field="recordedAt" sortable/>
+
       <pv-column :header="t('signs.actions')">
         <template #body="slotProps">
           <pv-button icon="pi pi-pencil" rounded text @click="navigateToEdit(slotProps.data.id)"/>

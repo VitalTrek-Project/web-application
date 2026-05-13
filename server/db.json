@@ -550,7 +550,7 @@
       "bloodOxygen": 88,
       "bodyTemperature": 36.8,
       "steps": 14200,
-      "recordedAt": "2024-06-01T11:25:00Z",
+      "recordedAt": "2024-06-01T11:25:00Z"
 
     },
     {
@@ -575,7 +575,7 @@
     },
     {
       "id": 4,
-      "touristId": 1,
+      "touristId": 4,
       "expeditionId": 1,
       "heartRate": 165,
       "bloodOxygen": 90,
@@ -585,7 +585,7 @@
     },
     {
       "id": 5,
-      "touristId": 2,
+      "touristId": 5,
       "expeditionId": 1,
       "heartRate": 132,
       "bloodOxygen": 93,

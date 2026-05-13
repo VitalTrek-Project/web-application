@@ -1,7 +1,8 @@
 {
   "option": {
     "home": "Inicio",
-    "about": "Acerca de"
+    "about": "Acerca de",
+    "signs": "Senales"
 
   },
   "authoring-phrase": {
@@ -25,7 +26,13 @@
   "signs": {
     "title": "Senales",
     "id": "ID",
-    "name": "Nombre",
+    "expedition-id": "Expedicion ID",
+    "tourist-id": "Turista ID",
+    "heart-rate": "Frecuencia Cardiaca",
+    "blood-oxygen": "Oxigeno en sangre",
+    "body-temperature": "Temperatura Corporal",
+    "steps": "Pasos",
+    "recorded-at": "Grabado AT",
     "actions": "Acciones",
     "new": "Nueva Senal",
     "confirm-delete": "Estás seguro de que quieres eliminar {name}?",
