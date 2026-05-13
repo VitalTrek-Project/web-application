@@ -1,5 +1,6 @@
 import {createRouter, createWebHistory} from "vue-router";
 import Home from "./shared/presentation/views/home.vue";
+import monitoringRoutes from "./monitoring/presentation/monitoring-routes.js";
 
 // To import when IAM is implemented,
 // import iamRoutes from "./iam/presentation/iam-routes.js";
@@ -12,7 +13,7 @@ const pageNotFound = () => import('./shared/presentation/views/page-not-found.vu
 const routes = [
     { path: '/home',            name: 'home',       component: Home,        meta: { title: 'Home' } },
     { path: '/about',           name: 'about',      component: about,       meta: { title: 'About' } },
-    { path: '/publishing',      name: 'publishing', children: publishingRoutes },
+    { path: '/monitoring',      name: 'monitoring', children: monitoringRoutes },
     { path: '/iam',             name: 'iam',        children: iamRoutes },
     { path: '/',                redirect: '/home' },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: pageNotFound, meta: { title: 'Page Not Found' } }
@@ -23,7 +24,7 @@ const routes = [
 const routes = [
     { path: '/home',            name: 'home',       component: Home,        meta: { title: 'Home' } },
     { path: '/about',           name: 'about',      component: about,       meta: { title: 'About' } },
-
+    { path: '/monitoring',      name: 'monitoring', children: monitoringRoutes },
     { path: '/',                redirect: '/home' },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: pageNotFound, meta: { title: 'Page Not Found' } }
 ];
