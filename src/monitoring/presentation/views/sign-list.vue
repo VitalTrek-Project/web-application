@@ -1,14 +1,14 @@
 <script setup>
 import {useI18n} from "vue-i18n";
 import {useRouter} from "vue-router";
-import usePublishingStore from "../../application/monitoring.store.js";
+import useMonitoringStore from "../../application/monitoring.store.js";
 import {onMounted, toRefs} from "vue";
 import {useConfirm} from "primevue";
 
 const {t} = useI18n();
 const router = useRouter();
 const confirm = useConfirm();
-const store = usePublishingStore();
+const store = useMonitoringStore();
 const { signs, errors, signsLoaded } = toRefs(store);
 const { fetchSigns, deleteSign } = store;
 
@@ -79,4 +79,4 @@ onMounted(() => {
 
 <style scoped>
 
-</style>
+</style>]

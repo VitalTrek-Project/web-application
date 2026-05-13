@@ -9,10 +9,12 @@ const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const store = useMonitoringStore();
-const {errors, addSign, updateSign} = store;
+const {errors, tourists, addSign, updateSign, fetchTourists} = store;
 
-/** @type {import('vue').Ref<{name: string}>} Presentation form state mapped to Sign entity fields. */
-const form = ref({name: ''});
+
+const form = ref({touristId: null, expeditionId: null, heartRate: null,
+                        bloodOxygen: null,
+                        bodyTemperature: null, steps: null, recordedAt: ''});
 /** Determines whether the current route represents edition of an existing sign. */
 const isEdit = computed(() => !!route.params.id);
 
@@ -21,6 +23,26 @@ const isEdit = computed(() => !!route.params.id);
  * @param {number|string} id - Sign identifier.
  * @returns {Sign|undefined}
  */
+onMounted(() => {
+  console.log(route.params.id);
+  if (isEdit.value) {
+    const sign = getSignById(route.params.id);
+    console.log(sign);
+    if (sign){
+      form.value.touristId = sign.touristId;
+      form.value.expeditionId = sign.expeditionId;
+      form.value.heartRate = sign.heartRate;
+      form.value.bloodOxygen = sign.bloodOxygen;
+      form.value.bodyTemperature = sign.bodyTemperature;
+      form.value.steps = sign.steps;
+      form.value.recordedAt = sign.recordedAt;
+    } else navigateBack();
+
+  }
+});
+
+
+
 function getSignById(id) {
   return store.getSignById(id);
 }
@@ -37,39 +59,54 @@ const navigateBack = () => router.push({ name: 'monitoring-signs' });
 const saveSign = () => {
   const sign = new Sign({
     id: isEdit.value ? route.params.id : null,
-    name: form.value.name
+    touristId: form.value.touristId,
+    expeditionId: form.value.expeditionId,
+    heartRate: form.value.heartRate,
+    bloodOxygen: form.value.bloodOxygen,
+    bodyTemperature: form.value.bodyTemperature,
+    steps: form.value.steps,
+    recordedAt: form.value.recordedAt,
+
   });
   isEdit.value ? updateSign(sign) : addSign(sign);
   navigateBack();
 }
 
-onMounted(() => {
-  console.log(route.params.id);
-  if (isEdit.value) {
-    const sign = getSignById(route.params.id);
-    console.log(sign);
-    if (sign) form.value.name = sign.recordedAt; else navigateBack();
-  }
-})
+
 </script>
 
 <template>
   <div class="p-4">
-    <h1>{{ isEdit ? t('sign.edit-title') : t('sign.new-title')}}</h1>
+    <h1>{{ isEdit ? t('sign.edit-title') : t('sign.new-title') }}</h1>
     <form @submit.prevent="saveSign">
       <div class="field mb-3">
-        <label for="name">{{ t('sign.name')}}</label>
-        <pv-input-text id="name" v-model="form.name" class="w-full" required/>
+        <label for="heartRate">{{ t('sign.heartRate') }}</label>
+        <pv-input-text id="heartRate" v-model="form.heartRate" required class="w-full" />
       </div>
-      <pv-button :label="t('sign.save')" icon="pi pi-save" type="submit"/>
-      <pv-button :label="t('sign.cancel')" class="ml-2" severity="secondary" @click="navigateBack"/>
+      <div class="field mb-3">
+        <label for="bloodOxygen">{{ t('sign.bloodOxygen') }}</label>
+        <pv-textarea id="bloodOxygen" v-model="form.bloodOxygen" rows="4" class="w-full" />
+      </div>
+      <div class="field mb-3">
+        <label for="tourist">{{ t('sign.tourist') }}</label>
+        <pv-select
+            id="tourist"
+            v-model="form.touristId"
+            :options="tourists"
+            optionLabel="fullName"
+            optionValue="id"
+            placeholder="Select a tourist"
+            class="w-full"
+        />
+      </div>
+      <pv-button type="submit" :label="t('sign.save')" icon="pi pi-save" />
+      <pv-button :label="t('sign.cancel')" severity="secondary" class="ml-2" @click="navigateBack" />
     </form>
     <div v-if="errors.length" class="text-red-500 mt-3">
-      {{t('errors.occurred')}}: {{ errors.map(e => e.message).join(', ') }}
+      {{ t('errors.occurred') }}: {{ errors.map(e => e.message).join(', ') }}
     </div>
   </div>
 </template>
-
 <style scoped>
 
 </style>

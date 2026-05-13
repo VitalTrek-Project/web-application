@@ -1,7 +1,7 @@
 import {Sign} from "../domain/model/sign.entity.js";
 
 /**
- * Maps Publishing sign resources into domain entities.
+ * Maps Monitoring sign resources into domain entities.
  *
  * @class SignAssembler
  */

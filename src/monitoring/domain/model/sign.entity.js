@@ -1,8 +1,10 @@
+import {Tourist} from "./tourist.entity.js";
+
 export class Sign {
 
     constructor({id=null, touristId= null,expeditionId=null,
-                    heartRate='',bloodOxygen='',bodyTemperature='',
-                steps='', recordedAt=''}){
+                    heartRate=null,bloodOxygen=null,bodyTemperature=null,
+                steps=null, recordedAt='', tourist = null}){
         this.id = id;
         this.touristId = touristId;
         this.expeditionId = expeditionId;
@@ -11,5 +13,7 @@ export class Sign {
         this.bodyTemperature = bodyTemperature;
         this.steps = steps;
         this.recordedAt = recordedAt;
+
+        this.tourist = tourist instanceof Tourist ? tourist : null;
     }
 }

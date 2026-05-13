@@ -2,8 +2,10 @@ import {defineStore} from "pinia";
 import {computed, ref} from "vue";
 import {MonitoringApi} from "../infrastructure/monitoring-api.js";
 import {SignAssembler} from "../infrastructure/sign.assembler.js";
+import{TouristAssembler} from "../infrastructure/tourist.assembler.js";
 
 import {Sign} from "../domain/model/sign.entity.js";
+import {Tourist} from "../domain/model/tourist.entity.js";
 
 
 const monitoringApi = new MonitoringApi();
@@ -20,10 +22,10 @@ const useMonitoringStore = defineStore('monitoring', () => {
      */
     const signs = ref([]);
     /**
-     * List of tutorial entities.
-     * @type {import('vue').Ref<Tutorial[]>}
+     * List of tourist entities.
+     * @type {import('vue').Ref<Tourist[]>}
      */
-
+    const tourists = ref([]);
     /**
      * List of errors encountered during API operations.
      * @type {import('vue').Ref<Error[]>}
@@ -35,10 +37,10 @@ const useMonitoringStore = defineStore('monitoring', () => {
      */
     const signsLoaded = ref(false);
     /**
-     * Whether tutorials have been loaded from the API.
+     * Whether tourists have been loaded from the API.
      * @type {import('vue').Ref<boolean>}
      */
-
+    const touristsLoaded = ref(false);
     /**
      * Number of loaded signs.
      * @type {import('vue').ComputedRef<number>}
@@ -47,11 +49,14 @@ const useMonitoringStore = defineStore('monitoring', () => {
         return signsLoaded ? signs.value.length : 0;
     });
     /**
-     * Number of loaded tutorials.
+     * Number of loaded tourists.
      * @type {import('vue').ComputedRef<number>}
      */
 
-
+    const touristsCount = computed(() => {
+        return touristsLoaded ? signs.value.length : 0;
+    });
+    
     /**
      * Loads signs from infrastructure and updates the application state.
      * @returns {void}
@@ -66,9 +71,52 @@ const useMonitoringStore = defineStore('monitoring', () => {
             errors.value.push(error);
         });
     }
+    function fetchTourists() {
+        monitoringApi.getTourists().then(response => {
+            tourists.value = TouristAssembler.toEntitiesFromResponse(response);
+            touristsLoaded.value = true;
+        }).catch(error => {
+            errors.value.push(error);
+        });
+    }
+
+    function getTouristById(id) {
+        let idNum = parseInt(id);
+        return tourists.value.find(tourist => tourist["id"] === idNum);
+    }
+
+    function addTourist(tourist) {
+        monitoringApi.createTourist(tourist).then(response => {
+            const resource = response.data;
+            const newTourist = TouristAssembler.toEntityFromResource(resource);
+            tourists.value.push(newTourist);
+        }).catch(error => {
+            errors.value.push(error);
+        });
+    }
+
+    function updateTourist(tourist) {
+        monitoringApi.updateTourist(tourist).then(response => {
+            const resource = response.data;
+            const updatedTourist = TouristAssembler.toEntityFromResource(resource);
+            const index = tourists.value.findIndex(t => t["id"] === updatedTourist.id);
+            if (index !== -1) tourists.value[index] = updatedTourist;
+        }).catch(error => {
+            errors.value.push(error);
+        });
+    }
+
+    function deleteTourist(tourist) {
+        monitoringApi.deleteTourist(tourist.id).then(() => {
+            const index = tourists.value.findIndex(t => t["id"] === tourist.id);
+            if (index !== -1) tourists.value.splice(index, 1);
+        }).catch(error => {
+            errors.value.push(error);
+        });
+    }
 
     /**
-     * Loads tutorials from infrastructure and updates the application state.
+     * Loads tourists from infrastructure and updates the application state.
      * @returns {void}
      */
 
@@ -133,19 +181,22 @@ const useMonitoringStore = defineStore('monitoring', () => {
 
     return {
         signs,
-      
+        tourists,
         errors,
         signsLoaded,
-        
+        touristsLoaded,
         signsCount,
-        
+        touristsCount,
         fetchSigns,
-     
+        fetchTourists,
         getSignById,
         addSign,
         updateSign,
         deleteSign,
-      
+        addTourist,
+        updateTourist,
+        deleteTourist,
+        getTouristById
     }
 });
 
