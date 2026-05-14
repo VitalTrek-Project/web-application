@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const platformApi = import.meta.env.VITE_VITALTREK_PLATFORM_API_URL;
+const platformApi = import.meta.env.VITE_API_BASE_URL;
 
 /**
  * Shared infrastructure base class that owns the configured Axios client.
