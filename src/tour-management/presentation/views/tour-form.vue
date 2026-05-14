@@ -1,256 +1,466 @@
 <script setup>
-
-import { computed, onMounted, ref } from "vue";
-
+import { computed, onMounted, reactive, ref  } from "vue";
 import { useRoute, useRouter } from "vue-router";
-
 import { useI18n } from "vue-i18n";
+import { useConfirm } from "primevue/useconfirm";
 
 import useTourManagementStore
-  from "../../application/tour-management.store.js";
-
-import { Tour }
-  from "../../domain/model/tour.entity.js";
+  from "../../application/tourManagement.store.js";
 
 const { t } = useI18n();
-
 const route = useRoute();
-
 const router = useRouter();
-
+const confirm = useConfirm();
 const store = useTourManagementStore();
 
-const {
-  errors,
-  addTour,
-  updateTour
-} = store;
+const loading = ref(false);
 
-/**
- * Presentation form state mapped to Tour entity fields.
- *
- * @type {import('vue').Ref<{
- *  agencyId: string,
- *  title: string,
- *  description: string,
- *  difficulty: string,
- *  status: string,
- *  capacity: number
- * }>}
- */
-const form = ref({
+const saving = ref(false);
 
+const isEditMode = computed(() => Boolean(route.params.id));
+
+const form = reactive({
+  id: null,
   agencyId: '',
   title: '',
   description: '',
-  difficulty: '',
-  status: '',
-  capacity: 0
+  difficulty: 'easy',
+  status: 'available',
+  capacity: 1,
+  checkpoints: []
 });
 
-/**
- * Determines whether current route is edit mode.
- */
-const isEdit = computed(() =>
-    !!route.params.id
-);
+const difficultyOptions = computed(() => [
+  {
+    label: t('tour.difficulty.easy'),
+    value: 'easy'
+  },
+  {
+    label: t('tour.difficulty.medium'),
+    value: 'medium'
+  },
+  {
+    label: t('tour.difficulty.difficult'),
+    value: 'difficult'
+  }
+]);
 
-/**
- * Reads one tour entity from application state.
- *
- * @param {number|string} id
- *
- * @returns {Tour|undefined}
- */
-function getTourById(id) {
+const statusOptions = computed(() => [
+  {
+    label: t('tour.status.available'),
+    value: 'available'
+  },
+  {
+    label: t('tour.status.unavailable'),
+    value: 'unavailable'
+  }
+]);
 
-  return store.getTourById(id);
-}
-
-/**
- * Navigates back to tours list route.
- */
-const navigateBack = () =>
-    router.push({
-      name: 'tour-management-tours'
-    });
-
-/**
- * Creates or updates a Tour entity.
- */
-const saveTour = () => {
-
-  const tour = new Tour(
-
-      isEdit.value
-          ? route.params.id
-          : null,
-
-      form.value.agencyId,
-
-      form.value.title,
-
-      form.value.description,
-
-      form.value.difficulty,
-
-      form.value.status,
-
-      form.value.capacity
-  );
-
-  isEdit.value
-      ? updateTour(tour)
-      : addTour(tour);
-
-  navigateBack();
+const fillForm = (tour) => {
+  form.id = tour.id;
+  form.agencyId = tour.agencyId ?? '';
+  form.title = tour.title ?? '';
+  form.description = tour.description ?? '';
+  form.difficulty = tour.difficulty ?? 'easy';
+  form.status = tour.status ?? 'available';
+  form.capacity = Number(tour.capacity ?? 1);
+  form.checkpoints = tour.checkpoints ?? [];
 };
 
-onMounted(() => {
+const goBackToList = () => {
+  router.push({
+    name: 'tour-management-tours'
+  });
+};
 
-  if (isEdit.value) {
+const saveTour = async () => {
+  saving.value = true;
 
-    const tour =
-        getTourById(route.params.id);
+  const tourPayload = {
+    id: form.id,
+    agencyId: form.agencyId,
+    title: form.title,
+    description: form.description,
+    difficulty: form.difficulty,
+    status: form.status,
+    capacity: Number(form.capacity),
+    checkpoints: form.checkpoints
+  };
 
-    if (tour) {
-
-      form.value = {
-
-        agencyId: tour.agencyId,
-        title: tour.title,
-        description: tour.description,
-        difficulty: tour.difficulty,
-        status: tour.status,
-        capacity: tour.capacity
-      };
-
+  try {
+    if (isEditMode.value) {
+      await store.updateTour(tourPayload);
     } else {
-
-      navigateBack();
+      await store.addTour(tourPayload);
     }
+
+    await router.push({
+      name: 'tour-management-tours'
+    });
+  } finally {
+    saving.value = false;
+  }
+};
+
+onMounted(async () => {
+  if (!isEditMode.value) return;
+
+  loading.value = true;
+
+  try {
+    const tourId = route.params.id;
+
+    const existingTour =
+        store.tours.find(tour => String(tour.id) === String(tourId));
+
+    if (existingTour) {
+      fillForm(existingTour);
+      return;
+    }
+
+    const fetchedTour = await store.fetchTourById(tourId);
+
+    if (fetchedTour) {
+      fillForm(fetchedTour);
+    }
+  } finally {
+    loading.value = false;
   }
 });
 
 </script>
 
 <template>
+  <section class="tour-form-page">
+    <div class="tour-tabs">
+      <router-link to="/tours" class="tour-tab">
+        {{ t('tour.tabs.list') }}
+      </router-link>
 
-  <div class="p-4">
+      <router-link to="/tours/new" class="tour-tab active">
+        {{ t('tour.tabs.form') }}
+      </router-link>
 
-    <h1>
-
-      {{
-        isEdit
-            ? t('tour.edit-title')
-            : t('tour.new-title')
-      }}
-
-    </h1>
-
-    <form @submit.prevent="saveTour">
-
-      <div class="field mb-3">
-
-        <label for="title">
-          {{ t('tour.title') }}
-        </label>
-
-        <pv-input-text
-            id="title"
-            v-model="form.title"
-            class="w-full"
-            required
-        />
-
-      </div>
-
-      <div class="field mb-3">
-
-        <label for="description">
-          {{ t('tour.description') }}
-        </label>
-
-        <pv-textarea
-            id="description"
-            v-model="form.description"
-            class="w-full"
-            rows="4"
-        />
-
-      </div>
-
-      <div class="field mb-3">
-
-        <label for="difficulty">
-          {{ t('tour.difficulty') }}
-        </label>
-
-        <pv-input-text
-            id="difficulty"
-            v-model="form.difficulty"
-            class="w-full"
-        />
-
-      </div>
-
-      <div class="field mb-3">
-
-        <label for="status">
-          {{ t('tour.status') }}
-        </label>
-
-        <pv-input-text
-            id="status"
-            v-model="form.status"
-            class="w-full"
-        />
-
-      </div>
-
-      <div class="field mb-3">
-
-        <label for="capacity">
-          {{ t('tour.capacity') }}
-        </label>
-
-        <pv-input-number
-            id="capacity"
-            v-model="form.capacity"
-            class="w-full"
-        />
-
-      </div>
-
-      <pv-button
-          :label="t('tour.save')"
-          icon="pi pi-save"
-          type="submit"
-      />
-
-      <pv-button
-          :label="t('tour.cancel')"
-          class="ml-2"
-          severity="secondary"
-          @click="navigateBack"
-      />
-
-    </form>
-
-    <div
-        v-if="errors.length"
-        class="text-red-500 mt-3"
-    >
-
-      {{ t('errors.occurred') }}:
-      {{ errors.map(e => e.message).join(', ') }}
-
+      <router-link to="/tourists-assignment" class="tour-tab">
+        {{ t('tour.tabs.assign-tourists') }}
+      </router-link>
     </div>
 
-  </div>
+    <div class="tour-form-card">
+      <div class="tour-form-header">
+        <div>
+          <h2>
+            {{ isEditMode ? t('tour.form.edit-title') : t('tour.form.create-title') }}
+          </h2>
 
+          <p>
+            {{ isEditMode ? t('tour.form.edit-description') : t('tour.form.create-description') }}
+          </p>
+        </div>
+      </div>
+
+      <form class="tour-form" @submit.prevent="saveTour">
+        <div v-if="loading" class="loading-message">
+          {{ t('tour.form.loading') }}
+        </div>
+
+        <template v-else>
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="title">
+                {{ t('tour.form.fields.title') }}
+              </label>
+
+              <pv-input-text
+                  id="title"
+                  v-model="form.title"
+                  class="w-full"
+                  required
+              />
+            </div>
+
+            <div class="form-field">
+              <label for="agencyId">
+                {{ t('tour.form.fields.agency-id') }}
+              </label>
+
+              <pv-input-text
+                  id="agencyId"
+                  v-model="form.agencyId"
+                  class="w-full"
+              />
+            </div>
+
+            <div class="form-field full">
+              <label for="description">
+                {{ t('tour.form.fields.description') }}
+              </label>
+
+              <pv-textarea
+                  id="description"
+                  v-model="form.description"
+                  class="w-full"
+                  rows="4"
+                  auto-resize
+              />
+            </div>
+
+            <div class="form-field">
+              <label for="difficulty">
+                {{ t('tour.form.fields.difficulty') }}
+              </label>
+
+              <pv-select
+                  id="difficulty"
+                  v-model="form.difficulty"
+                  :options="difficultyOptions"
+                  option-label="label"
+                  option-value="value"
+                  class="w-full"
+              />
+            </div>
+
+            <div class="form-field">
+              <label for="status">
+                {{ t('tour.form.fields.status') }}
+              </label>
+
+              <pv-select
+                  id="status"
+                  v-model="form.status"
+                  :options="statusOptions"
+                  option-label="label"
+                  option-value="value"
+                  class="w-full"
+              />
+            </div>
+
+            <div class="form-field">
+              <label for="capacity">
+                {{ t('tour.form.fields.capacity') }}
+              </label>
+
+              <pv-input-number
+                  id="capacity"
+                  v-model="form.capacity"
+                  class="w-full"
+                  :min="1"
+                  show-buttons
+              />
+            </div>
+          </div>
+
+          <div
+              v-if="store.errors.length"
+              class="error-message"
+          >
+            {{ t('errors.occurred') }}:
+            {{ store.errors.map(e => e.message).join(', ') }}
+          </div>
+
+          <div class="form-actions">
+            <pv-button
+                type="button"
+                :label="t('tour.form.cancel')"
+                severity="secondary"
+                outlined
+                @click="goBackToList"
+            />
+
+            <pv-button
+                type="submit"
+                :label="isEditMode ? t('tour.form.update') : t('tour.form.create')"
+                class="save-button"
+                icon="pi pi-save"
+                :loading="saving"
+            />
+          </div>
+        </template>
+      </form>
+    </div>
+  </section>
 </template>
 
 <style scoped>
+.tour-form-page {
+  width: min(900px, 100%);
+  margin: 0 auto;
+  text-align: left;
+  position: relative;
+}
 
+.tour-form-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  left: 230px;
+  background: rgba(2, 6, 23, 0.42);
+  backdrop-filter: blur(1px);
+  pointer-events: none;
+}
+
+.tour-tabs,
+.tour-form-card {
+  position: relative;
+  z-index: 1;
+}
+
+.tour-form-card {
+  background: #33465f;
+  border: 1px solid rgba(185, 198, 216, 0.16);
+  border-radius: 14px;
+  padding: 28px;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.35);
+}
+
+.tour-tab {
+  position: relative;
+  color: #aab6c5;
+  text-decoration: none;
+  font-size: 0.78rem;
+  padding: 0 0 12px;
+  white-space: nowrap;
+}
+
+.tour-tab.active {
+  color: #f26a3d;
+  font-weight: 700;
+}
+
+.tour-tab.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: #f26a3d;
+  border-radius: 999px;
+}
+
+.tour-form-card {
+  background: #33465f;
+  border: 1px solid rgba(185, 198, 216, 0.16);
+  border-radius: 10px;
+  padding: 26px;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.16);
+}
+
+.tour-form-header {
+  margin-bottom: 24px;
+}
+
+.tour-form-header h2 {
+  color: #ffffff;
+  font-family: var(--heading);
+  font-size: 1.25rem;
+  margin: 0 0 6px;
+}
+
+.tour-form-header p {
+  color: #d0d9e6;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.tour-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-field.full {
+  grid-column: 1 / -1;
+}
+
+.form-field label {
+  color: #e7eef8;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.loading-message {
+  color: #ffffff;
+  font-size: 0.85rem;
+}
+
+.error-message {
+  color: #fecaca;
+  font-size: 0.8rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.save-button {
+  background: #f26a3d;
+  border-color: #f26a3d;
+}
+
+.save-button:hover {
+  background: #ff7a4f;
+  border-color: #ff7a4f;
+}
+
+:deep(.p-inputtext),
+:deep(.p-textarea),
+:deep(.p-select),
+:deep(.p-inputnumber-input) {
+  background: #3b506b;
+  border-color: rgba(220, 229, 241, 0.16);
+  color: #ffffff;
+}
+
+:deep(.p-inputtext:enabled:focus),
+:deep(.p-textarea:enabled:focus),
+:deep(.p-select:not(.p-disabled).p-focus),
+:deep(.p-inputnumber-input:enabled:focus) {
+  border-color: #f26a3d;
+  box-shadow: 0 0 0 1px rgba(242, 106, 61, 0.25);
+}
+
+:deep(.p-select-label),
+:deep(.p-select-dropdown) {
+  color: #ffffff;
+}
+
+@media (max-width: 750px) {
+  .tour-tabs {
+    overflow-x: auto;
+    gap: 18px;
+    padding-left: 4px;
+  }
+
+  .tour-form-card {
+    padding: 18px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .form-actions :deep(.p-button) {
+    width: 100%;
+  }
+}
 </style>
