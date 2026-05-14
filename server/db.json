@@ -573,26 +573,6 @@
       "recordedAt": "2024-06-01T11:25:00Z"
     },
     {
-      "id": 4,
-      "touristId": 4,
-      "expeditionId": 1,
-      "heartRate": 165,
-      "bloodOxygen": 90,
-      "bodyTemperature": 36.7,
-      "steps": 12000,
-      "recordedAt": "2024-06-01T10:00:00Z"
-    },
-    {
-      "id": 5,
-      "touristId": 5,
-      "expeditionId": 1,
-      "heartRate": 132,
-      "bloodOxygen": 93,
-      "bodyTemperature": 36.4,
-      "steps": 11500,
-      "recordedAt": "2024-06-01T10:00:00Z"
-    },
-    {
       "id": 6,
       "touristId": 1,
       "expeditionId": "2",

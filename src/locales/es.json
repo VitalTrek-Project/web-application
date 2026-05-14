@@ -36,7 +36,7 @@
     "recorded-at": "Grabado AT",
     "actions": "Acciones",
     "new": "Nueva Senal",
-    "confirm-delete": "Estás seguro de que quieres eliminar {name}?",
+    "confirm-delete": "Estás seguro de que quieres eliminar ",
     "delete-header": "Confirmar Eliminación"
   },
   "sign": {

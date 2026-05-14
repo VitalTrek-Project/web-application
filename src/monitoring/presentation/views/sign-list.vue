@@ -27,7 +27,7 @@ const navigateToEdit = (id) => router.push({ name: 'monitoring-sign-edit', param
  */
 const confirmDelete = (sign) => {
   confirm.require({
-    message: t('signs.confirm-delete', { name: sign.touristId }),
+    message: t('signs.confirm-delete'),
     header: t('signs.delete-header'),
     icon: 'pi pi-exclamation-triangle',
     accept: () => deleteSign(sign)

@@ -36,7 +36,7 @@
     "recorded-at": "Recorded AT",
     "actions": "Actions",
     "new": "New Sign",
-    "confirm-delete": "Are you sure you want to delete {name}?",
+    "confirm-delete": "Are you sure you want to delete signal?",
     "delete-header": "Confirm Deletion"
   },
   "sign": {
@@ -66,7 +66,7 @@
     "raisedAt": "Raised AT",
     "actions": "Actions",
     "new": "New Alert",
-    "confirm-delete": "Are you sure you want to delete ",
+    "confirm-delete": "Are you sure you want to delete alert",
     "delete-header": "Confirm Deletion"
   },
   "alert": {
