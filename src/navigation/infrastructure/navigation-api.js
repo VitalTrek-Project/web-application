@@ -49,7 +49,7 @@ export class NavigationApi extends BaseApi {
      */
 
     startExpedition(tourId) {
-        return this.#expeditionsEndpoint.start(tourId);
+        return this.#expeditionsEndpoint.post(`${tourId}/start`)
     }
 
     /**
@@ -59,7 +59,7 @@ export class NavigationApi extends BaseApi {
      */
 
     finishExpedition(id) {
-        return this.#expeditionsEndpoint.finish(id);
+        return this.#expeditionsEndpoint.post(`${id}/finish`);
     }
 
     /**
