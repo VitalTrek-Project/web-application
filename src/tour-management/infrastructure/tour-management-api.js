@@ -1,8 +1,9 @@
 import { BaseApi } from '../../shared/infrastructure/base-api.js';
 import { BaseEndpoint } from '../../shared/infrastructure/base-endpoint.js';
 
-const toursEndpointPath = '/tours';
-const checkpointsEndpointPath = '/checkpoints';
+const toursEndpointPath = import.meta.env.VITE_TOUR_ENDPOINT_PATH;
+const touristsEndpointPath = import.meta.env.VITE_TOURIST_ENDPOINT_PATH;
+const checkpointsEndpointPath = import.meta.env.VITE_CHECKPOINTS_ENDPOINT_PATH;
 
 /**
  * Infrastructure adapter for Tour Management HTTP endpoints.
@@ -16,6 +17,9 @@ export class TourManagementApi extends BaseApi {
     #toursEndpoint;
 
     /** @type {BaseEndpoint} */
+    #touristsEndpoint;
+
+    /** @type {BaseEndpoint} */
     #checkpointsEndpoint;
 
     /**
@@ -27,6 +31,9 @@ export class TourManagementApi extends BaseApi {
         this.#toursEndpoint =
             new BaseEndpoint(this, toursEndpointPath);
 
+        this.#touristsEndpoint =
+            new BaseEndpoint(this, touristsEndpointPath);
+
         this.#checkpointsEndpoint =
             new BaseEndpoint(this, checkpointsEndpointPath);
     }
@@ -37,6 +44,14 @@ export class TourManagementApi extends BaseApi {
      */
     getTours() {
         return this.#toursEndpoint.getAll();
+    }
+
+    /**
+     * Retrieves tourist resources.
+     * @returns {Promise}
+     */
+    getTourists() {
+        return this.#touristsEndpoint.getAll();
     }
 
     /**
@@ -79,13 +94,20 @@ export class TourManagementApi extends BaseApi {
     /**
      * Assigns a tourist to a tour.
      * @param {number|string} tourId
-     * @param {number|string} touristId
+     * @param {Object} resource
      * @returns {Promise}
      */
-    assignTourist(tourId, touristId) {
+    assignTourist(tourId, resource) {
+        return this.#toursEndpoint.update(tourId, resource);
+    }
 
-        return this.#toursEndpoint.update(tourId, {
-            touristId
-        });
+    /**
+     * Updates a tourist resource.
+     * @param {number|string} touristId
+     * @param {Object} resource
+     * @returns {Promise}
+     */
+    updateTourist(touristId, resource) {
+        return this.#touristsEndpoint.update(touristId, resource);
     }
 }
