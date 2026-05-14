@@ -16,16 +16,14 @@ export class TourAssembler {
     }
 
     static toEntitiesFromResponse(response) {
-
-        if (response.status !== 200) {
+        if (response.status < 200 || response.status >= 400) {
             console.error(`${response.status} - ${response.statusText}`);
             return [];
         }
 
-        const resources =
-            response.data instanceof Array
-                ? response.data
-                : [response.data];
+        const resources = response.data instanceof Array
+            ? response.data
+            : [response.data];
 
         return resources.map(resource =>
             this.toEntityFromResource(resource)
