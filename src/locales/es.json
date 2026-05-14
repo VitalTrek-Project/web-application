@@ -1,8 +1,12 @@
 {
   "option": {
     "home": "Inicio",
-    "about": "Acerca de"
-
+    "about": "Acerca de",
+    "expedition": "Expedición",
+    "progress": "Progreso",
+    "t-experience": "Experiencia del Turista",
+    "weather": "Clima",
+    "store": "Tienda de Navegación"
   },
   "authoring-phrase": {
     "intro": "Hecho ",

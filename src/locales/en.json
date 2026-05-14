@@ -2,8 +2,12 @@
 {
   "option": {
     "home": "Home",
-    "about": "About"
-
+    "about": "About",
+    "expedition": "Expedition",
+    "progress": "Progress",
+    "t-experience": "Tourist Experience",
+    "weather": "Weather",
+    "store": "Navigation Store"
   },
   "authoring-phrase": {
     "intro": "Made ",
