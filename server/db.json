@@ -551,7 +551,6 @@
       "bodyTemperature": 36.8,
       "steps": 14200,
       "recordedAt": "2024-06-01T11:25:00Z"
-
     },
     {
       "id": 2,
@@ -595,13 +594,14 @@
     },
     {
       "id": 6,
-      "touristId": null,
-      "expeditionId": null,
-      "heartRate": "",
-      "bloodOxygen": "",
-      "bodyTemperature": "",
-      "steps": "",
-      "recordedAt": ""
+      "touristId": 1,
+      "expeditionId": "2",
+      "heartRate": "12",
+      "bloodOxygen": "12",
+      "bodyTemperature": "12",
+      "steps": "12",
+      "recordedAt": "1231231",
+      "tourist": null
     }
   ]
 }

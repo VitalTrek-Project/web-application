@@ -19,6 +19,7 @@ const items = [
   {label: 'option.home', to: '/home'},
   {label: 'option.about', to: '/about'},
   {label: 'option.signs', to: '/monitoring/signs'},
+  {label: 'option.alerts', to: '/monitoring/alerts'},
 
 ];
 </script>

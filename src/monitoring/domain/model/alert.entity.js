@@ -1,7 +1,9 @@
+import {Tourist} from "./tourist.entity.js";
+
 export class Alert {
 
     constructor({id=null, touristId= null,expeditionId=null, type='',
-                   severity='', status='', message='',  raisedAt=''}){
+                   severity='', status='', message='',  raisedAt='', tourist = null}){
 
         this.id=id;
         this.touristId = touristId;
@@ -11,5 +13,7 @@ export class Alert {
         this.status = status;
         this.message = message;
         this.raisedAt = raisedAt;
+
+        this.tourist = tourist instanceof Tourist ? tourist : null;
     }
 }

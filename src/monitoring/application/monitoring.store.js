@@ -3,9 +3,11 @@ import {computed, ref} from "vue";
 import {MonitoringApi} from "../infrastructure/monitoring-api.js";
 import {SignAssembler} from "../infrastructure/sign.assembler.js";
 import{TouristAssembler} from "../infrastructure/tourist.assembler.js";
+import{AlertAssembler} from "../infrastructure/alert.assembler.js";
 
 import {Sign} from "../domain/model/sign.entity.js";
 import {Tourist} from "../domain/model/tourist.entity.js";
+import {Alert} from "../domain/model/alert.entity.js";
 
 
 const monitoringApi = new MonitoringApi();
@@ -79,7 +81,6 @@ const useMonitoringStore = defineStore('monitoring', () => {
             errors.value.push(error);
         });
     }
-
     function getTouristById(id) {
         let idNum = parseInt(id);
         return tourists.value.find(tourist => tourist["id"] === idNum);
@@ -176,7 +177,50 @@ const useMonitoringStore = defineStore('monitoring', () => {
         });
     }
 
-
+    const alerts = ref([]);
+    const alertsLoaded = ref(false);
+    const alertsCount = computed(() => {
+        return alertsLoaded ? alerts.value.length : 0;
+    });
+    function fetchAlerts() {
+        monitoringApi.getAlerts().then(response => {
+            alerts.value = AlertAssembler.toEntitiesFromResponse(response);
+            alertsLoaded.value = true;
+        }).catch(error => {
+            errors.value.push(error);
+        });
+    }
+    function getAlertById(id) {
+        let idNum = parseInt(id);
+        return alerts.value.find(alert => alert["id"] === idNum);
+    }
+    function updateAlert(alert) {
+        monitoringApi.updateAlert(alert).then(response => {
+            const resource = response.data;
+            const updatedAlert = AlertAssembler.toEntityFromResource(resource);
+            const index = alerts.value.findIndex(t => t["id"] === updatedAlert.id);
+            if (index !== -1) alerts.value[index] = updatedAlert;
+        }).catch(error => {
+            errors.value.push(error);
+        });
+    }
+    function deleteAlert(alert) {
+        monitoringApi.deleteAlert(alert.id).then(() => {
+            const index = alerts.value.findIndex(t => t["id"] === alert.id);
+            if (index !== -1) alerts.value.splice(index, 1);
+        }).catch(error => {
+            errors.value.push(error);
+        });
+    }
+    function addAlert(alert) {
+        monitoringApi.createAlert(alert).then(response => {
+            const resource = response.data;
+            const newAlert = AlertAssembler.toEntityFromResource(resource);
+            alerts.value.push(newAlert);
+        }).catch(error => {
+            errors.value.push(error);
+        });
+    }
 
 
     return {
@@ -196,7 +240,16 @@ const useMonitoringStore = defineStore('monitoring', () => {
         addTourist,
         updateTourist,
         deleteTourist,
-        getTouristById
+        getTouristById,
+
+        addAlert,
+        updateAlert,
+        deleteAlert,
+        getAlertById,
+        alertsLoaded,
+        alerts,
+        alertsCount,
+        fetchAlerts
     }
 });
 

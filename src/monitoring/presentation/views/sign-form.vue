@@ -25,6 +25,7 @@ const isEdit = computed(() => !!route.params.id);
  */
 onMounted(() => {
   console.log(route.params.id);
+  if (!tourists.length) fetchTourists();
   if (isEdit.value) {
     const sign = getSignById(route.params.id);
     console.log(sign);
@@ -80,14 +81,6 @@ const saveSign = () => {
     <h1>{{ isEdit ? t('sign.edit-title') : t('sign.new-title') }}</h1>
     <form @submit.prevent="saveSign">
       <div class="field mb-3">
-        <label for="heartRate">{{ t('sign.heartRate') }}</label>
-        <pv-input-text id="heartRate" v-model="form.heartRate" required class="w-full" />
-      </div>
-      <div class="field mb-3">
-        <label for="bloodOxygen">{{ t('sign.bloodOxygen') }}</label>
-        <pv-textarea id="bloodOxygen" v-model="form.bloodOxygen" rows="4" class="w-full" />
-      </div>
-      <div class="field mb-3">
         <label for="tourist">{{ t('sign.tourist') }}</label>
         <pv-select
             id="tourist"
@@ -99,6 +92,32 @@ const saveSign = () => {
             class="w-full"
         />
       </div>
+      <div class="field mb-3">
+        <label for="expeditionId">{{ t('sign.expeditionId') }}</label>
+        <pv-input-text id="expeditionId" v-model="form.expeditionId" required class="w-full" />
+      </div>
+      <div class="field mb-3">
+        <label for="heartRate">{{ t('sign.heartRate') }}</label>
+        <pv-input-text id="heartRate" v-model="form.heartRate" required class="w-full" />
+      </div>
+      <div class="field mb-3">
+        <label for="bloodOxygen">{{ t('sign.bloodOxygen') }}</label>
+        <pv-textarea id="bloodOxygen" v-model="form.bloodOxygen" rows="4" class="w-full" />
+      </div>
+      <div class="field mb-3">
+        <label for="bodyTemperature">{{ t('sign.bodyTemperature') }}</label>
+        <pv-textarea id="bodyTemperature" v-model="form.bodyTemperature" rows="4" class="w-full" />
+      </div>
+      <div class="field mb-3">
+        <label for="steps">{{ t('sign.steps') }}</label>
+        <pv-textarea id="steps" v-model="form.steps" rows="4" class="w-full" />
+      </div>
+      <div class="field mb-3">
+        <label for="recordedAt">{{ t('sign.recordedAt') }}</label>
+        <pv-textarea id="recordedAt" v-model="form.recordedAt" rows="4" class="w-full" />
+      </div>
+
+
       <pv-button type="submit" :label="t('sign.save')" icon="pi pi-save" />
       <pv-button :label="t('sign.cancel')" severity="secondary" class="ml-2" @click="navigateBack" />
     </form>

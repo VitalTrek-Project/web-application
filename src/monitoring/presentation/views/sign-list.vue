@@ -10,7 +10,7 @@ const router = useRouter();
 const confirm = useConfirm();
 const store = useMonitoringStore();
 const { signs, errors, signsLoaded } = toRefs(store);
-const { fetchSigns, deleteSign } = store;
+const { tourists, fetchSigns, deleteSign, fetchTourists } = store;
 
 /** Navigates to the sign creation route. */
 const navigateToNew = () => router.push({ name: 'monitoring-sign-new' });
@@ -35,6 +35,7 @@ const confirmDelete = (sign) => {
 }
 
 onMounted(() => {
+  if (!tourists.length) fetchTourists();
   if (!store.signsLoaded) {
     fetchSigns();
     signsLoaded.value = store.signsLoaded;
@@ -56,7 +57,7 @@ onMounted(() => {
         striped-rows
         table-style="min-width: 50rem">
       <pv-column :header="t('signs.expedition-id')" field="expeditionId" sortable/>
-      <pv-column :header="t('signs.tourist-id')" field="touristId" sortable/>
+      <pv-column :header="t('signs.tourist-id')" field= "touristId" sortable/>
       <pv-column :header="t('signs.heart-rate')" field="heartRate" sortable/>
       <pv-column :header="t('signs.blood-oxygen')" field="bloodOxygen" sortable/>
       <pv-column :header="t('signs.body-temperature')" field="bodyTemperature" sortable/>
