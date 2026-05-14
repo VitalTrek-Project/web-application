@@ -1,8 +1,117 @@
 {
   "option": {
     "home": "Inicio",
-    "about": "Acerca de"
-
+    "about": "Acerca de",
+    "routes": "Rutas",
+    "navigation-expedition": "Navegación y expedición",
+    "safety-monitoring": "Seguridad y monitoreo",
+    "tour-management": "Gestión de tours",
+    "community": "Comunidad",
+    "agencies": "Agencias",
+    "plans": "Planes",
+    "identity-access": "Identidad y acceso",
+    "notifications-profile": "Notificaciones y perfil",
+    "my-profile": "Mi perfil"
+  },
+  "sidebar": {
+    "sos": "SOS"
+  },
+  "tour-management": {
+    "context": "CONTEXTO DELIMITADO",
+    "title": "Gestión de tours",
+    "subtitle": "Tours, puntos de control y asignación de turistas."
+  },
+  "tour": {
+    "title": "Lista de tours",
+    "new": "Nuevo tour",
+    "description": "Administra tus tours, capacidad, dificultad y estado de publicación.",
+    "tabs": {
+      "list": "Lista de tours",
+      "form": "Turistas registrados",
+      "assign-tourists": "Asignar turistas"
+    },
+    "search-placeholder": "Buscar tour...",
+    "difficulty": {
+      "easy": "Fácil",
+      "medium": "Medio",
+      "difficult": "Difícil",
+      "hard": "Difícil"
+    },
+    "status": {
+      "available": "Disponible",
+      "unavailable": "No disponible",
+      "published": "Publicado",
+      "draft": "Borrador"
+    },
+    "form": {
+      "create-title": "Crear tour",
+      "edit-title": "Editar tour",
+      "create-description": "Completa la información para registrar un nuevo tour.",
+      "edit-description": "Actualiza la información del tour seleccionado.",
+      "loading": "Cargando información del tour...",
+      "fields": {
+        "title": "Título",
+        "agency-id": "ID de agencia",
+        "description": "Descripción",
+        "difficulty": "Dificultad",
+        "status": "Estado",
+        "capacity": "Capacidad"
+      },
+      "create": "Crear tour",
+      "update": "Actualizar tour",
+      "cancel": "Cancelar"
+    }
+  },
+  "tours": {
+    "id": "ID",
+    "title-column": "Título",
+    "difficulty": "Dificultad",
+    "status": "Estado",
+    "capacity": "Capacidad",
+    "actions": "Acciones",
+    "confirm-delete": "¿Seguro que deseas eliminar {title}?",
+    "delete-header": "Eliminar tour"
+  },
+  "tourists": {
+    "assignment-title": "Turistas registrados",
+    "assignment-description": "Asigna turistas a tours, retíralos o cámbialos a otro tour.",
+    "id": "ID",
+    "name": "Nombre",
+    "email": "Correo",
+    "current-tour": "Tour actual",
+    "select-tour": "Seleccionar tour",
+    "select-tour-placeholder": "Elige un tour",
+    "not-assigned": "Sin asignar",
+    "actions": "Acciones",
+    "assign": "Asignar",
+    "unassign": "Retirar",
+    "change": "Cambiar"
+  },
+  "footer": {
+    "description": "Tu vida, tu ruta, tu tranquilidad. La plataforma de trekking IoT más completa del Perú.",
+    "follow-us": "SÍGUENOS",
+    "platform": {
+      "title": "Plataforma",
+      "routes": "Explorar rutas",
+      "monitoring": "Monitoreo IoT",
+      "dashboard": "Panel de control",
+      "community": "Comunidad",
+      "agencies": "Agencias turísticas"
+    },
+    "account": {
+      "title": "Cuenta",
+      "agency-account": "Cuenta de agencia",
+      "my-profile": "Mi perfil",
+      "settings": "Configuración"
+    },
+    "support": {
+      "title": "Soporte",
+      "help-center": "Centro de ayuda",
+      "contact": "Contacto",
+      "privacy": "Privacidad",
+      "terms": "Términos de uso",
+      "iot-security": "Seguridad IoT"
+    }
   },
   "authoring-phrase": {
     "intro": "Hecho ",
