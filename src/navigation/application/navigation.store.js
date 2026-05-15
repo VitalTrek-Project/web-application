@@ -119,22 +119,31 @@ export const useNavigationStore = defineStore(
         }
 
         /**
-         * Fetches weather data for the given location.
+         * Fetches weather data for the given coordinates.
          * MockAPI does not support location-based queries, so all records
-         * are fetched and the first match by location name is selected.
-         * @param {string} location
+         * are fetched and the best match is selected when possible.
+         * @param {number} latitude
+         * @param {number} longitude
          * @returns {Promise}
          */
-        function fetchWeather(location) {
-            return navigationApi.getWeather(location)
+        function fetchWeather(latitude, longitude) {
+            return navigationApi.getWeather(latitude, longitude)
                 .then(response => {
                     const records = Array.isArray(response.data)
                         ? response.data
                         : [response.data];
 
-                    const match = records.find(
-                        w => w.location === location
-                    ) ?? records[0] ?? null;
+                    // Try to match by latitude/longitude when available (allow small tolerance)
+                    const match = records.find(w => {
+                        if (w == null) return false;
+                        const hasCoords = w.latitude != null && w.longitude != null;
+                        const coordsProvided = typeof latitude === 'number' && typeof longitude === 'number';
+                        if (hasCoords && coordsProvided) {
+                            const tol = 0.01; // ~1km tolerance depending on units
+                            return Math.abs(Number(w.latitude) - latitude) <= tol && Math.abs(Number(w.longitude) - longitude) <= tol;
+                        }
+                        return false;
+                    }) ?? records[0] ?? null;
 
                     weather.value = match;
                     return weather.value;
