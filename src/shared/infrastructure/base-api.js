@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const platformApi = import.meta.env.VITE_VITALTREK_PLATFORM_API_URL;
+// Support either the new generic VITE_API_BASE_URL or the older VITE_VITALTREK_PLATFORM_API_URL
+const platformApi = String(import.meta.env.VITE_API_BASE_URL ?? import.meta.env.VITE_VITALTREK_PLATFORM_API_URL ?? "").trim();
 
 /**
  * Shared infrastructure base class that owns the configured Axios client.
@@ -14,10 +15,23 @@ export class BaseApi {
 
     /** Initializes the shared Axios client with environment-driven configuration. */
     constructor() {
+        if (!platformApi) {
+            // Helpful warning for local development when env vars are missing
+            // eslint-disable-next-line no-console
+            console.warn('BaseApi: API base URL not configured (VITE_API_BASE_URL or VITE_VITALTREK_PLATFORM_API_URL). Requests may fail.');
+        }
+
         this.#http = axios.create({
-            baseURL: platformApi,
-            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}
+            baseURL: platformApi || undefined,
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            timeout: 10000
         });
+
+        // Centralized response interceptor to normalize errors if needed
+        this.#http.interceptors.response.use(
+            response => response,
+            error => Promise.reject(error?.response ?? error)
+        );
     }
 
     /**
