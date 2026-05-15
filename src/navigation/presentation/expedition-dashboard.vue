@@ -62,7 +62,10 @@ const handleFinish = async () => {
  */
 onMounted(async () => {
   try {
-    await store.fetchExpedition();
+    // Si ya hay una expedición en el store, recargamos con su id.
+    // Si no, usamos 1 como id inicial para el mock server.
+    const id = store.currentExpedition?.id ?? 1;
+    await store.fetchExpedition(id);
   } catch (error) {
     console.error(error);
   }
@@ -101,7 +104,7 @@ onMounted(async () => {
               icon="pi pi-play"
               :label="t('expedition.start')"
               @click="handleStart"
-              :disabled="expedition.status === 'started'"
+              :disabled="expedition.status === 'in_progress'"
           />
 
           <pv-button

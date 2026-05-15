@@ -1,5 +1,9 @@
 import {createRouter, createWebHistory} from "vue-router";
 import Home from "./shared/presentation/views/home.vue";
+import Weather from "./navigation/presentation/weather-widget.vue";
+import Route from "./navigation/presentation/route-map.vue";
+import Experience from "./navigation/presentation/experience-log.vue";
+import Expedition from "./navigation/presentation/expedition-dashboard.vue"
 
 // To import when IAM is implemented,
 // import iamRoutes from "./iam/presentation/iam-routes.js";
@@ -21,11 +25,13 @@ const routes = [
 
 // Routes version when IAM is not implemented
 const routes = [
-    { path: '/home',            name: 'home',       component: Home,        meta: { title: 'Home' } },
-    { path: '/about',           name: 'about',      component: about,       meta: { title: 'About' } },
-
+    { path: '/home',            name: 'home',        component: Home,         meta: { title: 'Home' } },
+    { path: '/about',           name: 'about',       component: about,        meta: { title: 'About' } },
+    { path: '/weather',         name: 'Weather',     component: Weather,      meta: { title: 'Weather' } },
+    { path: '/expeditions',     name: 'Expeditions', component: Expedition,   meta: { title: 'Expeditions' } },
+    { path: '/experiences',     name: 'Experiences', component: Experience,   meta: { title: 'Experiences' } },
     { path: '/',                redirect: '/home' },
-    { path: '/:pathMatch(.*)*', name: 'not-found', component: pageNotFound, meta: { title: 'Page Not Found' } }
+    { path: '/:pathMatch(.*)*', name: 'not-found',   component: pageNotFound, meta: { title: 'Page Not Found' } }
 ];
 
 const router = createRouter({

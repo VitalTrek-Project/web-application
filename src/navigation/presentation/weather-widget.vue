@@ -20,10 +20,7 @@ const loadWeather = async () => {
 
   try {
     // 🔥 puedes cambiar coords según tu lógica real
-    weather.value = await store.fetchWeather({
-      latitude: 0,
-      longitude: 0
-    });
+    weather.value = await store.fetchWeather(0, 0);
 
   } catch (err) {
     error.value = err;

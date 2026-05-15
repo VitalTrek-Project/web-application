@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 
 import { NavigationApi } from "../infrastructure/navigation-api.js";
-import { ExperienceAssembler } from "../infrastructure/experiencie.assembler.js";
+import { ExperienceAssembler } from "../infrastructure/experience.assembler.js";
 import { ExpeditionAssembler } from "../infrastructure/expedition.assembler.js";
 
 const navigationApi = new NavigationApi();
@@ -18,7 +18,7 @@ export const useNavigationStore = defineStore(
         /** @type {import('vue').Ref<import('../domain/progress.entity.js').Progress|null>} */
         const progress = ref(null);
 
-        /** @type {import('vue').Ref<import('../domain/tourist-experience.entity.js').TouristExperience[]>} */
+        /** @type {import('vue').Ref<import('../domain/experience.entity.js').TouristExperience[]>} */
         const experiences = ref([]);
 
         /** @type {import('vue').Ref<import('../domain/weather.entity.js').Weather|null>} */
