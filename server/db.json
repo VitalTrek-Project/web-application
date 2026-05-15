@@ -543,26 +543,6 @@
   ],
   "vital-sign-readings": [
     {
-      "id": 1,
-      "touristId": 1,
-      "expeditionId": 1,
-      "heartRate": 182,
-      "bloodOxygen": 88,
-      "bodyTemperature": 36.8,
-      "steps": 14200,
-      "recordedAt": "2024-06-01T11:25:00Z"
-    },
-    {
-      "id": 2,
-      "touristId": 2,
-      "expeditionId": 1,
-      "heartRate": 145,
-      "bloodOxygen": 91,
-      "bodyTemperature": 36.5,
-      "steps": 13800,
-      "recordedAt": "2024-06-01T11:25:00Z"
-    },
-    {
       "id": 3,
       "touristId": 3,
       "expeditionId": 1,
@@ -576,8 +556,8 @@
       "id": 6,
       "touristId": 1,
       "expeditionId": "2",
-      "heartRate": "12",
-      "bloodOxygen": "12",
+      "heartRate": "15",
+      "bloodOxygen": "15",
       "bodyTemperature": "12",
       "steps": "12",
       "recordedAt": "1231231",

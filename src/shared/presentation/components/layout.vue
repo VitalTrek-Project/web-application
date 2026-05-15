@@ -26,7 +26,6 @@ const items = [
 
 <template>
   <pv-toast/>
-  <pv-confirm-dialog/>
   <div class="header">
     <pv-toolbar class="bg-primary">
       <template #start>
