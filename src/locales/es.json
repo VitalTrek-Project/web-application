@@ -2,6 +2,7 @@
   "option": {
     "home": "Inicio",
     "about": "Acerca de",
+<<<<<<< HEAD
     "routes": "Rutas",
     "navigation-expedition": "Navegación y expedición",
     "safety-monitoring": "Seguridad y monitoreo",
@@ -136,6 +137,13 @@
     "copyright": "© 2026 VitalTrek. Todos los derechos reservados.",
     "app-store": "App Store",
     "google-play": "Google Play"
+=======
+    "expedition": "Expedición",
+    "progress": "Progreso",
+    "t-experience": "Experiencia del Turista",
+    "weather": "Clima",
+    "store": "Tienda de Navegación"
+>>>>>>> feature/navigation
   },
   "authoring-phrase": {
     "intro": "Hecho ",

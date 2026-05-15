@@ -2,12 +2,19 @@
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 import LanguageSwitcher from "./language-switcher.vue";
+<<<<<<< HEAD
 import { useI18n } from "vue-i18n";
+=======
+import {ref} from "vue";
+import {useRoute} from "vue-router";
+import {useI18n} from "vue-i18n";
+>>>>>>> feature/navigation
 import FooterContent from "./footer-content.vue";
 
 const { t } = useI18n();
 const route = useRoute();
 
+<<<<<<< HEAD
 const items = [
   { label: 'option.home', to: '/home' },
   { label: 'option.routes', to: '/routes' },
@@ -59,6 +66,44 @@ const hero = computed(() => {
       <div class="brand">
         <div class="brand-icon">
           <i class="pi pi-map-marker"></i>
+=======
+const route = useRoute();
+const drawer = ref(false);
+const toggleDrawer = () => {
+  /**
+   * Toggles the state of the drawer between open and closed.
+   */
+  drawer.value = !drawer.value;
+}
+const items = [
+  {label: 'option.home', to: '/home', icon: 'pi pi-home'},
+  { label: 'option.navigation', to: '/navigation', icon: 'pi pi-map' },
+];
+
+const isActive = (to) => route.path === to || route.path.startsWith(to);
+</script>
+
+<template>
+  <pv-toast/>
+  <pv-confirm-dialog/>
+  <div class="header">
+    <pv-toolbar class="bg-primary">
+      <template #start>
+        <pv-button class="p-button-text" icon="pi pi-bars" @click="toggleDrawer"/>
+        <h3>VitalTrek</h3>
+      </template>
+      <template #center>
+
+      </template>
+      <template #end>
+        <div class="flex-column mr-3">
+          <pv-button v-for="item in items" :key="item.label" as-child v-slot="slotProps">
+            <router-link :to="item.to" :class="[slotProps['class'], { active: isActive(item.to) }]">
+              <i :class="item.icon" aria-hidden="true" style="margin-right:6px"></i>
+              {{ t(item.label) }}
+            </router-link>
+          </pv-button>
+>>>>>>> feature/navigation
         </div>
         <span>VitalTrek</span>
       </div>
@@ -414,5 +459,12 @@ const hero = computed(() => {
     padding: 20px 16px 32px;
     margin-top: 0;
   }
+}
+
+/* Active link styling */
+.router-link-active,
+.active {
+  font-weight: 600;
+  text-decoration: underline;
 }
 </style>

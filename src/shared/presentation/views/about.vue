@@ -7,7 +7,10 @@ const { t } = useI18n();
 <template>
   <div class="align-content-start justify-content-start m-4">
     <h1>{{ t('about.title')}}</h1>
+<<<<<<< HEAD
 
+=======
+>>>>>>> feature/navigation
     <p>{{ t('about.content') }}</p>
   </div>
 </template>
