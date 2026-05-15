@@ -12,16 +12,13 @@ const loading = ref(false);
 const error = ref(null);
 
 /**
- * Fetch weather from store
+ * Fetch weather from store using coordinates. Falls back to (0,0) when geolocation is unavailable.
  */
-const loadWeather = async () => {
+const loadWeather = async (latitude = 0, longitude = 0) => {
   loading.value = true;
   error.value = null;
-
   try {
-    // 🔥 puedes cambiar coords según tu lógica real
-    weather.value = await store.fetchWeather(0, 0);
-
+    weather.value = await store.fetchWeather(latitude, longitude);
   } catch (err) {
     error.value = err;
   } finally {
@@ -30,7 +27,15 @@ const loadWeather = async () => {
 };
 
 onMounted(() => {
-  loadWeather();
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+        (pos) => loadWeather(pos.coords.latitude, pos.coords.longitude),
+        () => loadWeather(0, 0),
+        { timeout: 5000 }
+    );
+  } else {
+    loadWeather(0, 0);
+  }
 });
 </script>
 
