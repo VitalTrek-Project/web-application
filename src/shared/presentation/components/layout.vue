@@ -2,12 +2,14 @@
 
 import LanguageSwitcher from "./language-switcher.vue";
 import {ref} from "vue";
+import {useRoute} from "vue-router";
 import {useI18n} from "vue-i18n";
 import FooterContent from "./footer-content.vue";
 // To import when IAM is implemented
 // import AuthenticationSection from "../../../iam/presentation/components/authentication-section.vue";
 const { t } = useI18n();
 
+const route = useRoute();
 const drawer = ref(false);
 const toggleDrawer = () => {
   /**
@@ -16,9 +18,11 @@ const toggleDrawer = () => {
   drawer.value = !drawer.value;
 }
 const items = [
-  {label: 'option.home', to: '/home'},
-  {label: 'option.about', to: '/about'},
+  {label: 'option.home', to: '/home', icon: 'pi pi-home'},
+  { label: 'option.navigation', to: '/navigation', icon: 'pi pi-map' },
 ];
+
+const isActive = (to) => route.path === to || route.path.startsWith(to);
 </script>
 
 <template>
@@ -36,7 +40,10 @@ const items = [
       <template #end>
         <div class="flex-column mr-3">
           <pv-button v-for="item in items" :key="item.label" as-child v-slot="slotProps">
-            <router-link :to="item.to" :class="slotProps['class']">{{ t(item.label) }}</router-link>
+            <router-link :to="item.to" :class="[slotProps['class'], { active: isActive(item.to) }]">
+              <i :class="item.icon" aria-hidden="true" style="margin-right:6px"></i>
+              {{ t(item.label) }}
+            </router-link>
           </pv-button>
         </div>
         <!-- To add when IAM is implemented -->
@@ -72,5 +79,12 @@ const items = [
   left: 0;
   width: 100%;
   padding: 10px;
+}
+
+/* Active link styling */
+.router-link-active,
+.active {
+  font-weight: 600;
+  text-decoration: underline;
 }
 </style>
