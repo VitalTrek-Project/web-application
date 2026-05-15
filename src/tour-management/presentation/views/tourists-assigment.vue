@@ -2,9 +2,10 @@
 import { computed, onMounted, ref, toRefs } from "vue";
 import { useI18n } from "vue-i18n";
 
-import useTourManagementStore
-  from "../../application/tourManagement.store.js";
+import useTourManagementStore from "../../application/tourManagement.store.js";
 import TourPanel from "../components/tour-panel.vue";
+import { useBcSearch } from "../../../shared/presentation/composables/use-bc-search.js";
+import { summarizeTouristAssignmentStats } from "../utils/tour-presenter.js";
 
 const { t } = useI18n();
 
@@ -27,6 +28,11 @@ const {
 } = store;
 
 const selectedTourByTourist = ref({});
+const { filteredItems: filteredTourists } = useBcSearch(tourists);
+
+const stats = computed(() =>
+  summarizeTouristAssignmentStats(tours.value, tourists.value)
+);
 
 const tourOptions = computed(() =>
   tours.value.map((tour) => ({
@@ -92,93 +98,112 @@ onMounted(async () => {
 <template>
   <TourPanel>
     <div class="tour-card tourists-assignment">
-      <header class="tourists-card-header">
-        <h2>{{ t("tourists.assignment-title") }}</h2>
-        <p>{{ t("tourists.assignment-description") }}</p>
-      </header>
+      <div class="tour-dashboard-header">
+        <div>
+          <h2 class="tour-section-title">{{ t("tourists.assignment-title") }}</h2>
+          <p class="tour-meta">{{ t("tourists.assignment-subtitle") }}</p>
+        </div>
+      </div>
 
-      <pv-data-table
-          :value="tourists"
-          :loading="!touristsLoaded || !toursLoaded"
-          class="tour-table-assignment"
-          paginator
-          :rows="5"
-          :rows-per-page-options="[5, 10, 20]"
-          table-style="min-width: 100%"
-      >
-        <pv-column field="id" :header="t('tourists.id')" />
+      <div v-if="touristsLoaded && tourists.length" class="tour-stats-row">
+        <article class="tour-stat-card">
+          <strong>{{ stats.total }}</strong>
+          <span>{{ t("tourists.stats-total") }}</span>
+        </article>
+        <article class="tour-stat-card tour-stat-card--teal">
+          <strong>{{ stats.assigned }}</strong>
+          <span>{{ t("tourists.stats-assigned") }}</span>
+        </article>
+        <article class="tour-stat-card tour-stat-card--muted">
+          <strong>{{ stats.unassigned }}</strong>
+          <span>{{ t("tourists.stats-unassigned") }}</span>
+        </article>
+      </div>
 
-        <pv-column :header="t('tourists.name')">
-          <template #body="slotProps">
-            <span class="tourist-name">
-              {{ slotProps.data.fullName || slotProps.data.name }}
-            </span>
-          </template>
-        </pv-column>
+      <section class="tour-info-card" style="padding: 0; overflow: hidden">
+        <pv-data-table
+            :value="filteredTourists"
+            :loading="!touristsLoaded || !toursLoaded"
+            class="tour-table-assignment"
+            paginator
+            :rows="5"
+            :rows-per-page-options="[5, 10, 20]"
+            table-style="min-width: 100%"
+        >
+          <pv-column field="id" :header="t('tourists.id')" />
 
-        <pv-column field="email" :header="t('tourists.email')">
-          <template #body="slotProps">
-            <span class="tourist-email">{{ slotProps.data.email }}</span>
-          </template>
-        </pv-column>
+          <pv-column :header="t('tourists.name')">
+            <template #body="slotProps">
+              <span class="tourist-name">
+                {{ slotProps.data.fullName || slotProps.data.name }}
+              </span>
+            </template>
+          </pv-column>
 
-        <pv-column :header="t('tourists.current-tour')">
-          <template #body="slotProps">
-            <span
-                class="current-tour"
-                :class="{
-                  'current-tour--assigned': getTourAssignedToTourist(
-                    slotProps.data.id
-                  )
-                }"
-            >
-              {{ getTouristAssignmentText(slotProps.data.id) }}
-            </span>
-          </template>
-        </pv-column>
+          <pv-column field="email" :header="t('tourists.email')">
+            <template #body="slotProps">
+              <span class="tourist-email">{{ slotProps.data.email }}</span>
+            </template>
+          </pv-column>
 
-        <pv-column :header="t('tourists.select-tour')">
-          <template #body="slotProps">
-            <pv-select
-                v-model="selectedTourByTourist[slotProps.data.id]"
-                :options="tourOptions"
-                option-label="label"
-                option-value="value"
-                :placeholder="t('tourists.select-tour-placeholder')"
-                class="tour-select-field"
-            />
-          </template>
-        </pv-column>
+          <pv-column :header="t('tourists.current-tour')">
+            <template #body="slotProps">
+              <span
+                  class="current-tour"
+                  :class="{
+                    'current-tour--assigned': getTourAssignedToTourist(
+                      slotProps.data.id
+                    )
+                  }"
+              >
+                {{ getTouristAssignmentText(slotProps.data.id) }}
+              </span>
+            </template>
+          </pv-column>
 
-        <pv-column :header="t('tourists.actions')">
-          <template #body="slotProps">
-            <div class="assignment-actions">
-              <pv-button
-                  :label="
-                    getTourAssignedToTourist(slotProps.data.id)
-                      ? t('tourists.change')
-                      : t('tourists.assign')
-                  "
-                  icon="pi pi-user-plus"
-                  size="small"
-                  class="assign-action-btn"
-                  @click="handleAssignOrChange(slotProps.data.id)"
+          <pv-column :header="t('tourists.select-tour')">
+            <template #body="slotProps">
+              <pv-select
+                  v-model="selectedTourByTourist[slotProps.data.id]"
+                  :options="tourOptions"
+                  option-label="label"
+                  option-value="value"
+                  :placeholder="t('tourists.select-tour-placeholder')"
+                  class="tour-select-field"
               />
+            </template>
+          </pv-column>
 
-              <pv-button
-                  v-if="getTourAssignedToTourist(slotProps.data.id)"
-                  :label="t('tourists.unassign')"
-                  icon="pi pi-user-minus"
-                  severity="danger"
-                  size="small"
-                  outlined
-                  class="unassign-action-btn"
-                  @click="handleUnassign(slotProps.data.id)"
-              />
-            </div>
-          </template>
-        </pv-column>
-      </pv-data-table>
+          <pv-column :header="t('tourists.actions')">
+            <template #body="slotProps">
+              <div class="assignment-actions">
+                <pv-button
+                    :label="
+                      getTourAssignedToTourist(slotProps.data.id)
+                        ? t('tourists.change')
+                        : t('tourists.assign')
+                    "
+                    icon="pi pi-user-plus"
+                    size="small"
+                    class="assign-action-btn"
+                    @click="handleAssignOrChange(slotProps.data.id)"
+                />
+
+                <pv-button
+                    v-if="getTourAssignedToTourist(slotProps.data.id)"
+                    :label="t('tourists.unassign')"
+                    icon="pi pi-user-minus"
+                    severity="danger"
+                    size="small"
+                    outlined
+                    class="unassign-action-btn"
+                    @click="handleUnassign(slotProps.data.id)"
+                />
+              </div>
+            </template>
+          </pv-column>
+        </pv-data-table>
+      </section>
 
       <div v-if="errors.length" class="tour-error">
         {{ t("errors.occurred") }}:
@@ -189,27 +214,6 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-.tourists-card-header {
-  margin-bottom: 24px;
-}
-
-.tourists-card-header h2 {
-  color: #ffffff;
-  font-family: var(--heading);
-  font-size: 1.45rem;
-  font-weight: 700;
-  margin: 0 0 8px;
-  letter-spacing: -0.01em;
-}
-
-.tourists-card-header p {
-  color: #94a3b8;
-  font-size: 0.8rem;
-  line-height: 1.55;
-  margin: 0;
-  max-width: 520px;
-}
-
 .tourist-name {
   font-weight: 600;
   color: #f1f5f9;
@@ -306,42 +310,17 @@ onMounted(async () => {
   background: transparent;
 }
 
-:deep(.tour-table-assignment .p-select),
-:deep(.tour-table-assignment .p-select-label),
-:deep(.tour-table-assignment .p-select-dropdown) {
-  background: #1a2433;
-  border-color: rgba(148, 163, 184, 0.22);
-  color: #f1f5f9;
-  font-size: 0.8rem;
-}
-
 :deep(.tour-table-assignment .p-paginator) {
   background: transparent;
   border: none;
   color: #94a3b8;
-  padding-top: 20px;
-}
-
-:deep(.tour-table-assignment .p-paginator .p-paginator-page),
-:deep(.tour-table-assignment .p-paginator .p-paginator-first),
-:deep(.tour-table-assignment .p-paginator .p-paginator-prev),
-:deep(.tour-table-assignment .p-paginator .p-paginator-next),
-:deep(.tour-table-assignment .p-paginator .p-paginator-last) {
-  color: #94a3b8;
-  min-width: 2rem;
-  height: 2rem;
-  border-radius: 999px;
+  padding: 16px 20px 20px;
 }
 
 :deep(.tour-table-assignment .p-paginator .p-paginator-page.p-highlight) {
-  background: #14b8a6;
-  color: #ffffff;
-  border-color: #14b8a6;
-}
-
-:deep(.tour-table-assignment .p-paginator .p-select) {
-  background: #1a2433;
-  border-color: rgba(148, 163, 184, 0.2);
+  background: #ff7a30;
+  color: #0f1419;
+  border-color: #ff7a30;
 }
 
 @media (max-width: 900px) {

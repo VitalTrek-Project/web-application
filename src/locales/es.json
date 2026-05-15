@@ -1,11 +1,14 @@
 {
+  "common": {
+    "search": "Buscar..."
+  },
   "option": {
     "home": "Inicio",
     "about": "Acerca de",
-<<<<<<< HEAD
     "routes": "Rutas",
     "navigation-expedition": "Navegación y expedición",
-    "safety-monitoring": "Seguridad y monitoreo",
+    "iot": "IoT y dispositivos",
+    "safety-monitoring": "IoT y dispositivos",
     "tour-management": "Gestión de tours",
     "community": "Comunidad",
     "agencies": "Agencias",
@@ -21,7 +24,7 @@
     "subtitle": "Explora rutas, tours, monitoreo y más desde un solo lugar."
   },
   "monitoring": {
-    "context": "CONTEXTO DELIMITADO",
+    "context": "MONITOREO",
     "title": "Monitoreo",
     "subtitle": "Signos vitales y alertas de expedición.",
     "tabs": {
@@ -34,14 +37,18 @@
     "sos": "! S.O.S."
   },
   "tour-management": {
-    "context": "CONTEXTO DELIMITADO",
+    "context": "GESTIÓN DE TOURS",
     "title": "Gestión de tours",
     "subtitle": "Tours, puntos de control y asignación de turistas."
   },
   "tour": {
     "title": "Lista de tours",
+    "subtitle": "Administra tours, capacidad, dificultad y estado de publicación.",
     "new": "Nuevo tour",
     "description": "Administra tus tours, capacidad, dificultad y estado de publicación.",
+    "stats-total": "Tours",
+    "stats-published": "Publicados",
+    "stats-draft": "Borradores",
     "tabs": {
       "list": "Lista de tours",
       "form": "Formulario de tour",
@@ -96,7 +103,11 @@
   },
   "tourists": {
     "assignment-title": "Turistas registrados",
+    "assignment-subtitle": "Asigna turistas a tours, retíralos o cámbialos a otro tour.",
     "assignment-description": "Asigna turistas a tours, retíralos o cámbialos a otro tour.",
+    "stats-total": "Turistas",
+    "stats-assigned": "Asignados",
+    "stats-unassigned": "Sin asignar",
     "id": "ID",
     "name": "Nombre",
     "email": "Correo",
@@ -137,13 +148,151 @@
     "copyright": "© 2026 VitalTrek. Todos los derechos reservados.",
     "app-store": "App Store",
     "google-play": "Google Play"
-=======
-    "expedition": "Expedición",
+  },
+  "iot": {
+    "context": "IOT",
+    "title": "IoT y dispositivos",
+    "subtitle": "Dispositivos, sensores y envío de signos vitales a monitoreo.",
+    "tabs": {
+      "devices": "Dispositivos",
+      "readings": "Lecturas",
+      "control": "Control"
+    },
+    "devices": {
+      "title": "Dispositivos conectados",
+      "subtitle": "Monitorea wearables y sensores de la expedición en tiempo real.",
+      "refresh": "Actualizar",
+      "view-readings": "Ver lecturas",
+      "selected-title": "Dispositivo activo",
+      "stats-total": "Total",
+      "stats-online": "En línea",
+      "stats-offline": "Desconectados",
+      "expedition": "Expedición",
+      "name": "Nombre",
+      "type": "Tipo",
+      "status": "Estado",
+      "last-seen": "Última conexión",
+      "empty": "No hay dispositivos en MockAPI. Revisa el recurso /devices.",
+      "add": "Agregar dispositivo",
+      "add-title": "Registrar dispositivo",
+      "add-description": "Crea un wearable o sensor en MockAPI (/devices).",
+      "save": "Registrar",
+      "cancel": "Cancelar",
+      "delete": "Eliminar",
+      "confirm-delete": "¿Eliminar este dispositivo de MockAPI?",
+      "delete-header": "Eliminar dispositivo",
+      "invalid-id": "No se puede eliminar: el dispositivo no tiene ID válido.",
+      "types": {
+        "wearable": "Wearable",
+        "gps_tracker": "GPS",
+        "environmental": "Sensor ambiental"
+      },
+      "statuses": {
+        "online": "En línea",
+        "offline": "Desconectado"
+      },
+      "expedition-placeholder": "ID expedición (opcional)",
+      "name-placeholder": "Ej. Pulse Band 04"
+    },
+    "readings": {
+      "title": "Lecturas de sensores",
+      "history-title": "Historial de lecturas",
+      "sync-monitoring": "Enviar a monitoreo",
+      "select-device": "Selecciona un dispositivo.",
+      "empty": "No hay lecturas para este dispositivo en /sensor-readings.",
+      "id": "ID",
+      "type": "Tipo",
+      "value": "Valor",
+      "unit": "Unidad",
+      "recorded-at": "Registrado",
+      "types": {
+        "heart-rate": "Frecuencia cardiaca",
+        "blood-oxygen": "Oxígeno",
+        "temperature": "Temperatura",
+        "steps": "Pasos",
+        "location": "Ubicación",
+        "altitude": "Altitud",
+        "generic": "Sensor"
+      }
+    },
+    "control": {
+      "title": "Panel de control",
+      "description": "Envía comandos simulados al dispositivo seleccionado.",
+      "device-info": "Dispositivo",
+      "device": "Dispositivo",
+      "command": "Comando",
+      "command-hint": "Elige una acción y envíala al dispositivo activo.",
+      "send": "Enviar comando",
+      "commands": {
+        "ping": "Ping",
+        "sync": "Sincronizar",
+        "sos": "SOS test"
+      }
+    }
+  },
+  "navigation": {
+    "context": "NAVEGACIÓN",
+    "title": "Navegación y expedición",
+    "subtitle": "Mapa, clima, bitácora y panel de expedición.",
+    "tabs": {
+      "map-route": "Mapa y ruta",
+      "climate": "Clima",
+      "binnacle": "Bitácora",
+      "expedition-panel": "Panel de expedición"
+    },
+    "map": {
+      "title": "Mapa y ruta",
+      "subtitle": "Waypoints de la expedición y descarga offline simulada.",
+      "placeholder": "Vista de mapa (mock)",
+      "waypoints": "Waypoints",
+      "download-offline": "Descargar ruta offline",
+      "no-checkpoints": "No hay waypoints para este tour.",
+      "completed": "Completado",
+      "pending": "Pendiente",
+      "stats-total": "Waypoints",
+      "stats-done": "Completados",
+      "stats-pending": "Pendientes"
+    }
+  },
+  "expedition": {
+    "title": "Panel de expedición",
+    "subtitle": "Controla el estado y el avance de la expedición activa.",
+    "no-data": "No hay datos de expedición.",
+    "status": "Estado",
+    "tour-id": "Tour",
+    "guide-id": "Guía",
+    "expedition-id": "Expedición",
+    "started-at": "Inicio",
+    "start": "Iniciar",
+    "finish": "Finalizar",
     "progress": "Progreso",
-    "t-experience": "Experiencia del Turista",
-    "weather": "Clima",
-    "store": "Tienda de Navegación"
->>>>>>> feature/navigation
+    "stats-checkpoints": "Checkpoints",
+    "stats-completed": "Completados",
+    "stats-progress": "Avance",
+    "status-planned": "Planificada",
+    "status-active": "En curso",
+    "status-finished": "Finalizada"
+  },
+  "weather": {
+    "title": "Clima en ruta",
+    "subtitle": "Condiciones actuales según tu ubicación o datos mock.",
+    "loading": "Cargando clima...",
+    "temperature": "Temperatura",
+    "condition": "Condición",
+    "humidity": "Humedad",
+    "wind": "Viento",
+    "refresh": "Actualizar",
+    "no-data": "Sin datos meteorológicos."
+  },
+  "experience": {
+    "title": "Bitácora",
+    "subtitle": "Registra notas y multimedia de la expedición.",
+    "placeholder": "Escribe una nota de la expedición...",
+    "save": "Guardar entrada",
+    "history": "Historial",
+    "empty": "Aún no hay entradas en la bitácora.",
+    "new-entry": "Nueva entrada",
+    "attach-media": "Adjuntar archivo"
   },
   "authoring-phrase": {
     "intro": "Hecho ",
@@ -158,14 +307,118 @@
     "title": "Inicio",
     "content": "Bienvenido a VitalTrek."
   },
+  "platform": {
+    "loading": "Cargando...",
+    "home": {
+      "eyebrow": "MONITOREO EN TIEMPO REAL",
+      "title": "Tu aventura. Controlada al detalle.",
+      "subtitle": "Trekking en Perú con monitoreo biométrico en tiempo real. Rutas curadas, alertas inteligentes y comunidad activa.",
+      "cta-routes": "Explorar rutas",
+      "cta-dashboard": "Dashboard IoT",
+      "featured-title": "Las mejores expediciones en Perú",
+      "see-all": "Ver todas las rutas"
+    },
+    "routes": {
+      "eyebrow": "CATÁLOGO",
+      "title": "Explorar rutas",
+      "search-placeholder": "Buscar ruta o región...",
+      "empty": "No hay rutas que coincidan con tu búsqueda."
+    },
+    "community": {
+      "eyebrow": "RED DE TREKKERS",
+      "title": "Comunidad VitalTrek",
+      "compose-placeholder": "Comparte tu experiencia de trekking...",
+      "photo": "Foto",
+      "route": "Ruta",
+      "post": "Publicar",
+      "recent": "ACTIVIDAD RECIENTE",
+      "top-trekkers": "Top trekkers",
+      "global-title": "Estadísticas globales",
+      "time": {
+        "hours": "hace {count} horas",
+        "yesterday": "ayer"
+      },
+      "badge": {
+        "route": "Ruta completada",
+        "tip": "Pro tip",
+        "record": "Récord personal"
+      },
+      "posts": {
+        "ana": "¡Vistas increíbles en el paso de la mujer muerta! Las piernas arden pero vale totalmente la pena.",
+        "carlos": "La altura me pegó fuerte en el checkpoint 3, pero el guía nos mantuvo motivados.",
+        "maria": "Llegamos al campamento Wayllabamba. El paisaje es absolutamente surrealista."
+      },
+      "rank": {
+        "legend": "Leyenda",
+        "expert": "Guía experto",
+        "veteran": "Veterano",
+        "active": "Activo",
+        "rising": "En ascenso"
+      },
+      "trekker": {
+        "stats1": "31 rutas · 1240 km",
+        "stats2": "28 rutas · 1102 km",
+        "stats3": "24 rutas · 980 km",
+        "stats4": "19 rutas · 760 km",
+        "stats5": "15 rutas · 620 km"
+      },
+      "global": {
+        "trekkers": "Trekkers activos",
+        "routes-today": "Rutas completadas hoy",
+        "km-week": "Km recorridos (semana)",
+        "sos": "Alertas SOS atendidas"
+      }
+    },
+    "stats": {
+      "routes": "Rutas verificadas",
+      "trekkers": "Trekkers activos",
+      "uptime": "Uptime IoT",
+      "rating": "Valoración media"
+    },
+    "features": {
+      "watch": {
+        "title": "Smartwatch IoT",
+        "subtitle": "Apple Watch, Fitbit y más"
+      },
+      "routes": {
+        "title": "340+ Rutas",
+        "subtitle": "Verificadas con GPS"
+      },
+      "sos": {
+        "title": "SOS integrado",
+        "subtitle": "Geolocalización + estado"
+      },
+      "agencies": {
+        "title": "Agencias certificadas",
+        "subtitle": "Tours guiados"
+      }
+    },
+    "filters": {
+      "all": "Todas"
+    },
+    "difficulty": {
+      "easy": "Fácil",
+      "moderate": "Moderado",
+      "difficult": "Difícil"
+    },
+    "route": {
+      "days": "días",
+      "start": "Iniciar ruta",
+      "see-more": "Ver más"
+    }
+  },
   "page-not-found": {
-    "title": "Página no encontrada",
+    "title": "Page 404 not found",
     "content": "La ruta {unavailable-route} no está disponible.",
     "go-home": "Ir al Inicio"
   },
   "signs": {
-    "title": "Senales",
+    "title": "Signos vitales",
+    "subtitle": "Lecturas de signos vitales por turista y expedición.",
     "list-description": "Lecturas de signos vitales por turista y expedición.",
+    "stats-total": "Registros",
+    "stats-avg-hr": "FC promedio",
+    "stats-latest": "Última lectura",
     "id": "ID",
     "expedition-id": "Expedicion ID",
     "tourist-id": "Turista ID",
@@ -185,6 +438,7 @@
     "name": "Nombre",
     "save": "Guardar",
     "cancel": "Cancelar",
+    "delete": "Eliminar",
     "tourist": "Turista",
     "expeditionId": "Expedicion ID",
     "heartRate": "Frecuencia Cardiaca",
@@ -195,7 +449,11 @@
   },
   "alerts": {
     "title": "Alertas",
+    "subtitle": "Alertas generadas durante el monitoreo de la expedición.",
     "list-description": "Alertas generadas durante el monitoreo.",
+    "stats-total": "Total",
+    "stats-open": "Abiertas",
+    "stats-critical": "Críticas",
     "id": "ID",
     "touristId": "Turista ID",
     "expeditionId": "Expedicion ID",
@@ -214,7 +472,8 @@
     "edit-title": "Editar Alert",
     "name": "Nombre",
     "save": "Guardar",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "delete": "Eliminar"
   },
   "errors": {
     "occurred": "Ocurrieron errores"

@@ -130,18 +130,18 @@ onMounted(async () => {
 <template>
   <TourPanel>
     <div class="tour-card tour-form-card">
-      <div class="tour-form-header">
+      <div class="tour-dashboard-header">
         <div>
-          <h2>
+          <h2 class="tour-section-title">
             {{ isEditMode ? t('tour.form.edit-title') : t('tour.form.create-title') }}
           </h2>
-
-          <p>
+          <p class="tour-meta">
             {{ isEditMode ? t('tour.form.edit-description') : t('tour.form.create-description') }}
           </p>
         </div>
       </div>
 
+      <section class="tour-info-card">
       <form class="tour-form" @submit.prevent="saveTour">
         <div v-if="loading" class="loading-message">
           {{ t('tour.form.loading') }}
@@ -260,6 +260,7 @@ onMounted(async () => {
           </div>
         </template>
       </form>
+      </section>
     </div>
   </TourPanel>
 </template>

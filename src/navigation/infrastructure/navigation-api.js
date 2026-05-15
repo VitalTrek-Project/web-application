@@ -4,6 +4,7 @@ import { BaseEndpoint } from '../../shared/infrastructure/base-endpoint.js';
 const expeditionsEndpointPath = import.meta.env.VITE_EXPEDITIONS_ENDPOINT_PATH;
 const experiencesEndpointPath = import.meta.env.VITE_EXPERIENCES_ENDPOINT_PATH;
 const weatherEndpointPath = import.meta.env.VITE_WEATHER_ENDPOINT_PATH;
+const checkpointsEndpointPath = import.meta.env.VITE_CHECKPOINTS_ENDPOINT_PATH;
 
 /**
  * Infrastructure adapter for Navigation & Exploration HTTP endpoints.
@@ -21,6 +22,9 @@ export class NavigationApi extends BaseApi {
     /** @type {BaseEndpoint} */
     #weatherEndpoint;
 
+    /** @type {BaseEndpoint} */
+    #checkpointsEndpoint;
+
     /**
      * Creates endpoint clients for expeditions, experiences and weather resources.
      */
@@ -28,7 +32,24 @@ export class NavigationApi extends BaseApi {
         super();
         this.#expeditionsEndpoint = new BaseEndpoint(this, expeditionsEndpointPath);
         this.#experiencesEndpoint = new BaseEndpoint(this, experiencesEndpointPath);
-        this.#weatherEndpoint     = new BaseEndpoint(this, weatherEndpointPath);
+        this.#weatherEndpoint = new BaseEndpoint(this, weatherEndpointPath);
+        this.#checkpointsEndpoint = new BaseEndpoint(this, checkpointsEndpointPath);
+    }
+
+    /**
+     * Retrieves all checkpoint resources (filtered by tour in the store).
+     * @returns {Promise}
+     */
+    getCheckpoints() {
+        return this.#checkpointsEndpoint.getAll();
+    }
+
+    /**
+     * Retrieves all experience resources (filtered by expedition in the store).
+     * @returns {Promise}
+     */
+    getExperiences() {
+        return this.#experiencesEndpoint.getAll();
     }
 
     /**

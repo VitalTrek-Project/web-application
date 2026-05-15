@@ -1,11 +1,14 @@
 {
+  "common": {
+    "search": "Search..."
+  },
   "option": {
     "home": "Home",
     "about": "About",
-<<<<<<< HEAD
     "routes": "Routes",
     "navigation-expedition": "Navigation & expedition",
-    "safety-monitoring": "Safety & monitoring",
+    "iot": "IoT & devices",
+    "safety-monitoring": "IoT & devices",
     "tour-management": "Tour management",
     "community": "Community",
     "agencies": "Agencies",
@@ -21,7 +24,7 @@
     "subtitle": "Explore routes, tours, monitoring and more from one place."
   },
   "monitoring": {
-    "context": "BOUNDED CONTEXT",
+    "context": "MONITORING",
     "title": "Monitoring",
     "subtitle": "Vital signs and expedition alerts.",
     "tabs": {
@@ -34,14 +37,18 @@
     "sos": "! S.O.S."
   },
   "tour-management": {
-    "context": "BOUNDED CONTEXT",
+    "context": "TOUR MANAGEMENT",
     "title": "Tour management",
     "subtitle": "Tours, checkpoints and tourist assignment."
   },
   "tour": {
     "title": "Tour list",
+    "subtitle": "Manage tours, capacity, difficulty and publication status.",
     "new": "New tour",
     "description": "Manage your tours, capacity, difficulty and publication status.",
+    "stats-total": "Tours",
+    "stats-published": "Published",
+    "stats-draft": "Drafts",
     "tabs": {
       "list": "Tour list",
       "form": "Tour form",
@@ -96,7 +103,11 @@
   },
   "tourists": {
     "assignment-title": "Registered tourists",
+    "assignment-subtitle": "Assign tourists to tours, remove them or move them to another tour.",
     "assignment-description": "Assign tourists to tours, remove them or move them to another tour.",
+    "stats-total": "Tourists",
+    "stats-assigned": "Assigned",
+    "stats-unassigned": "Unassigned",
     "id": "ID",
     "name": "Name",
     "email": "Email",
@@ -137,13 +148,151 @@
     "copyright": "© 2026 VitalTrek. All rights reserved.",
     "app-store": "App Store",
     "google-play": "Google Play"
-=======
-    "expedition": "Expedition",
+  },
+  "iot": {
+    "context": "IOT",
+    "title": "IoT & devices",
+    "subtitle": "Devices, sensors and vital sign sync to monitoring.",
+    "tabs": {
+      "devices": "Devices",
+      "readings": "Readings",
+      "control": "Control"
+    },
+    "devices": {
+      "title": "Connected devices",
+      "subtitle": "Monitor expedition wearables and sensors in real time.",
+      "refresh": "Refresh",
+      "view-readings": "View readings",
+      "selected-title": "Active device",
+      "stats-total": "Total",
+      "stats-online": "Online",
+      "stats-offline": "Offline",
+      "expedition": "Expedition",
+      "name": "Name",
+      "type": "Type",
+      "status": "Status",
+      "last-seen": "Last seen",
+      "empty": "No devices in MockAPI. Check the /devices resource.",
+      "add": "Add device",
+      "add-title": "Register device",
+      "add-description": "Create a wearable or sensor in MockAPI (/devices).",
+      "save": "Register",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "confirm-delete": "Remove this device from MockAPI?",
+      "delete-header": "Delete device",
+      "invalid-id": "Cannot delete: device has no valid ID.",
+      "types": {
+        "wearable": "Wearable",
+        "gps_tracker": "GPS tracker",
+        "environmental": "Environmental sensor"
+      },
+      "statuses": {
+        "online": "Online",
+        "offline": "Offline"
+      },
+      "expedition-placeholder": "Expedition ID (optional)",
+      "name-placeholder": "e.g. Pulse Band 04"
+    },
+    "readings": {
+      "title": "Sensor readings",
+      "history-title": "Reading history",
+      "sync-monitoring": "Send to monitoring",
+      "select-device": "Select a device.",
+      "empty": "No readings for this device in /sensor-readings.",
+      "id": "ID",
+      "type": "Type",
+      "value": "Value",
+      "unit": "Unit",
+      "recorded-at": "Recorded at",
+      "types": {
+        "heart-rate": "Heart rate",
+        "blood-oxygen": "Blood oxygen",
+        "temperature": "Temperature",
+        "steps": "Steps",
+        "location": "Location",
+        "altitude": "Altitude",
+        "generic": "Sensor"
+      }
+    },
+    "control": {
+      "title": "Control panel",
+      "description": "Send simulated commands to the selected device.",
+      "device-info": "Device",
+      "device": "Device",
+      "command": "Command",
+      "command-hint": "Pick an action and send it to the active device.",
+      "send": "Send command",
+      "commands": {
+        "ping": "Ping",
+        "sync": "Sync",
+        "sos": "SOS test"
+      }
+    }
+  },
+  "navigation": {
+    "context": "NAVIGATION",
+    "title": "Navigation and expedition",
+    "subtitle": "Map, weather, logbook and expedition panel.",
+    "tabs": {
+      "map-route": "Map and route",
+      "climate": "Climate",
+      "binnacle": "Binnacle",
+      "expedition-panel": "Expedition panel"
+    },
+    "map": {
+      "title": "Map and route",
+      "subtitle": "Expedition waypoints and simulated offline download.",
+      "placeholder": "Map view (mock)",
+      "waypoints": "Waypoints",
+      "download-offline": "Download offline route",
+      "no-checkpoints": "No waypoints for this tour.",
+      "completed": "Completed",
+      "pending": "Pending",
+      "stats-total": "Waypoints",
+      "stats-done": "Completed",
+      "stats-pending": "Pending"
+    }
+  },
+  "expedition": {
+    "title": "Expedition panel",
+    "subtitle": "Control status and progress of the active expedition.",
+    "no-data": "No expedition data available.",
+    "status": "Status",
+    "tour-id": "Tour",
+    "guide-id": "Guide",
+    "expedition-id": "Expedition",
+    "started-at": "Started",
+    "start": "Start",
+    "finish": "Finish",
     "progress": "Progress",
-    "t-experience": "Tourist Experience",
-    "weather": "Weather",
-    "store": "Navigation Store"
->>>>>>> feature/navigation
+    "stats-checkpoints": "Checkpoints",
+    "stats-completed": "Completed",
+    "stats-progress": "Progress",
+    "status-planned": "Planned",
+    "status-active": "In progress",
+    "status-finished": "Finished"
+  },
+  "weather": {
+    "title": "Route weather",
+    "subtitle": "Current conditions from your location or mock data.",
+    "loading": "Loading weather...",
+    "temperature": "Temperature",
+    "condition": "Condition",
+    "humidity": "Humidity",
+    "wind": "Wind",
+    "refresh": "Refresh",
+    "no-data": "No weather data available."
+  },
+  "experience": {
+    "title": "Binnacle",
+    "subtitle": "Log notes and media from the expedition.",
+    "placeholder": "Write an expedition note...",
+    "save": "Save entry",
+    "history": "History",
+    "empty": "No logbook entries yet.",
+    "new-entry": "New entry",
+    "attach-media": "Attach file"
   },
   "authoring-phrase": {
     "intro": "Made ",
@@ -158,14 +307,118 @@
     "title": "Welcome",
     "content": "Welcome to VitalTrek."
   },
+  "platform": {
+    "loading": "Loading...",
+    "home": {
+      "eyebrow": "REAL-TIME MONITORING",
+      "title": "Your adventure. Controlled in detail.",
+      "subtitle": "Trekking in Peru with real-time biometric monitoring. Curated routes, smart alerts and an active community.",
+      "cta-routes": "Explore routes",
+      "cta-dashboard": "IoT Dashboard",
+      "featured-title": "The best expeditions in Peru",
+      "see-all": "See all routes"
+    },
+    "routes": {
+      "eyebrow": "CATALOG",
+      "title": "Explore routes",
+      "search-placeholder": "Search route or region...",
+      "empty": "No routes match your search."
+    },
+    "community": {
+      "eyebrow": "TREKKERS NETWORK",
+      "title": "VitalTrek Community",
+      "compose-placeholder": "Share your trekking experience...",
+      "photo": "Photo",
+      "route": "Route",
+      "post": "Post",
+      "recent": "RECENT ACTIVITY",
+      "top-trekkers": "Top trekkers",
+      "global-title": "Global statistics",
+      "time": {
+        "hours": "{count} hours ago",
+        "yesterday": "yesterday"
+      },
+      "badge": {
+        "route": "Route completed",
+        "tip": "Pro tip",
+        "record": "Personal record"
+      },
+      "posts": {
+        "ana": "Amazing views at Dead Woman's Pass! Legs are burning but totally worth it.",
+        "carlos": "Altitude hit me hard at checkpoint 3, but the guide kept us motivated.",
+        "maria": "Reached Wayllabamba camp. The landscape is absolutely surreal."
+      },
+      "rank": {
+        "legend": "Legend",
+        "expert": "Expert guide",
+        "veteran": "Veteran",
+        "active": "Active",
+        "rising": "Rising"
+      },
+      "trekker": {
+        "stats1": "31 routes · 1240 km",
+        "stats2": "28 routes · 1102 km",
+        "stats3": "24 routes · 980 km",
+        "stats4": "19 routes · 760 km",
+        "stats5": "15 routes · 620 km"
+      },
+      "global": {
+        "trekkers": "Active trekkers",
+        "routes-today": "Routes completed today",
+        "km-week": "Km traveled (week)",
+        "sos": "SOS alerts handled"
+      }
+    },
+    "stats": {
+      "routes": "Verified routes",
+      "trekkers": "Active trekkers",
+      "uptime": "IoT uptime",
+      "rating": "Average rating"
+    },
+    "features": {
+      "watch": {
+        "title": "IoT smartwatch",
+        "subtitle": "Apple Watch, Fitbit and more"
+      },
+      "routes": {
+        "title": "340+ Routes",
+        "subtitle": "GPS verified"
+      },
+      "sos": {
+        "title": "Integrated SOS",
+        "subtitle": "Geolocation + status"
+      },
+      "agencies": {
+        "title": "Certified agencies",
+        "subtitle": "Guided tours"
+      }
+    },
+    "filters": {
+      "all": "All"
+    },
+    "difficulty": {
+      "easy": "Easy",
+      "moderate": "Moderate",
+      "difficult": "Difficult"
+    },
+    "route": {
+      "days": "days",
+      "start": "Start route",
+      "see-more": "See more"
+    }
+  },
   "page-not-found": {
-    "title": "Page Not Found",
+    "title": "Page 404 not found",
     "content": "The path {unavailable-route} is not available.",
     "go-home": "Go Home"
   },
   "signs": {
-    "title": "Signs",
+    "title": "Vital signs",
+    "subtitle": "Vital sign readings by tourist and expedition.",
     "list-description": "Vital sign readings by tourist and expedition.",
+    "stats-total": "Records",
+    "stats-avg-hr": "Avg heart rate",
+    "stats-latest": "Latest reading",
     "id": "ID",
     "expedition-id": "Expedition ID",
     "tourist-id": "Tourist ID",
@@ -185,6 +438,7 @@
     "name": "Name",
     "save": "Save",
     "cancel": "Cancel",
+    "delete": "Delete",
     "tourist": "Tourist",
     "expeditionId": "Expedition ID",
     "heartRate": "Heart Rate",
@@ -196,7 +450,11 @@
   },
   "alerts": {
     "title": "Alerts",
+    "subtitle": "Alerts generated during expedition monitoring.",
     "list-description": "Alerts raised during monitoring.",
+    "stats-total": "Total",
+    "stats-open": "Open",
+    "stats-critical": "Critical",
     "id": "ID",
     "touristId": "Tourist ID",
     "expeditionId": "Expedition ID",
@@ -215,7 +473,8 @@
     "edit-title": "Edit Alert",
     "name": "Name",
     "save": "Save",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "delete": "Delete"
   },
   "errors": {
     "occurred": "Errors occurred"

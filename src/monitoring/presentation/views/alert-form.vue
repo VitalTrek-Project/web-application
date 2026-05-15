@@ -73,12 +73,17 @@ const saveAlert = () => {
 
 <template>
   <MonitoringPanel>
-    <div class="monitoring-card bc-form-card">
-      <div class="bc-form-header">
-        <h2>{{ isEdit ? t("alert.edit-title") : t("alert.new-title") }}</h2>
-        <p>{{ t("alerts.list-description") }}</p>
+    <div class="monitoring-card">
+      <div class="monitoring-dashboard-header">
+        <div>
+          <h2 class="monitoring-section-title">
+            {{ isEdit ? t("alert.edit-title") : t("alert.new-title") }}
+          </h2>
+          <p class="monitoring-meta">{{ t("alerts.subtitle") }}</p>
+        </div>
       </div>
 
+      <section class="monitoring-info-card">
       <form class="bc-form monitoring-form-fields" @submit.prevent="saveAlert">
         <div class="bc-form-field">
           <label for="tourist">{{ t("alerts.touristId") }}</label>
@@ -133,6 +138,7 @@ const saveAlert = () => {
           />
         </div>
       </form>
+      </section>
 
       <div v-if="errors.length" class="monitoring-error">
         {{ t("errors.occurred") }}: {{ errors.map((e) => e.message).join(", ") }}

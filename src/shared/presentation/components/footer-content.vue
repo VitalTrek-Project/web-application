@@ -1,5 +1,6 @@
 <script setup>
 import { useI18n } from "vue-i18n";
+import VitalTrekLogo from "./vital-trek-logo.vue";
 
 const { t } = useI18n();
 </script>
@@ -8,9 +9,7 @@ const { t } = useI18n();
   <div class="footer-content">
     <div class="footer-brand">
       <div class="footer-brand-header">
-        <div class="footer-logo">
-          <i class="pi pi-map-marker"></i>
-        </div>
+        <VitalTrekLogo variant="footer" />
 
         <h3>VitalTrek</h3>
       </div>
@@ -101,16 +100,6 @@ const { t } = useI18n();
   margin-bottom: 14px;
 }
 
-.footer-logo {
-  width: 32px;
-  height: 32px;
-  border-radius: 999px;
-  display: grid;
-  place-items: center;
-  background: rgba(34, 197, 94, 0.12);
-  color: #84cc16;
-  flex: 0 0 auto;
-}
 
 h3,
 h4 {

@@ -1,196 +1,155 @@
 <script setup>
 import { computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
-
+import { storeToRefs } from "pinia";
 import useNavigationStore from "../application/navigation.store.js";
-
-import RouteMap from "./route-map.vue";
-import WeatherWidget from "./weather-widget.vue";
-import ExperienceLog from "./experience-log.vue";
+import NavigationPanel from "./components/navigation-panel.vue";
+import {
+  formatNavigationDate,
+  getExpeditionStatusKey,
+  summarizeCheckpointProgress
+} from "./utils/navigation-presenter.js";
 
 const { t } = useI18n();
 const store = useNavigationStore();
+const { currentExpedition, progress, errors, loading } = storeToRefs(store);
+const { ensureExpeditionLoaded, startExpedition, finishExpedition } = store;
 
-/**
- * STATE
- */
-const expedition = computed(() =>
-    store.currentExpedition ?? null
+const expedition = computed(() => currentExpedition.value);
+
+const checkpointStats = computed(() =>
+  summarizeCheckpointProgress(
+    expedition.value?.checkpoints,
+    progress.value?.completedCheckpoints
+  )
 );
 
-const progress = computed(() =>
-    store.progress ?? null
+const progressPercentage = computed(() => checkpointStats.value.percentage);
+
+const statusKey = computed(() =>
+  getExpeditionStatusKey(expedition.value?.status)
 );
 
-/**
- * COMPUTED
- */
-const progressPercentage = computed(() => {
-  if (!progress.value) return 0;
-
-  return progress.value.totalCheckpoints > 0
-      ? (progress.value.completedCheckpoints /
-      progress.value.totalCheckpoints) * 100
-      : 0;
+const statusLabel = computed(() => {
+  const key = statusKey.value;
+  if (key === "active") return t("expedition.status-active");
+  if (key === "finished") return t("expedition.status-finished");
+  if (key === "planned") return t("expedition.status-planned");
+  return expedition.value?.status ?? "—";
 });
 
-/**
- * METHODS
- */
-const handleStart = async () => {
-  if (!expedition.value) return;
-
-  try {
-    await store.startExpedition(expedition.value.tourId);
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-const handleFinish = async () => {
-  if (!expedition.value) return;
-
-  try {
-    await store.finishExpedition(expedition.value.id);
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-/**
- * LIFECYCLE
- */
-onMounted(async () => {
-  try {
-    // Si ya hay una expedición en el store, recargamos con su id.
-    // Si no, usamos 1 como id inicial para el mock server.
-    const id = store.currentExpedition?.id ?? 1;
-    await store.fetchExpedition(id);
-  } catch (error) {
-    console.error(error);
-  }
+onMounted(() => {
+  ensureExpeditionLoaded(3).catch(() => {});
 });
+
+const handleStart = () => {
+  if (!expedition.value) return;
+  startExpedition(expedition.value.tourId).catch(() => {});
+};
+
+const handleFinish = () => {
+  if (!expedition.value) return;
+  finishExpedition(expedition.value.id).catch(() => {});
+};
 </script>
 
 <template>
-  <section class="dashboard">
-    <h2>{{ t('expedition.title') }}</h2>
+  <NavigationPanel>
+    <div class="navigation-card">
+      <div v-if="loading" class="navigation-empty">{{ t("weather.loading") }}</div>
 
-    <!-- NO DATA -->
-    <div v-if="!expedition">
-      {{ t('expedition.no-data') }}
-    </div>
+      <div v-else-if="!expedition" class="navigation-empty">
+        {{ t("expedition.no-data") }}
+      </div>
 
-    <!-- DASHBOARD -->
-    <div v-else class="dashboard-content">
+      <template v-else>
+        <div class="navigation-dashboard-header">
+          <div>
+            <h2 class="navigation-section-title">{{ t("expedition.title") }}</h2>
+            <p class="navigation-meta">{{ t("expedition.subtitle") }}</p>
+          </div>
+          <div class="navigation-dashboard-actions">
+            <pv-button
+                icon="pi pi-play"
+                :label="t('expedition.start')"
+                class="navigation-primary-button"
+                :disabled="expedition.status === 'in_progress'"
+                @click="handleStart"
+            />
+            <pv-button
+                icon="pi pi-check"
+                :label="t('expedition.finish')"
+                class="navigation-outline-button"
+                outlined
+                :disabled="expedition.status === 'finished'"
+                @click="handleFinish"
+            />
+          </div>
+        </div>
 
-      <!-- HEADER -->
-      <div class="dashboard-header">
-        <div>
-          <p>
-            <strong>{{ t('expedition.status') }}:</strong>
-            {{ expedition.status }}
+        <div class="navigation-stats-row">
+          <article class="navigation-stat-card">
+            <strong>{{ checkpointStats.total }}</strong>
+            <span>{{ t("expedition.stats-checkpoints") }}</span>
+          </article>
+          <article class="navigation-stat-card navigation-stat-card--accent">
+            <strong>{{ checkpointStats.completed }}</strong>
+            <span>{{ t("expedition.stats-completed") }}</span>
+          </article>
+          <article class="navigation-stat-card navigation-stat-card--muted">
+            <strong>{{ progressPercentage }}%</strong>
+            <span>{{ t("expedition.stats-progress") }}</span>
+          </article>
+        </div>
+
+        <section class="navigation-info-card">
+          <dl class="navigation-detail-grid">
+            <div>
+              <dt>{{ t("expedition.status") }}</dt>
+              <dd>
+                <span
+                    class="navigation-status-pill"
+                    :class="`navigation-status-pill--${statusKey}`"
+                >
+                  {{ statusLabel }}
+                </span>
+              </dd>
+            </div>
+            <div>
+              <dt>{{ t("expedition.expedition-id") }}</dt>
+              <dd>{{ expedition.id }}</dd>
+            </div>
+            <div>
+              <dt>{{ t("expedition.tour-id") }}</dt>
+              <dd>{{ expedition.tourId }}</dd>
+            </div>
+            <div v-if="expedition.guideId">
+              <dt>{{ t("expedition.guide-id") }}</dt>
+              <dd>{{ expedition.guideId }}</dd>
+            </div>
+          </dl>
+          <p v-if="expedition.startedAt" class="navigation-meta">
+            {{ t("expedition.started-at") }}:
+            {{ formatNavigationDate(expedition.startedAt) }}
           </p>
 
-          <p>
-            <strong>{{ t('expedition.tour-id') }}:</strong>
-            {{ expedition.tourId }}
+          <p class="navigation-meta" style="margin: 12px 0 4px">
+            {{ t("expedition.progress") }}:
+            {{ checkpointStats.completed }} / {{ checkpointStats.total }}
           </p>
-        </div>
+          <div class="navigation-progress-bar">
+            <div
+                class="navigation-progress-fill"
+                :style="{ width: progressPercentage + '%' }"
+            />
+          </div>
+        </section>
+      </template>
 
-        <!-- ACTIONS -->
-        <div class="actions">
-          <pv-button
-              icon="pi pi-play"
-              :label="t('expedition.start')"
-              @click="handleStart"
-              :disabled="expedition.status === 'in_progress'"
-          />
-
-          <pv-button
-              icon="pi pi-check"
-              severity="success"
-              :label="t('expedition.finish')"
-              @click="handleFinish"
-              :disabled="expedition.status === 'finished'"
-          />
-        </div>
-      </div>
-
-      <!-- PROGRESS -->
-      <div class="progress-section" v-if="progress">
-        <p>
-          {{ t('expedition.progress') }}:
-          {{ progress.completedCheckpoints }} /
-          {{ progress.totalCheckpoints }}
-        </p>
-
-        <div class="progress-bar">
-          <div
-              class="progress-fill"
-              :style="{ width: progressPercentage + '%' }"
-          />
-        </div>
-      </div>
-
-      <!-- GRID -->
-      <div class="dashboard-grid">
-
-        <RouteMap />
-
-        <WeatherWidget />
-
-        <ExperienceLog />
-
+      <div v-if="errors.length" class="monitoring-error">
+        {{ t("errors.occurred") }}:
+        {{ errors.map((e) => e.message).join(", ") }}
       </div>
     </div>
-  </section>
+  </NavigationPanel>
 </template>
-
-<style scoped>
-.dashboard {
-  width: min(1200px, 100%);
-  margin: 0 auto;
-  color: #ffffff;
-}
-
-.dashboard-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.actions {
-  display: flex;
-  gap: 10px;
-}
-
-.progress-section {
-  margin-bottom: 20px;
-}
-
-.progress-bar {
-  height: 8px;
-  background: #3b506b;
-  border-radius: 999px;
-  overflow: hidden;
-  margin-top: 6px;
-}
-
-.progress-fill {
-  height: 100%;
-  background: #22c55e;
-  transition: width 0.3s ease;
-}
-
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-
-.dashboard-grid > *:nth-child(3) {
-  grid-column: 1 / -1;
-}
-</style>

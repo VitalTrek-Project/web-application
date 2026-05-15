@@ -1,35 +1,33 @@
 <script setup>
 import { computed } from "vue";
 import { useRoute } from "vue-router";
-import LanguageSwitcher from "./language-switcher.vue";
-<<<<<<< HEAD
 import { useI18n } from "vue-i18n";
-=======
-import {ref} from "vue";
-import {useRoute} from "vue-router";
-import {useI18n} from "vue-i18n";
->>>>>>> feature/navigation
+import LanguageSwitcher from "./language-switcher.vue";
 import FooterContent from "./footer-content.vue";
+import VitalTrekLogo from "./vital-trek-logo.vue";
 
 const { t } = useI18n();
 const route = useRoute();
 
-<<<<<<< HEAD
 const items = [
-  { label: 'option.home', to: '/home' },
-  { label: 'option.routes', to: '/routes' },
-  { label: 'option.navigation-expedition', to: '/navigation' },
-  { label: 'option.safety-monitoring', to: '/safety' },
-  { label: 'option.tour-management', to: '/tours' },
-  { label: 'option.monitoring', to: '/monitoring/signs' },
-  { label: 'option.community', to: '/community' },
-  { label: 'option.agencies', to: '/agencies' },
-  { label: 'option.plans', to: '/plans' },
-  { label: 'option.identity-access', to: '/identity' },
-  { label: 'option.notifications-profile', to: '/notifications' },
-  { label: 'option.my-profile', to: '/profile' },
-  { label: 'option.about', to: '/about' }
+  { label: "option.home", to: "/home" },
+  { label: "option.routes", to: "/routes" },
+  { label: "option.navigation-expedition", to: "/navigation" },
+  { label: "option.iot", to: "/iot" },
+  { label: "option.tour-management", to: "/tours" },
+  { label: "option.monitoring", to: "/monitoring/signs" },
+  { label: "option.community", to: "/community" },
+  { label: "option.agencies", to: "/agencies" },
+  { label: "option.plans", to: "/plans" },
+  { label: "option.identity-access", to: "/identity" },
+  { label: "option.notifications-profile", to: "/notifications" },
+  { label: "option.my-profile", to: "/profile" },
+  { label: "option.about", to: "/about" }
 ];
+
+const hideShellHero = computed(() =>
+  ["/home", "/routes", "/community"].includes(route.path)
+);
 
 const hero = computed(() => {
   const path = route.path;
@@ -40,10 +38,21 @@ const hero = computed(() => {
       subtitle: t("monitoring.subtitle")
     };
   }
-  if (
-    path.startsWith("/tours") ||
-    path.startsWith("/tourists-assignment")
-  ) {
+  if (path.startsWith("/navigation")) {
+    return {
+      eyebrow: t("navigation.context"),
+      title: t("navigation.title"),
+      subtitle: t("navigation.subtitle")
+    };
+  }
+  if (path.startsWith("/iot")) {
+    return {
+      eyebrow: t("iot.context"),
+      title: t("iot.title"),
+      subtitle: t("iot.subtitle")
+    };
+  }
+  if (path.startsWith("/tours") || path.startsWith("/tourists-assignment")) {
     return {
       eyebrow: t("tour-management.context"),
       title: t("tour-management.title"),
@@ -64,47 +73,7 @@ const hero = computed(() => {
   <div class="app-shell">
     <aside class="sidebar">
       <div class="brand">
-        <div class="brand-icon">
-          <i class="pi pi-map-marker"></i>
-=======
-const route = useRoute();
-const drawer = ref(false);
-const toggleDrawer = () => {
-  /**
-   * Toggles the state of the drawer between open and closed.
-   */
-  drawer.value = !drawer.value;
-}
-const items = [
-  {label: 'option.home', to: '/home', icon: 'pi pi-home'},
-  { label: 'option.navigation', to: '/navigation', icon: 'pi pi-map' },
-];
-
-const isActive = (to) => route.path === to || route.path.startsWith(to);
-</script>
-
-<template>
-  <pv-toast/>
-  <pv-confirm-dialog/>
-  <div class="header">
-    <pv-toolbar class="bg-primary">
-      <template #start>
-        <pv-button class="p-button-text" icon="pi pi-bars" @click="toggleDrawer"/>
-        <h3>VitalTrek</h3>
-      </template>
-      <template #center>
-
-      </template>
-      <template #end>
-        <div class="flex-column mr-3">
-          <pv-button v-for="item in items" :key="item.label" as-child v-slot="slotProps">
-            <router-link :to="item.to" :class="[slotProps['class'], { active: isActive(item.to) }]">
-              <i :class="item.icon" aria-hidden="true" style="margin-right:6px"></i>
-              {{ t(item.label) }}
-            </router-link>
-          </pv-button>
->>>>>>> feature/navigation
-        </div>
+        <VitalTrekLogo variant="sidebar" />
         <span>VitalTrek</span>
       </div>
 
@@ -118,7 +87,10 @@ const isActive = (to) => route.path === to || route.path.startsWith(to);
             class="sidebar-link"
             active-class="sidebar-link-active"
             :class="{
-              'sidebar-link-active': item.to === '/monitoring/signs' && route.path.startsWith('/monitoring')
+              'sidebar-link-active':
+                (item.to === '/monitoring/signs' && route.path.startsWith('/monitoring')) ||
+                (item.to === '/navigation' && route.path.startsWith('/navigation')) ||
+                (item.to === '/iot' && route.path.startsWith('/iot'))
             }"
         >
           {{ t(item.label) }}
@@ -129,20 +101,19 @@ const isActive = (to) => route.path === to || route.path.startsWith(to);
         <pv-button
             type="button"
             :label="t('sidebar.sos')"
-            icon="pi pi-heart"
             severity="danger"
             size="large"
             class="sos-button"
         />
 
-        <div class="user-avatar">
-          MG
+        <div class="user-avatar" :aria-label="t('option.my-profile')">
+          <i class="pi pi-user" aria-hidden="true" />
         </div>
       </div>
     </aside>
 
     <section class="page-area">
-      <header class="hero-header">
+      <header v-if="!hideShellHero" class="hero-header">
         <div class="hero-content">
           <span class="eyebrow">{{ hero.eyebrow }}</span>
           <h1>{{ hero.title }}</h1>
@@ -150,17 +121,17 @@ const isActive = (to) => route.path === to || route.path.startsWith(to);
         </div>
       </header>
 
-      <main class="main-content">
+      <main class="main-content" :class="{ 'main-content--platform': hideShellHero }">
         <router-view />
       </main>
 
       <footer class="footer">
         <footer-content />
         <div class="footer-bottom">
-          <span>{{ t('footer.copyright') }}</span>
+          <span>{{ t("footer.copyright") }}</span>
           <div class="store-buttons">
-            <a href="#" class="store-button">{{ t('footer.app-store') }}</a>
-            <a href="#" class="store-button">{{ t('footer.google-play') }}</a>
+            <a href="#" class="store-button">{{ t("footer.app-store") }}</a>
+            <a href="#" class="store-button">{{ t("footer.google-play") }}</a>
           </div>
         </div>
       </footer>
@@ -198,14 +169,8 @@ const isActive = (to) => route.path === to || route.path.startsWith(to);
   margin-bottom: 20px;
 }
 
-.brand-icon {
-  width: 30px;
-  height: 30px;
-  border-radius: 999px;
-  display: grid;
-  place-items: center;
-  background: rgba(34, 197, 94, 0.12);
-  color: #84cc16;
+.brand :deep(.vital-trek-logo--sidebar) {
+  flex-shrink: 0;
 }
 
 .sidebar-nav {
@@ -277,9 +242,12 @@ const isActive = (to) => route.path === to || route.path.startsWith(to);
   place-items: center;
   background: #f26a3d;
   color: #ffffff;
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: 0.95rem;
   box-shadow: 0 0 0 4px rgba(242, 106, 61, 0.12);
+}
+
+.user-avatar .pi-user {
+  font-size: 0.95rem;
 }
 
 .page-area {
@@ -362,12 +330,7 @@ const isActive = (to) => route.path === to || route.path.startsWith(to);
   font-weight: 700;
   color: #ffffff;
   text-shadow: 0 2px 24px rgba(0, 0, 0, 0.25);
-  background: linear-gradient(
-    180deg,
-    #ffffff 0%,
-    #f3eaf8 55%,
-    #d4c4e8 100%
-  );
+  background: linear-gradient(180deg, #ffffff 0%, #f3eaf8 55%, #d4c4e8 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -459,12 +422,5 @@ const isActive = (to) => route.path === to || route.path.startsWith(to);
     padding: 20px 16px 32px;
     margin-top: 0;
   }
-}
-
-/* Active link styling */
-.router-link-active,
-.active {
-  font-weight: 600;
-  text-decoration: underline;
 }
 </style>

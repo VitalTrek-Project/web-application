@@ -1,110 +1,122 @@
 <script setup>
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
+import { useI18n } from "vue-i18n";
+import { storeToRefs } from "pinia";
 import useNavigationStore from "../application/navigation.store.js";
+import NavigationPanel from "./components/navigation-panel.vue";
+import {
+  getExpeditionStatusKey,
+  summarizeCheckpointProgress
+} from "./utils/navigation-presenter.js";
 
+const { t } = useI18n();
 const store = useNavigationStore();
+const { currentExpedition, progress, errors, loading } = storeToRefs(store);
+const { ensureExpeditionLoaded } = store;
 
-/**
- * DATA
- */
-const expedition = computed(() =>
-    store.currentExpedition ?? null
+const checkpoints = computed(() => currentExpedition.value?.checkpoints ?? []);
+
+const checkpointStats = computed(() =>
+  summarizeCheckpointProgress(
+    checkpoints.value,
+    progress.value?.completedCheckpoints
+  )
 );
 
-const checkpoints = computed(() =>
-    expedition.value?.checkpoints ?? []
-);
-
-/**
- * Helpers
- */
 const isCompleted = (checkpoint) => {
-  const completed =
-      store.progress?.completedCheckpoints ?? 0;
-
+  const completed = progress.value?.completedCheckpoints ?? 0;
   return checkpoint.order <= completed;
 };
+
+onMounted(() => {
+  ensureExpeditionLoaded(3).catch(() => {});
+});
 </script>
 
 <template>
-  <div class="route-map">
-    <h3>Route Map</h3>
+  <NavigationPanel>
+    <div class="navigation-card">
+      <div class="navigation-dashboard-header">
+        <div>
+          <h2 class="navigation-section-title">{{ t("navigation.map.title") }}</h2>
+          <p class="navigation-meta">{{ t("navigation.map.subtitle") }}</p>
+        </div>
+      </div>
 
-    <!-- Empty -->
-    <div v-if="!checkpoints.length">
-      No checkpoints available
+      <div v-if="loading" class="navigation-empty">{{ t("weather.loading") }}</div>
+
+      <template v-else>
+        <div class="navigation-stats-row">
+          <article class="navigation-stat-card">
+            <strong>{{ checkpointStats.total }}</strong>
+            <span>{{ t("navigation.map.stats-total") }}</span>
+          </article>
+          <article class="navigation-stat-card navigation-stat-card--accent">
+            <strong>{{ checkpointStats.completed }}</strong>
+            <span>{{ t("navigation.map.stats-done") }}</span>
+          </article>
+          <article class="navigation-stat-card navigation-stat-card--muted">
+            <strong>{{ checkpointStats.pending }}</strong>
+            <span>{{ t("navigation.map.stats-pending") }}</span>
+          </article>
+        </div>
+
+        <div class="navigation-map-grid">
+          <div class="navigation-map-visual">
+            <i class="pi pi-map" aria-hidden="true" />
+            <p>{{ t("navigation.map.placeholder") }}</p>
+            <span
+                v-if="currentExpedition"
+                class="navigation-status-pill"
+                :class="`navigation-status-pill--${getExpeditionStatusKey(currentExpedition.status)}`"
+            >
+              {{ currentExpedition.status }}
+            </span>
+          </div>
+
+          <aside class="navigation-waypoints-card">
+            <h3>{{ t("navigation.map.waypoints") }}</h3>
+
+            <p v-if="!checkpoints.length" class="navigation-empty navigation-waypoint-list">
+              {{ t("navigation.map.no-checkpoints") }}
+            </p>
+
+            <ul v-else class="navigation-waypoint-list">
+              <li
+                  v-for="cp in checkpoints"
+                  :key="cp.order"
+                  class="navigation-waypoint-item"
+                  :class="{ completed: isCompleted(cp) }"
+              >
+                <i class="pi pi-map-marker navigation-waypoint-pin" aria-hidden="true" />
+                <span>{{ cp.name }}</span>
+                <span
+                    class="navigation-waypoint-badge"
+                    :class="isCompleted(cp) ? 'navigation-waypoint-badge--done' : 'navigation-waypoint-badge--pending'"
+                >
+                  {{ isCompleted(cp) ? t("navigation.map.completed") : t("navigation.map.pending") }}
+                </span>
+              </li>
+            </ul>
+
+            <div class="navigation-waypoints-footer">
+              <pv-button
+                  type="button"
+                  :label="t('navigation.map.download-offline')"
+                  class="navigation-outline-button"
+                  icon="pi pi-download"
+                  outlined
+                  @click="store.downloadOfflineRoute(currentExpedition?.tourId)"
+              />
+            </div>
+          </aside>
+        </div>
+      </template>
+
+      <div v-if="errors.length" class="monitoring-error">
+        {{ t("errors.occurred") }}:
+        {{ errors.map((e) => e.message).join(", ") }}
+      </div>
     </div>
-
-    <!-- List -->
-    <ul v-else class="checkpoint-list">
-      <li
-          v-for="cp in checkpoints"
-          :key="cp.order"
-          class="checkpoint-item"
-          :class="{ completed: isCompleted(cp) }"
-      >
-        <div class="checkpoint-header">
-          <span class="checkpoint-order">
-            #{{ cp.order }}
-          </span>
-
-          <span class="checkpoint-name">
-            {{ cp.name }}
-          </span>
-        </div>
-
-        <div class="checkpoint-coords">
-          📍 {{ cp.latitude }}, {{ cp.longitude }}
-        </div>
-
-        <div class="checkpoint-status">
-          <span v-if="isCompleted(cp)">✅ Completed</span>
-          <span v-else>⏳ Pending</span>
-        </div>
-      </li>
-    </ul>
-  </div>
+  </NavigationPanel>
 </template>
-
-<style scoped>
-.route-map {
-  background: #33465f;
-  border: 1px solid rgba(185, 198, 216, 0.16);
-  border-radius: 10px;
-  padding: 16px;
-  color: #ffffff;
-}
-
-.checkpoint-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.checkpoint-item {
-  background: #3b506b;
-  border-radius: 8px;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-
-.checkpoint-item.completed {
-  border-left: 4px solid #22c55e;
-}
-
-.checkpoint-header {
-  display: flex;
-  gap: 10px;
-  font-weight: bold;
-}
-
-.checkpoint-coords {
-  font-size: 0.8rem;
-  color: #d0d9e6;
-}
-
-.checkpoint-status {
-  margin-top: 4px;
-  font-size: 0.8rem;
-}
-</style>
