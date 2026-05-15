@@ -1,5 +1,5 @@
 /**
- * Logo de marca. Coloca el archivo en:
+ * Brand logo. Place the file at:
  * `src/assets/images/vital_treklogo.png`
  */
 export const VITAL_TREK_LOGO_SRC = new URL(

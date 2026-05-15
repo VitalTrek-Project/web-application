@@ -23,7 +23,7 @@ export class MonitoringApi extends BaseApi {
     #touristsEndpoint;
     
 
-    /** Creates endpoint clients for signs and tutorials resources. */
+    /** Creates endpoint clients for signs and tourists resources. */
     constructor() {
         super();
         this.#signsEndpoint = new BaseEndpoint(this, signsEndpointPath);

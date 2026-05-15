@@ -3,7 +3,7 @@ const sensorDataView = () => import("./views/sensor-data-view.vue");
 const deviceControlPanel = () => import("./views/device-control-panel.vue");
 
 /**
- * Rutas montadas bajo `/iot`.
+ * Routes mounted under `/iot`.
  *
  * @type {import('vue-router').RouteRecordRaw[]}
  */

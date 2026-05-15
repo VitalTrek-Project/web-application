@@ -92,7 +92,7 @@ export const useIoTStore = defineStore("iot", () => {
     }
   }
 
-  /** Carga dispositivos y lecturas del dispositivo seleccionado (MockAPI). */
+  /** Loads devices and readings for the selected device (MockAPI). */
   async function ensureIoTDataLoaded() {
     await fetchDevices();
     if (selectedDeviceId.value != null) {
@@ -165,8 +165,8 @@ export const useIoTStore = defineStore("iot", () => {
   }
 
   /**
-   * Publica signos vitales en Monitoring a partir de lecturas IoT.
-   * Integración IoT → vital-sign-readings (MockAPI).
+   * Publishes vital signs to Monitoring from IoT readings.
+   * IoT → vital-sign-readings integration (MockAPI).
    */
   async function publishVitalSignsToMonitoring(context = {}) {
     const device = selectedDevice.value;

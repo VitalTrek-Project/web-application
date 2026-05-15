@@ -2,8 +2,8 @@ import { Sign } from "../../monitoring/domain/model/sign.entity.js";
 import { SENSOR_READING_TYPES } from "../domain/model/sensor-reading.entity.js";
 
 /**
- * Tipos que el diagrama trata como VitalSignReading (signos vitales → Monitoring).
- * Otros tipos (location, altitude) permanecen como SensorReading genérico.
+ * Types the diagram treats as VitalSignReading (vital signs → Monitoring).
+ * Other types (location, altitude) remain generic SensorReading.
  */
 const VITAL_SIGN_TYPES = new Set([
   SENSOR_READING_TYPES.HEART_RATE,
@@ -23,7 +23,7 @@ function normalizeType(type) {
 }
 
 /**
- * Convierte lecturas IoT en entidades Sign (VitalSignReading en el dominio de Monitoring).
+ * Maps IoT readings to Sign entities (VitalSignReading in the Monitoring domain).
  *
  * @param {import('../domain/model/sensor-reading.entity.js').SensorReading[]} readings
  * @param {{ touristId?: number|string, expeditionId?: number|string }} context
@@ -75,7 +75,7 @@ export function mapSensorReadingsToSigns(readings, context = {}) {
 }
 
 /**
- * Lecturas que no se mapean a Sign (p. ej. ubicación, altitud).
+ * Readings that are not mapped to Sign (e.g. location, altitude).
  * @param {import('../domain/model/sensor-reading.entity.js').SensorReading[]} readings
  */
 export function filterNonVitalReadings(readings) {

@@ -1,5 +1,5 @@
 /**
- * Dispositivo IoT asociado a una expedición o turista.
+ * IoT device linked to an expedition or tourist.
  */
 export class IoTDevice {
   constructor(id, name, type, status, lastSeen, expeditionId = null, touristId = null) {

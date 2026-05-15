@@ -1,5 +1,5 @@
 /**
- * Normaliza la lista de recursos devuelta por MockAPI (array plano o clave anidada).
+ * Normalizes the resource list returned by MockAPI (flat array or nested key).
  *
  * @param {import('axios').AxiosResponse} response
  * @param {string} [collectionKey]

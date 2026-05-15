@@ -5,7 +5,7 @@ const devicesEndpointPath = import.meta.env.VITE_IOT_DEVICES_ENDPOINT_PATH;
 const sensorReadingsEndpointPath = import.meta.env.VITE_SENSOR_READINGS_ENDPOINT_PATH;
 
 /**
- * Adaptador HTTP del bounded context IoT.
+ * HTTP adapter for the IoT bounded context.
  *
  * @class IoTApi
  * @extends BaseApi
@@ -56,7 +56,7 @@ export class IoTApi extends BaseApi {
   }
 
   /**
-   * MockAPI no expone acciones; se modela como PUT al dispositivo (merge con recurso actual).
+   * MockAPI does not expose actions; modelled as PUT on the device (merge with current resource).
    * @param {number|string} deviceId
    * @param {Object} command
    */

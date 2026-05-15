@@ -1,8 +1,8 @@
 /**
- * Lectura de sensor capturada por un dispositivo IoT.
+ * Sensor reading captured by an IoT device.
  *
- * En el diagrama, VitalSignReading es una especialización de SensorReading.
- * En esta implementación usamos un único tipo con distintos valores de `type`
+ * In the diagram, VitalSignReading is a specialization of SensorReading.
+ * This implementation uses a single type with different `type` values
  * (heart_rate, location, temperature, altitude, etc.).
  */
 export class SensorReading {
@@ -16,7 +16,7 @@ export class SensorReading {
   }
 }
 
-/** Tipos alineados al diagrama (simplificación académica). */
+/** Types aligned with the diagram (academic simplification). */
 export const SENSOR_READING_TYPES = Object.freeze({
   HEART_RATE: "heart_rate",
   LOCATION: "location",
