@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const platformApi = import.meta.env.VITE_API_BASE_URL;
+const platformApi = String(import.meta.env.VITE_API_BASE_URL ?? '').trim();
 
 /**
  * Shared infrastructure base class that owns the configured Axios client.

@@ -11,10 +11,26 @@
     "plans": "Planes",
     "identity-access": "Identidad y acceso",
     "notifications-profile": "Notificaciones y perfil",
-    "my-profile": "Mi perfil"
+    "my-profile": "Mi perfil",
+    "monitoring": "Monitoreo"
+  },
+  "app-shell": {
+    "context": "VITALTREK",
+    "title": "Plataforma",
+    "subtitle": "Explora rutas, tours, monitoreo y más desde un solo lugar."
+  },
+  "monitoring": {
+    "context": "CONTEXTO DELIMITADO",
+    "title": "Monitoreo",
+    "subtitle": "Signos vitales y alertas de expedición.",
+    "tabs": {
+      "vital-signs": "Signos vitales",
+      "new-sign": "Nuevo registro",
+      "alerts": "Alertas"
+    }
   },
   "sidebar": {
-    "sos": "SOS"
+    "sos": "! S.O.S."
   },
   "tour-management": {
     "context": "CONTEXTO DELIMITADO",
@@ -27,7 +43,7 @@
     "description": "Administra tus tours, capacidad, dificultad y estado de publicación.",
     "tabs": {
       "list": "Lista de tours",
-      "form": "Turistas registrados",
+      "form": "Formulario de tour",
       "assign-tourists": "Asignar turistas"
     },
     "search-placeholder": "Buscar tour...",
@@ -41,7 +57,8 @@
       "available": "Disponible",
       "unavailable": "No disponible",
       "published": "Publicado",
-      "draft": "Borrador"
+      "draft": "Borrador",
+      "full": "Completo"
     },
     "form": {
       "create-title": "Crear tour",
@@ -63,6 +80,10 @@
     }
   },
   "tours": {
+    "tour-column": "Tour",
+    "guide-column": "Guía",
+    "state-column": "Estado",
+    "guide-prefix": "Agencia",
     "id": "ID",
     "title-column": "Título",
     "difficulty": "Dificultad",
@@ -112,9 +133,9 @@
       "terms": "Términos de uso",
       "iot-security": "Seguridad IoT"
     },
-    "signs": "Senales",
-    "alerts": "Alertas"
-
+    "copyright": "© 2026 VitalTrek. Todos los derechos reservados.",
+    "app-store": "App Store",
+    "google-play": "Google Play"
   },
   "authoring-phrase": {
     "intro": "Hecho ",
@@ -136,6 +157,7 @@
   },
   "signs": {
     "title": "Senales",
+    "list-description": "Lecturas de signos vitales por turista y expedición.",
     "id": "ID",
     "expedition-id": "Expedicion ID",
     "tourist-id": "Turista ID",
@@ -164,7 +186,8 @@
     "recordedAt": "Recorded AT"
   },
   "alerts": {
-    "title": "Acciones",
+    "title": "Alertas",
+    "list-description": "Alertas generadas durante el monitoreo.",
     "id": "ID",
     "touristId": "Turista ID",
     "expeditionId": "Expedicion ID",

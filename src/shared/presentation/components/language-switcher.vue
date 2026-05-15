@@ -1,95 +1,71 @@
 <script setup>
-import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 
 const { locale } = useI18n();
 
-const isSpanish = computed(() => locale.value === 'es');
-
-const toggleLanguage = () => {
-  locale.value = isSpanish.value ? 'en' : 'es';
+const setLocale = (code) => {
+  locale.value = code;
 };
 </script>
 
 <template>
-  <button
-      type="button"
-      class="language-toggle"
-      :class="{ 'is-spanish': isSpanish }"
-      @click="toggleLanguage"
-      aria-label="Change language"
-  >
-    <span class="language-option language-option-es">ES</span>
-    <span class="language-option language-option-en">EN</span>
-    <span class="language-thumb">
-      {{ isSpanish ? 'ES' : 'EN' }}
-    </span>
-  </button>
+  <div class="language-pills" role="group" aria-label="Language">
+    <button
+        type="button"
+        class="language-pill"
+        :class="{ 'language-pill-active': locale === 'es' }"
+        @click="setLocale('es')"
+    >
+      ES
+    </button>
+    <button
+        type="button"
+        class="language-pill"
+        :class="{ 'language-pill-active': locale === 'en' }"
+        @click="setLocale('en')"
+    >
+      EN
+    </button>
+  </div>
 </template>
 
 <style scoped>
-.language-toggle {
-  position: relative;
-  width: 72px;
-  height: 32px;
-  padding: 3px;
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  border-radius: 999px;
-  background: rgba(15, 23, 42, 0.55);
-  cursor: pointer;
+.language-pills {
   display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  overflow: hidden;
-  transition: border-color 0.25s ease, background 0.25s ease;
+  gap: 8px;
+  margin-bottom: 4px;
 }
 
-.language-toggle:hover {
-  border-color: rgba(242, 106, 61, 0.65);
-  background: rgba(15, 23, 42, 0.85);
-}
-
-.language-option {
-  width: 50%;
-  position: relative;
-  z-index: 1;
-  color: #94a3b8;
-  font-size: 0.66rem;
-  font-weight: 800;
-  line-height: 1;
-  text-align: center;
-  pointer-events: none;
-}
-
-.language-thumb {
-  position: absolute;
-  z-index: 2;
-  top: 3px;
-  right: 3px;
-  width: 32px;
-  height: 24px;
+.language-pill {
+  min-width: 44px;
+  height: 36px;
+  padding: 0 14px;
   border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: rgba(15, 23, 42, 0.5);
+  color: #94a3b8;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.language-pill:hover {
+  border-color: rgba(242, 106, 61, 0.5);
+  color: #e2e8f0;
+}
+
+.language-pill-active {
   background: #f26a3d;
+  border-color: #f26a3d;
   color: #ffffff;
-  display: grid;
-  place-items: center;
-  font-size: 0.64rem;
-  font-weight: 900;
-  box-shadow: 0 8px 18px rgba(242, 106, 61, 0.35);
-  transition: transform 0.28s ease;
+  box-shadow: 0 6px 16px rgba(242, 106, 61, 0.35);
 }
 
-.language-toggle.is-spanish .language-thumb {
-  transform: translateX(-34px);
-}
-
-.language-toggle.is-spanish .language-option-es,
-.language-toggle:not(.is-spanish) .language-option-en {
-  color: transparent;
-}
-
-.language-toggle:focus-visible {
+.language-pill:focus-visible {
   outline: 2px solid #f26a3d;
-  outline-offset: 3px;
+  outline-offset: 2px;
 }
 </style>

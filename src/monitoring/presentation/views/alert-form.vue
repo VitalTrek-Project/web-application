@@ -4,7 +4,7 @@ import { useRoute, useRouter } from "vue-router";
 import useMonitoringStore from "../../application/monitoring.store.js";
 import { computed, onMounted, ref } from "vue";
 import { storeToRefs } from "pinia";
-import { Sign } from "../../domain/model/sign.entity.js";
+import { Alert } from "../../domain/model/alert.entity.js";
 import MonitoringPanel from "../components/monitoring-panel.vue";
 
 const { t } = useI18n();
@@ -12,16 +12,16 @@ const route = useRoute();
 const router = useRouter();
 const store = useMonitoringStore();
 const { errors, tourists } = storeToRefs(store);
-const { addSign, updateSign, fetchTourists, fetchSigns, getSignById } = store;
+const { addAlert, updateAlert, fetchTourists, fetchAlerts, getAlertById } = store;
 
 const form = ref({
   touristId: null,
   expeditionId: null,
-  heartRate: null,
-  bloodOxygen: null,
-  bodyTemperature: null,
-  steps: null,
-  recordedAt: ""
+  type: "",
+  severity: "",
+  status: "",
+  message: "",
+  raisedAt: ""
 });
 
 const isEdit = computed(() => !!route.params.id);
@@ -30,39 +30,43 @@ onMounted(async () => {
   if (!tourists.value.length) {
     await fetchTourists();
   }
-  if (!store.signsLoaded) {
-    await fetchSigns();
+  if (!store.alertsLoaded) {
+    await fetchAlerts();
   }
   if (isEdit.value) {
-    const sign = getSignById(route.params.id);
-    if (sign) {
-      form.value.touristId = sign.touristId;
-      form.value.expeditionId = sign.expeditionId;
-      form.value.heartRate = sign.heartRate;
-      form.value.bloodOxygen = sign.bloodOxygen;
-      form.value.bodyTemperature = sign.bodyTemperature;
-      form.value.steps = sign.steps;
-      form.value.recordedAt = sign.recordedAt;
+    const alert = getAlertById(route.params.id);
+    if (alert) {
+      form.value.touristId = alert.touristId;
+      form.value.expeditionId = alert.expeditionId;
+      form.value.type = alert.type;
+      form.value.severity = alert.severity;
+      form.value.status = alert.status;
+      form.value.message = alert.message;
+      form.value.raisedAt = alert.raisedAt;
     } else {
       navigateBack();
     }
   }
 });
 
-const navigateBack = () => router.push({ name: "monitoring-signs" });
+const navigateBack = () => router.push({ name: "monitoring-alert" });
 
-const saveSign = () => {
-  const sign = new Sign({
+const saveAlert = () => {
+  const alert = new Alert({
     id: isEdit.value ? route.params.id : null,
     touristId: form.value.touristId,
     expeditionId: form.value.expeditionId,
-    heartRate: form.value.heartRate,
-    bloodOxygen: form.value.bloodOxygen,
-    bodyTemperature: form.value.bodyTemperature,
-    steps: form.value.steps,
-    recordedAt: form.value.recordedAt
+    type: form.value.type,
+    severity: form.value.severity,
+    status: form.value.status,
+    message: form.value.message,
+    raisedAt: form.value.raisedAt
   });
-  isEdit.value ? updateSign(sign) : addSign(sign);
+  if (isEdit.value) {
+    updateAlert(alert);
+  } else {
+    addAlert(alert);
+  }
   navigateBack();
 };
 </script>
@@ -71,13 +75,13 @@ const saveSign = () => {
   <MonitoringPanel>
     <div class="monitoring-card bc-form-card">
       <div class="bc-form-header">
-        <h2>{{ isEdit ? t("sign.edit-title") : t("sign.new-title") }}</h2>
-        <p>{{ t("signs.list-description") }}</p>
+        <h2>{{ isEdit ? t("alert.edit-title") : t("alert.new-title") }}</h2>
+        <p>{{ t("alerts.list-description") }}</p>
       </div>
 
-      <form class="bc-form monitoring-form-fields" @submit.prevent="saveSign">
+      <form class="bc-form monitoring-form-fields" @submit.prevent="saveAlert">
         <div class="bc-form-field">
-          <label for="tourist">{{ t("sign.tourist") }}</label>
+          <label for="tourist">{{ t("alerts.touristId") }}</label>
           <pv-select
               id="tourist"
               v-model="form.touristId"
@@ -89,61 +93,41 @@ const saveSign = () => {
           />
         </div>
         <div class="bc-form-field">
-          <label for="expeditionId">{{ t("sign.expeditionId") }}</label>
-          <pv-input-text
-              id="expeditionId"
-              v-model="form.expeditionId"
-              required
-              class="w-full"
-          />
+          <label for="expeditionId">{{ t("alerts.expeditionId") }}</label>
+          <pv-input-text id="expeditionId" v-model="form.expeditionId" class="w-full" />
         </div>
         <div class="bc-form-field">
-          <label for="heartRate">{{ t("sign.heartRate") }}</label>
-          <pv-input-text
-              id="heartRate"
-              v-model="form.heartRate"
-              required
-              class="w-full"
-          />
+          <label for="type">{{ t("alerts.type") }}</label>
+          <pv-input-text id="type" v-model="form.type" class="w-full" />
         </div>
         <div class="bc-form-field">
-          <label for="bloodOxygen">{{ t("sign.bloodOxygen") }}</label>
-          <pv-textarea
-              id="bloodOxygen"
-              v-model="form.bloodOxygen"
-              rows="3"
-              class="w-full"
-          />
+          <label for="severity">{{ t("alerts.severity") }}</label>
+          <pv-input-text id="severity" v-model="form.severity" class="w-full" />
         </div>
         <div class="bc-form-field">
-          <label for="bodyTemperature">{{ t("sign.bodyTemperature") }}</label>
-          <pv-textarea
-              id="bodyTemperature"
-              v-model="form.bodyTemperature"
-              rows="3"
-              class="w-full"
-          />
+          <label for="status">{{ t("alerts.status") }}</label>
+          <pv-input-text id="status" v-model="form.status" class="w-full" />
         </div>
         <div class="bc-form-field">
-          <label for="steps">{{ t("sign.steps") }}</label>
-          <pv-textarea id="steps" v-model="form.steps" rows="3" class="w-full" />
+          <label for="message">{{ t("alerts.message") }}</label>
+          <pv-textarea id="message" v-model="form.message" rows="3" class="w-full" />
         </div>
         <div class="bc-form-field">
-          <label for="recordedAt">{{ t("sign.recordedAt") }}</label>
-          <pv-input-text id="recordedAt" v-model="form.recordedAt" class="w-full" />
+          <label for="raisedAt">{{ t("alerts.raisedAt") }}</label>
+          <pv-input-text id="raisedAt" v-model="form.raisedAt" class="w-full" />
         </div>
 
         <div class="bc-form-actions">
           <pv-button
               type="button"
-              :label="t('sign.cancel')"
+              :label="t('alert.cancel')"
               severity="secondary"
               outlined
               @click="navigateBack"
           />
           <pv-button
               type="submit"
-              :label="t('sign.save')"
+              :label="t('alert.save')"
               class="monitoring-primary-button"
               icon="pi pi-save"
           />

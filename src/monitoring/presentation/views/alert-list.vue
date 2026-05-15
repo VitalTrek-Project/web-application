@@ -1,84 +1,112 @@
 <script setup>
-import {useI18n} from "vue-i18n";
-import {useRouter} from "vue-router";
+import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
 import useMonitoringStore from "../../application/monitoring.store.js";
-import {onMounted, toRefs} from "vue";
-import {useConfirm} from "primevue";
+import { onMounted } from "vue";
+import { storeToRefs } from "pinia";
+import { useConfirm } from "primevue/useconfirm";
+import MonitoringPanel from "../components/monitoring-panel.vue";
 
-const {t} = useI18n();
+const { t } = useI18n();
 const router = useRouter();
 const confirm = useConfirm();
 const store = useMonitoringStore();
-const { alerts, errors, alertsLoaded } = toRefs(store);
-const { tourists, fetchAlerts, deleteAlert, fetchTourists } = store;
+const { alerts, errors, alertsLoaded, tourists } = storeToRefs(store);
+const { fetchAlerts, deleteAlert, fetchTourists } = store;
 
-/** Navigates to the alert creation route. */
-const navigateToNew = () => router.push({ name: 'monitoring-alert-new' });
+const navigateToNew = () =>
+  router.push({ name: "monitoring-alert-new" });
 
-/**
- * Navigates to the alert edit route.
- * @param {number|string} id - Alert identifier.
- */
-const navigateToEdit = (id) => router.push({ name: 'monitoring-alert-edit', params: { id } });
+const navigateToEdit = (id) =>
+  router.push({ name: "monitoring-alert-edit", params: { id } });
 
-/**
- * Asks for user confirmation before invoking the delete alert use case.
- * @param {import('../../../monitoring/domain/model/alert.entity.js').Alert} alert - Alert selected for deletion.
- */
 const confirmDelete = (alert) => {
   confirm.require({
-    message: t('alerts.confirm-delete', { name: alert.touristId }),
-    header: t('alerts.delete-header'),
-    icon: 'pi pi-exclamation-triangle',
+    message: t("alerts.confirm-delete", { name: alert.touristId }),
+    header: t("alerts.delete-header"),
+    icon: "pi pi-exclamation-triangle",
     accept: () => deleteAlert(alert)
   });
-}
+};
 
 onMounted(() => {
-  if (!tourists.length) fetchTourists();
-  if (!store.alertsLoaded) {
-    fetchAlerts();
-    alertsLoaded.value = store.alertsLoaded;
-  }
+  if (!tourists.value.length) fetchTourists();
+  if (!alertsLoaded.value) fetchAlerts();
 });
-
 </script>
 
 <template>
-  <div class="p-4">
-    <h1>{{ t('alerts.title')}}</h1>
-    <pv-button :label="t('alerts.new')" class="mb-3" icon="pi pi-plus" @click="navigateToNew"/>
-    <pv-data-table
-        :loading="!alertsLoaded"
-        :rows="5"
-        :rows-per-page-options="[5, 10, 20]"
-        :value="alerts"
-        paginator
-        striped-rows
-        table-style="min-width: 50rem">
-      <pv-column :header="t('alerts.id')" field="id" sortable/>
-      <pv-column :header="t('alerts.touristId')" field="touristId" sortable/>
-      <pv-column :header="t('alerts.expeditionId')" field="expeditionId" sortable/>
-      <pv-column :header="t('alerts.type')" field="type" sortable/>
-      <pv-column :header="t('alerts.severity')" field="severity" sortable/>
-      <pv-column :header="t('alerts.message')" field="message" sortable/>
-      <pv-column :header="t('alerts.status')" field="status" sortable/>
-      <pv-column :header="t('alerts.raisedAt')" field="raisedAt" sortable/>
+  <MonitoringPanel>
+    <div class="monitoring-card">
+      <div class="monitoring-card-header">
+        <div>
+          <h2>{{ t("alerts.title") }}</h2>
+          <p>{{ t("alerts.list-description") }}</p>
+        </div>
+        <pv-button
+            :label="t('alerts.new')"
+            class="monitoring-primary-button"
+            icon="pi pi-plus"
+            @click="navigateToNew"
+        />
+      </div>
 
-      <pv-column :header="t('alerts.actions')">
-        <template #body="slotProps">
-          <pv-button icon="pi pi-pencil" rounded text @click="navigateToEdit(slotProps.data.id)"/>
-          <pv-button icon="pi pi-trash" rounded text @click="confirmDelete(slotProps.data)"/>
-        </template>
-      </pv-column>
-    </pv-data-table>
-    <div v-if="errors.length" class="text-red-500 mt-3">
-      {{t('errors.occurred')}}: {{ errors.map(e => e.message).join(', ') }}
+      <pv-data-table
+          :loading="!alertsLoaded"
+          :rows="8"
+          :rows-per-page-options="[8, 16, 24]"
+          :value="alerts"
+          class="monitoring-table-mock"
+          paginator
+          table-style="width: 100%; table-layout: fixed"
+      >
+        <pv-column :header="t('alerts.id')" field="id" sortable />
+        <pv-column
+            :header="t('alerts.touristId')"
+            field="touristId"
+            sortable
+        />
+        <pv-column
+            :header="t('alerts.expeditionId')"
+            field="expeditionId"
+            sortable
+        />
+        <pv-column :header="t('alerts.type')" field="type" sortable />
+        <pv-column
+            :header="t('alerts.severity')"
+            field="severity"
+            sortable
+        />
+        <pv-column :header="t('alerts.message')" field="message" sortable />
+        <pv-column :header="t('alerts.status')" field="status" sortable />
+        <pv-column :header="t('alerts.raisedAt')" field="raisedAt" sortable />
+
+        <pv-column :header="t('alerts.actions')" style="width: 96px">
+          <template #body="slotProps">
+            <div class="table-actions">
+              <pv-button
+                  icon="pi pi-pencil"
+                  rounded
+                  text
+                  class="edit-button"
+                  @click="navigateToEdit(slotProps.data.id)"
+              />
+              <pv-button
+                  icon="pi pi-trash"
+                  rounded
+                  text
+                  class="delete-button"
+                  @click="confirmDelete(slotProps.data)"
+              />
+            </div>
+          </template>
+        </pv-column>
+      </pv-data-table>
+
+      <div v-if="errors.length" class="monitoring-error">
+        {{ t("errors.occurred") }}:
+        {{ errors.map((e) => e.message).join(", ") }}
+      </div>
     </div>
-    <pv-confirm-dialog/>
-  </div>
+  </MonitoringPanel>
 </template>
-
-<style scoped>
-
-</style>]

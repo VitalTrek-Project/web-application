@@ -1,9 +1,12 @@
 <script setup>
+import { computed } from "vue";
+import { useRoute } from "vue-router";
 import LanguageSwitcher from "./language-switcher.vue";
 import { useI18n } from "vue-i18n";
 import FooterContent from "./footer-content.vue";
 
 const { t } = useI18n();
+const route = useRoute();
 
 const items = [
   { label: 'option.home', to: '/home' },
@@ -11,32 +14,46 @@ const items = [
   { label: 'option.navigation-expedition', to: '/navigation' },
   { label: 'option.safety-monitoring', to: '/safety' },
   { label: 'option.tour-management', to: '/tours' },
+  { label: 'option.monitoring', to: '/monitoring/signs' },
   { label: 'option.community', to: '/community' },
   { label: 'option.agencies', to: '/agencies' },
   { label: 'option.plans', to: '/plans' },
   { label: 'option.identity-access', to: '/identity' },
   { label: 'option.notifications-profile', to: '/notifications' },
-  { label: 'option.my-profile', to: '/profile' }
-  {label: 'option.home', to: '/home'},
-  {label: 'option.about', to: '/about'},
-  {label: 'option.signs', to: '/monitoring/signs'},
-  {label: 'option.alerts', to: '/monitoring/alerts'},
-
+  { label: 'option.my-profile', to: '/profile' },
+  { label: 'option.about', to: '/about' }
 ];
+
+const hero = computed(() => {
+  const path = route.path;
+  if (path.startsWith("/monitoring")) {
+    return {
+      eyebrow: t("monitoring.context"),
+      title: t("monitoring.title"),
+      subtitle: t("monitoring.subtitle")
+    };
+  }
+  if (
+    path.startsWith("/tours") ||
+    path.startsWith("/tourists-assignment")
+  ) {
+    return {
+      eyebrow: t("tour-management.context"),
+      title: t("tour-management.title"),
+      subtitle: t("tour-management.subtitle")
+    };
+  }
+  return {
+    eyebrow: t("app-shell.context"),
+    title: t("app-shell.title"),
+    subtitle: t("app-shell.subtitle")
+  };
+});
 </script>
 
 <template>
   <pv-toast />
   <pv-confirm-dialog />
-  <pv-toast/>
-  <div class="header">
-    <pv-toolbar class="bg-primary">
-      <template #start>
-        <pv-button class="p-button-text" icon="pi pi-bars" @click="toggleDrawer"/>
-        <h3>VitalTrek</h3>
-      </template>
-      <template #center>
-
   <div class="app-shell">
     <aside class="sidebar">
       <div class="brand">
@@ -55,6 +72,9 @@ const items = [
             :to="item.to"
             class="sidebar-link"
             active-class="sidebar-link-active"
+            :class="{
+              'sidebar-link-active': item.to === '/monitoring/signs' && route.path.startsWith('/monitoring')
+            }"
         >
           {{ t(item.label) }}
         </router-link>
@@ -62,9 +82,11 @@ const items = [
 
       <div class="sidebar-bottom">
         <pv-button
+            type="button"
             :label="t('sidebar.sos')"
             icon="pi pi-heart"
             severity="danger"
+            size="large"
             class="sos-button"
         />
 
@@ -77,9 +99,9 @@ const items = [
     <section class="page-area">
       <header class="hero-header">
         <div class="hero-content">
-          <span class="eyebrow">{{ t('tour-management.context') }}</span>
-          <h1>{{ t('tour-management.title') }}</h1>
-          <p>{{ t('tour-management.subtitle') }}</p>
+          <span class="eyebrow">{{ hero.eyebrow }}</span>
+          <h1>{{ hero.title }}</h1>
+          <p>{{ hero.subtitle }}</p>
         </div>
       </header>
 
@@ -89,6 +111,13 @@ const items = [
 
       <footer class="footer">
         <footer-content />
+        <div class="footer-bottom">
+          <span>{{ t('footer.copyright') }}</span>
+          <div class="store-buttons">
+            <a href="#" class="store-button">{{ t('footer.app-store') }}</a>
+            <a href="#" class="store-button">{{ t('footer.google-play') }}</a>
+          </div>
+        </div>
       </footer>
     </section>
   </div>
@@ -174,9 +203,25 @@ const items = [
 
 .sos-button {
   width: 100%;
-  background: #f26a3d;
-  border-color: #f26a3d;
-  font-size: 0.78rem;
+  min-height: 52px;
+  padding: 0.65rem 1rem;
+  background: linear-gradient(180deg, #ff7a4f 0%, #e85a2e 100%);
+  border: none;
+  border-color: transparent;
+  box-shadow:
+    0 4px 14px rgba(242, 106, 61, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.sos-button :deep(.p-button-icon) {
+  font-size: 1.15rem;
+}
+
+.sos-button:hover {
+  filter: brightness(1.06);
 }
 
 .user-avatar {
@@ -202,52 +247,142 @@ const items = [
 }
 
 .hero-header {
-  height: 140px;
-  background:
-      radial-gradient(circle at 75% 10%, rgba(88, 28, 135, 0.65), transparent 38%),
-      linear-gradient(90deg, #5b2a79 0%, #2f124b 55%, #1d1237 100%);
+  position: relative;
+  min-height: 168px;
   display: flex;
   align-items: center;
-  padding: 0 12%;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  padding: 36px 12% 48px;
+  overflow: hidden;
+  background: #15102a;
+  border-bottom: none;
+}
+
+.hero-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 90% 140% at 88% -25%, rgba(192, 92, 255, 0.5) 0%, transparent 58%),
+    radial-gradient(ellipse 70% 90% at 12% 110%, rgba(75, 35, 110, 0.45) 0%, transparent 52%),
+    radial-gradient(ellipse 50% 80% at 50% 0%, rgba(120, 60, 160, 0.25) 0%, transparent 45%),
+    linear-gradient(
+      102deg,
+      #7a3d9e 0%,
+      #5b2a79 28%,
+      #3d1f5c 58%,
+      #221638 82%,
+      #15102a 100%
+    );
+  pointer-events: none;
+}
+
+.hero-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 72px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(17, 27, 42, 0.55) 45%,
+    #111b2a 100%
+  );
+  pointer-events: none;
 }
 
 .hero-content {
+  position: relative;
+  z-index: 1;
   text-align: left;
+  max-width: 640px;
 }
 
 .eyebrow {
   display: block;
-  color: #d7c7e8;
-  font-size: 0.66rem;
-  letter-spacing: 0.14em;
-  font-weight: 700;
-  margin-bottom: 8px;
+  color: #ff8f5f;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  font-weight: 800;
+  margin-bottom: 10px;
+  text-transform: uppercase;
 }
 
 .hero-content h1 {
-  color: #ffffff;
   margin: 0;
-  font-size: 2rem;
-  line-height: 1.1;
-  font-family: Georgia, "Times New Roman", serif;
+  font-size: 2.15rem;
+  line-height: 1.08;
+  font-family: var(--heading);
   font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #f3eaf8 55%,
+    #d4c4e8 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .hero-content p {
-  margin-top: 8px;
-  color: #e5d8ef;
-  font-size: 0.8rem;
+  margin: 10px 0 0;
+  color: rgba(229, 216, 239, 0.82);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  max-width: 420px;
 }
 
 .main-content {
   flex: 1;
-  padding: 70px 24px 48px;
+  padding: 28px 24px 48px;
+  margin-top: -8px;
 }
 
 .footer {
   border-top: 1px solid rgba(148, 163, 184, 0.13);
   background: #0d1723;
+}
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  width: min(980px, 100%);
+  margin: 0 auto;
+  padding: 18px 24px 28px;
+  border-top: 1px solid rgba(148, 163, 184, 0.1);
+  color: #8c99aa;
+  font-size: 0.68rem;
+}
+
+.store-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.store-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.45rem 0.85rem;
+  border-radius: 8px;
+  background: #111827;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.68rem;
+  font-weight: 700;
+  transition: background 0.2s ease;
+}
+
+.store-button:hover {
+  background: #1f2937;
 }
 
 @media (max-width: 900px) {
@@ -267,12 +402,17 @@ const items = [
   }
 
   .hero-header {
-    padding: 36px 24px;
-    height: auto;
+    padding: 28px 20px 40px;
+    min-height: auto;
+  }
+
+  .hero-content h1 {
+    font-size: 1.65rem;
   }
 
   .main-content {
-    padding: 32px 16px;
+    padding: 20px 16px 32px;
+    margin-top: 0;
   }
 }
 </style>

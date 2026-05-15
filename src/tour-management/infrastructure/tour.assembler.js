@@ -25,8 +25,11 @@ export class TourAssembler {
             ? response.data
             : [response.data];
 
-        return resources.map(resource =>
-            this.toEntityFromResource(resource)
-        );
+        return resources.map(resource => {
+            const tour = this.toEntityFromResource(resource);
+            tour.guide = resource.guide ?? resource.guideName ?? null;
+            tour.assignedTourists = resource.assignedTourists ?? [];
+            return tour;
+        });
     }
 }

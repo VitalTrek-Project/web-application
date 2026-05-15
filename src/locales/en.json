@@ -11,10 +11,26 @@
     "plans": "Plans",
     "identity-access": "Identity & access",
     "notifications-profile": "Notifications & profile",
-    "my-profile": "My profile"
+    "my-profile": "My profile",
+    "monitoring": "Monitoring"
+  },
+  "app-shell": {
+    "context": "VITALTREK",
+    "title": "Platform",
+    "subtitle": "Explore routes, tours, monitoring and more from one place."
+  },
+  "monitoring": {
+    "context": "BOUNDED CONTEXT",
+    "title": "Monitoring",
+    "subtitle": "Vital signs and expedition alerts.",
+    "tabs": {
+      "vital-signs": "Vital signs",
+      "new-sign": "New reading",
+      "alerts": "Alerts"
+    }
   },
   "sidebar": {
-    "sos": "SOS"
+    "sos": "! S.O.S."
   },
   "tour-management": {
     "context": "BOUNDED CONTEXT",
@@ -27,7 +43,7 @@
     "description": "Manage your tours, capacity, difficulty and publication status.",
     "tabs": {
       "list": "Tour list",
-      "form": "Registered tourists",
+      "form": "Tour form",
       "assign-tourists": "Assign tourists"
     },
     "search-placeholder": "Search tour...",
@@ -41,7 +57,8 @@
       "available": "Available",
       "unavailable": "Unavailable",
       "published": "Published",
-      "draft": "Draft"
+      "draft": "Draft",
+      "full": "Full"
     },
     "form": {
       "create-title": "Create tour",
@@ -63,6 +80,10 @@
     }
   },
   "tours": {
+    "tour-column": "Tour",
+    "guide-column": "Guide",
+    "state-column": "State",
+    "guide-prefix": "Agency",
     "id": "ID",
     "title-column": "Title",
     "difficulty": "Difficulty",
@@ -112,8 +133,9 @@
       "terms": "Terms of use",
       "iot-security": "IoT security"
     },
-    "signs": "Signs",
-    "alerts": "Alerts"
+    "copyright": "© 2026 VitalTrek. All rights reserved.",
+    "app-store": "App Store",
+    "google-play": "Google Play"
   },
   "authoring-phrase": {
     "intro": "Made ",
@@ -135,6 +157,7 @@
   },
   "signs": {
     "title": "Signs",
+    "list-description": "Vital sign readings by tourist and expedition.",
     "id": "ID",
     "expedition-id": "Expedition ID",
     "tourist-id": "Tourist ID",
@@ -165,6 +188,7 @@
   },
   "alerts": {
     "title": "Alerts",
+    "list-description": "Alerts raised during monitoring.",
     "id": "ID",
     "touristId": "Tourist ID",
     "expeditionId": "Expedition ID",

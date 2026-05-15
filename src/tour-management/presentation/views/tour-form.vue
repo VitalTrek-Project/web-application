@@ -6,6 +6,7 @@ import { useConfirm } from "primevue/useconfirm";
 
 import useTourManagementStore
   from "../../application/tourManagement.store.js";
+import TourPanel from "../components/tour-panel.vue";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -46,14 +47,10 @@ const difficultyOptions = computed(() => [
 ]);
 
 const statusOptions = computed(() => [
-  {
-    label: t('tour.status.available'),
-    value: 'available'
-  },
-  {
-    label: t('tour.status.unavailable'),
-    value: 'unavailable'
-  }
+  { label: t('tour.status.published'), value: 'published' },
+  { label: t('tour.status.draft'), value: 'draft' },
+  { label: t('tour.status.available'), value: 'available' },
+  { label: t('tour.status.unavailable'), value: 'unavailable' }
 ]);
 
 const fillForm = (tour) => {
@@ -131,22 +128,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <section class="tour-form-page">
-    <div class="tour-tabs">
-      <router-link to="/tours" class="tour-tab">
-        {{ t('tour.tabs.list') }}
-      </router-link>
-
-      <router-link to="/tours/new" class="tour-tab active">
-        {{ t('tour.tabs.form') }}
-      </router-link>
-
-      <router-link to="/tourists-assignment" class="tour-tab">
-        {{ t('tour.tabs.assign-tourists') }}
-      </router-link>
-    </div>
-
-    <div class="tour-form-card">
+  <TourPanel>
+    <div class="tour-card tour-form-card">
       <div class="tour-form-header">
         <div>
           <h2>
@@ -270,7 +253,7 @@ onMounted(async () => {
             <pv-button
                 type="submit"
                 :label="isEditMode ? t('tour.form.update') : t('tour.form.create')"
-                class="save-button"
+                class="tour-primary-button"
                 icon="pi pi-save"
                 :loading="saving"
             />
@@ -278,72 +261,12 @@ onMounted(async () => {
         </template>
       </form>
     </div>
-  </section>
+  </TourPanel>
 </template>
 
 <style scoped>
-.tour-form-page {
-  width: min(900px, 100%);
-  margin: 0 auto;
-  text-align: left;
-  position: relative;
-}
-
-.tour-form-page::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  left: 230px;
-  background: rgba(2, 6, 23, 0.42);
-  backdrop-filter: blur(1px);
-  pointer-events: none;
-}
-
-.tour-tabs,
 .tour-form-card {
-  position: relative;
-  z-index: 1;
-}
-
-.tour-form-card {
-  background: #33465f;
-  border: 1px solid rgba(185, 198, 216, 0.16);
-  border-radius: 14px;
-  padding: 28px;
-  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.35);
-}
-
-.tour-tab {
-  position: relative;
-  color: #aab6c5;
-  text-decoration: none;
-  font-size: 0.78rem;
-  padding: 0 0 12px;
-  white-space: nowrap;
-}
-
-.tour-tab.active {
-  color: #f26a3d;
-  font-weight: 700;
-}
-
-.tour-tab.active::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 2px;
-  background: #f26a3d;
-  border-radius: 999px;
-}
-
-.tour-form-card {
-  background: #33465f;
-  border: 1px solid rgba(185, 198, 216, 0.16);
-  border-radius: 10px;
-  padding: 26px;
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.16);
+  padding: 0;
 }
 
 .tour-form-header {
@@ -353,7 +276,7 @@ onMounted(async () => {
 .tour-form-header h2 {
   color: #ffffff;
   font-family: var(--heading);
-  font-size: 1.25rem;
+  font-size: 1.45rem;
   margin: 0 0 6px;
 }
 
@@ -408,16 +331,6 @@ onMounted(async () => {
   gap: 12px;
 }
 
-.save-button {
-  background: #f26a3d;
-  border-color: #f26a3d;
-}
-
-.save-button:hover {
-  background: #ff7a4f;
-  border-color: #ff7a4f;
-}
-
 :deep(.p-inputtext),
 :deep(.p-textarea),
 :deep(.p-select),
@@ -441,12 +354,6 @@ onMounted(async () => {
 }
 
 @media (max-width: 750px) {
-  .tour-tabs {
-    overflow-x: auto;
-    gap: 18px;
-    padding-left: 4px;
-  }
-
   .tour-form-card {
     padding: 18px;
   }

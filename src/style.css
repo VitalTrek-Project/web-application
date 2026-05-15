@@ -44,3 +44,354 @@ body {
   display: block;
   box-sizing: border-box;
 }
+
+/* Tour management & Monitoring — shell mockup VitalTrek */
+.tour-page,
+.monitoring-page {
+  width: min(1080px, 100%);
+  margin: 0 auto;
+  text-align: left;
+}
+
+.tour-panel,
+.monitoring-panel {
+  background: #121a26;
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.tour-tabs,
+.monitoring-tabs {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin: 0;
+  padding: 0 24px;
+  background: rgba(0, 0, 0, 0.22);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.tour-tab,
+.monitoring-tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 26px;
+  color: #7d8fa8;
+  text-decoration: none;
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.tour-tab:hover,
+.monitoring-tab:hover {
+  color: #c8d4e4;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.tour-tab-active,
+.monitoring-tab-active {
+  color: #ffffff;
+  font-weight: 700;
+  background: rgba(255, 122, 48, 0.06);
+}
+
+.tour-tab-active::before,
+.monitoring-tab-active::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #ff7a30, transparent);
+  opacity: 0.9;
+}
+
+.tour-tab-active::after,
+.monitoring-tab-active::after {
+  content: "";
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 0;
+  height: 3px;
+  border-radius: 3px 3px 0 0;
+  background: linear-gradient(90deg, #ffb07a 0%, #ff7a30 45%, #f26a3d 100%);
+  box-shadow: 0 0 20px rgba(255, 122, 48, 0.45);
+}
+
+.tour-card,
+.monitoring-card {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+}
+
+.tour-card-header,
+.monitoring-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.tour-card-header h2,
+.monitoring-card-header h2 {
+  color: #ffffff;
+  font-family: var(--heading);
+  font-size: 1.45rem;
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.monitoring-card-header p {
+  color: #94a3b8;
+  font-size: 0.8rem;
+  line-height: 1.55;
+  margin: 8px 0 0;
+  max-width: 520px;
+}
+
+.tour-primary-button,
+.monitoring-primary-button {
+  background: #ff7a30;
+  border: none;
+  color: #0f1419;
+  font-size: 0.8rem;
+  font-weight: 800;
+  padding: 0.62rem 1.35rem;
+  border-radius: 999px;
+  flex-shrink: 0;
+  box-shadow: 0 8px 24px rgba(255, 122, 48, 0.35);
+}
+
+.tour-primary-button:hover,
+.monitoring-primary-button:hover {
+  background: #ff8f4f;
+  border: none;
+  color: #0f1419;
+  filter: brightness(1.05);
+}
+
+.bc-error,
+.tour-error,
+.monitoring-error {
+  margin-top: 16px;
+  color: #fecaca;
+  font-size: 0.8rem;
+}
+
+.bc-form-card {
+  padding: 0;
+}
+
+.bc-form-header h2 {
+  color: #ffffff;
+  font-family: var(--heading);
+  font-size: 1.45rem;
+  margin: 0 0 6px;
+  letter-spacing: -0.01em;
+}
+
+.bc-form-header p {
+  color: #94a3b8;
+  font-size: 0.8rem;
+  line-height: 1.55;
+  margin: 0 0 22px;
+}
+
+.bc-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.bc-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bc-form-field label {
+  color: #e7eef8;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.bc-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.tour-table-mock .p-datatable-thead > tr > th,
+.monitoring-table-mock .p-datatable-thead > tr > th {
+  background: transparent;
+  color: #94a3b8;
+  border: none;
+  border-bottom: 1px solid rgba(220, 229, 241, 0.12);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 10px 12px 14px;
+}
+
+.tour-table-mock .p-datatable-tbody > tr > td,
+.monitoring-table-mock .p-datatable-tbody > tr > td {
+  background: transparent;
+  color: #f1f5f9;
+  border: none;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  padding: 18px 12px;
+  font-size: 0.84rem;
+}
+
+.tour-table-mock .p-datatable-tbody > tr:last-child > td,
+.monitoring-table-mock .p-datatable-tbody > tr:last-child > td {
+  border-bottom: none;
+}
+
+.tour-table-mock .p-datatable-tbody > tr:nth-child(odd) > td,
+.monitoring-table-mock .p-datatable-tbody > tr:nth-child(odd) > td {
+  background: transparent;
+}
+
+.tour-table-mock .p-datatable-tbody > tr:nth-child(even) > td,
+.monitoring-table-mock .p-datatable-tbody > tr:nth-child(even) > td {
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.tour-table-mock .p-datatable-tbody > tr:hover > td,
+.monitoring-table-mock .p-datatable-tbody > tr:hover > td {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.tour-table-mock .p-datatable-table,
+.monitoring-table-mock .p-datatable-table {
+  background: transparent;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.tour-table-mock .p-datatable,
+.monitoring-table-mock .p-datatable {
+  background: transparent;
+}
+
+.tour-table-mock .p-paginator,
+.monitoring-table-mock .p-paginator {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  padding-top: 20px;
+}
+
+.tour-table-mock .p-paginator .p-paginator-page.p-highlight,
+.monitoring-table-mock .p-paginator .p-paginator-page.p-highlight {
+  background: #14b8a6;
+  color: #ffffff;
+}
+
+.table-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.table-actions .edit-button {
+  color: #93c5fd;
+}
+
+.table-actions .delete-button {
+  color: #fca5a5;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.28rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.status-pill--published {
+  background: rgba(72, 187, 120, 0.2);
+  color: #6ee7a0;
+  border: 1px solid rgba(72, 187, 120, 0.28);
+}
+
+.status-pill--draft {
+  background: rgba(234, 179, 8, 0.18);
+  color: #fbbf24;
+  border: 1px solid rgba(234, 179, 8, 0.28);
+}
+
+.status-pill--neutral {
+  background: rgba(148, 163, 184, 0.12);
+  color: #cbd5e1;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+.tour-name-cell {
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.tour-guide-cell {
+  color: #d0d9e6;
+}
+
+@media (max-width: 800px) {
+  .tour-tabs,
+  .monitoring-tabs {
+    overflow-x: auto;
+    padding: 0 12px;
+    scrollbar-width: thin;
+  }
+
+  .tour-tab,
+  .monitoring-tab {
+    min-height: 48px;
+    padding: 0 18px;
+    font-size: 0.76rem;
+  }
+
+  .tour-card-header,
+  .monitoring-card-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tour-primary-button,
+  .monitoring-primary-button {
+    width: 100%;
+  }
+
+  .bc-form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .bc-form-actions .p-button {
+    width: 100%;
+  }
+}

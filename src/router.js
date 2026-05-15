@@ -32,7 +32,7 @@ const routes = [
     { path: '/tours/:id/edit', name: 'tour-management-tour-edit', component: TourForm, meta: { title: 'Edit Tour' } },
     { path: '/tourists-assignment', name: 'tour-management-tourists-assignment', component: TouristsAssignment, meta: { title: 'Tourists Assignment' } },
 
-    { path: '/monitoring',      name: 'monitoring', children: monitoringRoutes },
+    { path: '/monitoring', name: 'monitoring', redirect: { name: 'monitoring-signs' }, children: monitoringRoutes },
     { path: '/',                redirect: '/home' },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: pageNotFound, meta: { title: 'Page Not Found' } }
 ];

@@ -64,7 +64,8 @@ const useMonitoringStore = defineStore('monitoring', () => {
      * @returns {void}
      */
     function fetchSigns() {
-        monitoringApi.getSigns().then(response => {
+        errors.value = [];
+        return monitoringApi.getSigns().then(response => {
             signs.value = SignAssembler.toEntitiesFromResponse(response);
             signsLoaded.value = true;
             console.log(signsLoaded.value);
@@ -74,7 +75,8 @@ const useMonitoringStore = defineStore('monitoring', () => {
         });
     }
     function fetchTourists() {
-        monitoringApi.getTourists().then(response => {
+        errors.value = [];
+        return monitoringApi.getTourists().then(response => {
             tourists.value = TouristAssembler.toEntitiesFromResponse(response);
             touristsLoaded.value = true;
         }).catch(error => {
@@ -183,7 +185,8 @@ const useMonitoringStore = defineStore('monitoring', () => {
         return alertsLoaded ? alerts.value.length : 0;
     });
     function fetchAlerts() {
-        monitoringApi.getAlerts().then(response => {
+        errors.value = [];
+        return monitoringApi.getAlerts().then(response => {
             alerts.value = AlertAssembler.toEntitiesFromResponse(response);
             alertsLoaded.value = true;
         }).catch(error => {
