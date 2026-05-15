@@ -3,6 +3,7 @@ import Home from "./shared/presentation/views/home.vue";
 import TourList from "./tour-management/presentation/views/tour-list.vue";
 import TourForm from "./tour-management/presentation/views/tour-form.vue";
 import TouristsAssignment from "./tour-management/presentation/views/tourists-assigment.vue";
+import monitoringRoutes from "./monitoring/presentation/monitoring-routes.js";
 
 // To import when IAM is implemented,
 // import iamRoutes from "./iam/presentation/iam-routes.js";
@@ -15,7 +16,7 @@ const pageNotFound = () => import('./shared/presentation/views/page-not-found.vu
 const routes = [
     { path: '/home',            name: 'home',       component: Home,        meta: { title: 'Home' } },
     { path: '/about',           name: 'about',      component: about,       meta: { title: 'About' } },
-    { path: '/publishing',      name: 'publishing', children: publishingRoutes },
+    { path: '/monitoring',      name: 'monitoring', children: monitoringRoutes },
     { path: '/iam',             name: 'iam',        children: iamRoutes },
     { path: '/',                redirect: '/home' },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: pageNotFound, meta: { title: 'Page Not Found' } }
@@ -31,6 +32,7 @@ const routes = [
     { path: '/tours/:id/edit', name: 'tour-management-tour-edit', component: TourForm, meta: { title: 'Edit Tour' } },
     { path: '/tourists-assignment', name: 'tour-management-tourists-assignment', component: TouristsAssignment, meta: { title: 'Tourists Assignment' } },
 
+    { path: '/monitoring',      name: 'monitoring', children: monitoringRoutes },
     { path: '/',                redirect: '/home' },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: pageNotFound, meta: { title: 'Page Not Found' } }
 ];

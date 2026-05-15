@@ -111,7 +111,10 @@
       "privacy": "Privacidad",
       "terms": "Términos de uso",
       "iot-security": "Seguridad IoT"
-    }
+    },
+    "signs": "Senales",
+    "alerts": "Alertas"
+
   },
   "authoring-phrase": {
     "intro": "Hecho ",
@@ -130,6 +133,57 @@
     "title": "Página no encontrada",
     "content": "La ruta {unavailable-route} no está disponible.",
     "go-home": "Ir al Inicio"
+  },
+  "signs": {
+    "title": "Senales",
+    "id": "ID",
+    "expedition-id": "Expedicion ID",
+    "tourist-id": "Turista ID",
+    "heart-rate": "Frecuencia Cardiaca",
+    "blood-oxygen": "Oxigeno en sangre",
+    "body-temperature": "Temperatura Corporal",
+    "steps": "Pasos",
+    "recorded-at": "Grabado AT",
+    "actions": "Acciones",
+    "new": "Nueva Senal",
+    "confirm-delete": "Estás seguro de que quieres eliminar ",
+    "delete-header": "Confirmar Eliminación"
+  },
+  "sign": {
+    "new-title": "Crear Nueva senal",
+    "edit-title": "Editar Senal",
+    "name": "Nombre",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "tourist": "Turista",
+    "expeditionId": "Expedicion ID",
+    "heartRate": "Frecuencia Cardiaca",
+    "bloodOxygen": "Oxigeno en sangre",
+    "bodyTemperature": "Temperatura Corporal",
+    "steps": "Pasos",
+    "recordedAt": "Recorded AT"
+  },
+  "alerts": {
+    "title": "Acciones",
+    "id": "ID",
+    "touristId": "Turista ID",
+    "expeditionId": "Expedicion ID",
+    "type": "Tipo",
+    "severity": "Sveridad",
+    "message": "Mensaje",
+    "status": "Estado",
+    "raisedAt": "Raised AT",
+    "actions": "Acciones",
+    "new": "Nueva Alerta",
+    "confirm-delete": "Estas seguro de borrar?",
+    "delete-header": "Confirmar Eliminación"
+  },
+  "alert": {
+    "new-title": "Crear Nueva Alerta",
+    "edit-title": "Editar Alert",
+    "name": "Nombre",
+    "save": "Guardar",
+    "cancel": "Cancelar"
   },
   "errors": {
     "occurred": "Ocurrieron errores"

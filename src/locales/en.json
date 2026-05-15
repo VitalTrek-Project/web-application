@@ -111,7 +111,9 @@
       "privacy": "Privacy",
       "terms": "Terms of use",
       "iot-security": "IoT security"
-    }
+    },
+    "signs": "Signs",
+    "alerts": "Alerts"
   },
   "authoring-phrase": {
     "intro": "Made ",
@@ -131,7 +133,60 @@
     "content": "The path {unavailable-route} is not available.",
     "go-home": "Go Home"
   },
+  "signs": {
+    "title": "Signs",
+    "id": "ID",
+    "expedition-id": "Expedition ID",
+    "tourist-id": "Tourist ID",
+    "heart-rate": "Hear Rate",
+    "blood-oxygen": "Blood Oxygen",
+    "body-temperature": "Body Temperature",
+    "steps": "Steps",
+    "recorded-at": "Recorded AT",
+    "actions": "Actions",
+    "new": "New Sign",
+    "confirm-delete": "Are you sure you want to delete signal?",
+    "delete-header": "Confirm Deletion"
+  },
+  "sign": {
+    "new-title": "Create New Sign",
+    "edit-title": "Edit Sign",
+    "name": "Name",
+    "save": "Save",
+    "cancel": "Cancel",
+    "tourist": "Tourist",
+    "expeditionId": "Expedition ID",
+    "heartRate": "Heart Rate",
+    "bloodOxygen": "Blood Oxygen",
+    "bodyTemperature": "Body Temperature",
+    "steps": "Steps",
+    "recordedAt": "Recorded AT"
+
+  },
+  "alerts": {
+    "title": "Alerts",
+    "id": "ID",
+    "touristId": "Tourist ID",
+    "expeditionId": "Expedition ID",
+    "type": "Type",
+    "severity": "Severity",
+    "message": "Message",
+    "status": "Status",
+    "raisedAt": "Raised AT",
+    "actions": "Actions",
+    "new": "New Alert",
+    "confirm-delete": "Are you sure you want to delete alert",
+    "delete-header": "Confirm Deletion"
+  },
+  "alert": {
+    "new-title": "Create New Alert",
+    "edit-title": "Edit Alert",
+    "name": "Name",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
   "errors": {
     "occurred": "Errors occurred"
   }
+
 }

@@ -17,12 +17,25 @@ const items = [
   { label: 'option.identity-access', to: '/identity' },
   { label: 'option.notifications-profile', to: '/notifications' },
   { label: 'option.my-profile', to: '/profile' }
+  {label: 'option.home', to: '/home'},
+  {label: 'option.about', to: '/about'},
+  {label: 'option.signs', to: '/monitoring/signs'},
+  {label: 'option.alerts', to: '/monitoring/alerts'},
+
 ];
 </script>
 
 <template>
   <pv-toast />
   <pv-confirm-dialog />
+  <pv-toast/>
+  <div class="header">
+    <pv-toolbar class="bg-primary">
+      <template #start>
+        <pv-button class="p-button-text" icon="pi pi-bars" @click="toggleDrawer"/>
+        <h3>VitalTrek</h3>
+      </template>
+      <template #center>
 
   <div class="app-shell">
     <aside class="sidebar">
