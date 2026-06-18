@@ -5,9 +5,11 @@ import { useI18n } from "vue-i18n";
 import LanguageSwitcher from "./language-switcher.vue";
 import FooterContent from "./footer-content.vue";
 import VitalTrekLogo from "./vital-trek-logo.vue";
+import { useIncidentReport } from "../composables/use-incident-report.js";
 
 const { t } = useI18n();
 const route = useRoute();
+const { reportIncident } = useIncidentReport();
 
 const items = [
   { label: "option.home", to: "/home" },
@@ -104,6 +106,7 @@ const hero = computed(() => {
             severity="danger"
             size="large"
             class="sos-button"
+            @click="reportIncident({ source: 'sidebar-sos' })"
         />
 
         <div class="user-avatar" :aria-label="t('option.my-profile')">

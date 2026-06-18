@@ -2,7 +2,7 @@
 import { computed, onMounted, reactive, ref  } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
-import { useConfirm } from "primevue/useconfirm";
+import { useToast } from "primevue/usetoast";
 
 import useTourManagementStore
   from "../../application/tourManagement.store.js";
@@ -11,7 +11,7 @@ import TourPanel from "../components/tour-panel.vue";
 const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
-const confirm = useConfirm();
+const toast = useToast();
 const store = useTourManagementStore();
 
 const loading = ref(false);
@@ -70,6 +70,48 @@ const goBackToList = () => {
   });
 };
 
+const addCheckpoint = () => {
+  form.checkpoints.push({
+    order: form.checkpoints.length + 1,
+    name: '',
+    latitude: null,
+    longitude: null,
+    bluetoothBeaconId: ''
+  });
+};
+
+const removeCheckpoint = (index) => {
+  form.checkpoints.splice(index, 1);
+  form.checkpoints.forEach((checkpoint, i) => {
+    checkpoint.order = i + 1;
+  });
+};
+
+const moveCheckpoint = (index, direction) => {
+  const target = index + direction;
+  if (target < 0 || target >= form.checkpoints.length) return;
+  const [moved] = form.checkpoints.splice(index, 1);
+  form.checkpoints.splice(target, 0, moved);
+  form.checkpoints.forEach((checkpoint, i) => {
+    checkpoint.order = i + 1;
+  });
+};
+
+const normalizeCheckpoints = () =>
+  form.checkpoints.map((checkpoint, index) => ({
+    order: index + 1,
+    name: checkpoint.name,
+    latitude:
+        checkpoint.latitude === '' || checkpoint.latitude === null
+            ? null
+            : Number(checkpoint.latitude),
+    longitude:
+        checkpoint.longitude === '' || checkpoint.longitude === null
+            ? null
+            : Number(checkpoint.longitude),
+    bluetoothBeaconId: checkpoint.bluetoothBeaconId ?? ''
+  }));
+
 const saveTour = async () => {
   saving.value = true;
 
@@ -81,7 +123,7 @@ const saveTour = async () => {
     difficulty: form.difficulty,
     status: form.status,
     capacity: Number(form.capacity),
-    checkpoints: form.checkpoints
+    checkpoints: normalizeCheckpoints()
   };
 
   try {
@@ -91,8 +133,24 @@ const saveTour = async () => {
       await store.addTour(tourPayload);
     }
 
+    toast.add({
+      severity: 'success',
+      summary: isEditMode.value
+          ? t('tour.form.toast.updated-summary')
+          : t('tour.form.toast.created-summary'),
+      detail: t('tour.form.toast.detail', { title: form.title }),
+      life: 3500
+    });
+
     await router.push({
       name: 'tour-management-tours'
+    });
+  } catch {
+    toast.add({
+      severity: 'error',
+      summary: t('tour.form.toast.error-summary'),
+      detail: t('tour.form.toast.error-detail'),
+      life: 4000
     });
   } finally {
     saving.value = false;
@@ -233,6 +291,104 @@ onMounted(async () => {
             </div>
           </div>
 
+          <section class="checkpoints-section">
+            <div class="checkpoints-header">
+              <div>
+                <h3>{{ t('tour.form.checkpoints.title') }}</h3>
+                <p>{{ t('tour.form.checkpoints.subtitle') }}</p>
+              </div>
+              <pv-button
+                  type="button"
+                  :label="t('tour.form.checkpoints.add')"
+                  icon="pi pi-plus"
+                  class="tour-primary-button"
+                  @click="addCheckpoint"
+              />
+            </div>
+
+            <p
+                v-if="!form.checkpoints.length"
+                class="checkpoints-empty"
+            >
+              {{ t('tour.form.checkpoints.empty') }}
+            </p>
+
+            <ul v-else class="checkpoints-list">
+              <li
+                  v-for="(checkpoint, index) in form.checkpoints"
+                  :key="index"
+                  class="checkpoint-row"
+              >
+                <span class="checkpoint-order">{{ index + 1 }}</span>
+
+                <div class="checkpoint-fields">
+                  <div class="checkpoint-field checkpoint-field--name">
+                    <label>{{ t('tour.form.checkpoints.name') }}</label>
+                    <pv-input-text
+                        v-model="checkpoint.name"
+                        class="w-full"
+                        :placeholder="t('tour.form.checkpoints.name-placeholder')"
+                    />
+                  </div>
+                  <div class="checkpoint-field">
+                    <label>{{ t('tour.form.checkpoints.latitude') }}</label>
+                    <pv-input-text
+                        v-model="checkpoint.latitude"
+                        class="w-full"
+                        placeholder="-13.163"
+                    />
+                  </div>
+                  <div class="checkpoint-field">
+                    <label>{{ t('tour.form.checkpoints.longitude') }}</label>
+                    <pv-input-text
+                        v-model="checkpoint.longitude"
+                        class="w-full"
+                        placeholder="-72.545"
+                    />
+                  </div>
+                  <div class="checkpoint-field">
+                    <label>{{ t('tour.form.checkpoints.beacon') }}</label>
+                    <pv-input-text
+                        v-model="checkpoint.bluetoothBeaconId"
+                        class="w-full"
+                        :placeholder="t('tour.form.checkpoints.beacon-placeholder')"
+                    />
+                  </div>
+                </div>
+
+                <div class="checkpoint-actions">
+                  <pv-button
+                      type="button"
+                      icon="pi pi-arrow-up"
+                      rounded
+                      text
+                      :disabled="index === 0"
+                      :aria-label="t('tour.form.checkpoints.move-up')"
+                      @click="moveCheckpoint(index, -1)"
+                  />
+                  <pv-button
+                      type="button"
+                      icon="pi pi-arrow-down"
+                      rounded
+                      text
+                      :disabled="index === form.checkpoints.length - 1"
+                      :aria-label="t('tour.form.checkpoints.move-down')"
+                      @click="moveCheckpoint(index, 1)"
+                  />
+                  <pv-button
+                      type="button"
+                      icon="pi pi-trash"
+                      rounded
+                      text
+                      class="delete-button"
+                      :aria-label="t('tour.form.checkpoints.remove')"
+                      @click="removeCheckpoint(index)"
+                  />
+                </div>
+              </li>
+            </ul>
+          </section>
+
           <div
               v-if="store.errors.length"
               class="error-message"
@@ -330,6 +486,123 @@ onMounted(async () => {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
+}
+
+.checkpoints-section {
+  border-top: 1px solid rgba(220, 229, 241, 0.16);
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.checkpoints-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.checkpoints-header h3 {
+  color: #ffffff;
+  font-family: var(--heading);
+  font-size: 1.05rem;
+  margin: 0 0 4px;
+}
+
+.checkpoints-header p {
+  color: #aebacb;
+  font-size: 0.75rem;
+  margin: 0;
+}
+
+.checkpoints-empty {
+  color: #aebacb;
+  font-size: 0.82rem;
+  background: rgba(59, 80, 107, 0.4);
+  border: 1px dashed rgba(220, 229, 241, 0.22);
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+}
+
+.checkpoints-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.checkpoint-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: rgba(59, 80, 107, 0.4);
+  border: 1px solid rgba(220, 229, 241, 0.14);
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.checkpoint-order {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: #f26a3d;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.85rem;
+  margin-top: 18px;
+}
+
+.checkpoint-fields {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.4fr;
+  gap: 12px;
+}
+
+.checkpoint-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.checkpoint-field label {
+  color: #cdd7e5;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.checkpoint-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 12px;
+}
+
+.checkpoint-actions :deep(.delete-button) {
+  color: #fca5a5;
+}
+
+@media (max-width: 750px) {
+  .checkpoint-fields {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .checkpoint-row {
+    flex-wrap: wrap;
+  }
+
+  .checkpoint-actions {
+    flex-direction: row;
+    margin-top: 0;
+  }
 }
 
 :deep(.p-inputtext),

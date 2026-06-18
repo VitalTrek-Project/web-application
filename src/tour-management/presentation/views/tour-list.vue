@@ -2,6 +2,7 @@
 import { computed, onMounted, toRefs } from "vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
+import { useToast } from "primevue/usetoast";
 import useTourManagementStore from "../../application/tourManagement.store.js";
 import TourPanel from "../components/tour-panel.vue";
 import { useBcSearch } from "../../../shared/presentation/composables/use-bc-search.js";
@@ -12,10 +13,22 @@ import {
 
 const { t } = useI18n();
 const router = useRouter();
+const toast = useToast();
 const store = useTourManagementStore();
 
 const { tours, errors, toursLoaded } = toRefs(store);
 const { fetchTours } = store;
+
+const confirmDelete = (tour) => {
+  const ok = window.confirm(t("tours.confirm-delete-native"));
+  if (!ok) return;
+  store.deleteTour(tour.id);
+  toast.add({
+    severity: "success",
+    summary: t("tours.deleted"),
+    life: 3000
+  });
+};
 const { filteredItems: filteredTours } = useBcSearch(tours);
 
 const stats = computed(() => summarizeTourStats(tours.value));
@@ -132,16 +145,27 @@ onMounted(() => {
             </template>
           </pv-column>
 
-          <pv-column :header="t('tours.actions')" style="width: 72px">
+          <pv-column :header="t('tours.actions')" style="width: 110px">
             <template #body="slotProps">
-              <pv-button
-                  icon="pi pi-pencil"
-                  rounded
-                  text
-                  class="edit-button"
-                  :aria-label="t('tour.form.edit-title')"
-                  @click="navigateToEdit(slotProps.data)"
-              />
+              <div class="table-actions">
+                <pv-button
+                    icon="pi pi-pencil"
+                    rounded
+                    text
+                    class="edit-button"
+                    :aria-label="t('tour.form.edit-title')"
+                    @click="navigateToEdit(slotProps.data)"
+                />
+                <pv-button
+                    type="button"
+                    icon="pi pi-trash"
+                    rounded
+                    text
+                    class="delete-button"
+                    :aria-label="t('tours.delete-header')"
+                    @click="confirmDelete(slotProps.data)"
+                />
+              </div>
             </template>
           </pv-column>
           </pv-data-table>
@@ -161,6 +185,22 @@ onMounted(() => {
   margin-top: 16px;
   color: #fecaca;
   font-size: 0.8rem;
+}
+
+.table-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.table-actions :deep(.delete-button) {
+  color: #ef4444;
+}
+
+.table-actions :deep(.delete-button:hover) {
+  color: #dc2626;
+  background: rgba(239, 68, 68, 0.12);
 }
 
 :deep(.tour-table-mock .p-datatable-table) {

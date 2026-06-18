@@ -1,7 +1,8 @@
 <script setup>
 import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
 
-defineProps({
+const props = defineProps({
   route: {
     type: Object,
     required: true
@@ -13,6 +14,11 @@ defineProps({
 });
 
 const { t } = useI18n();
+const router = useRouter();
+
+const goToDetail = () => {
+  router.push({ name: "route-detail", params: { id: props.route.id } });
+};
 </script>
 
 <template>
@@ -38,8 +44,9 @@ const { t } = useI18n();
         <pv-button
             :label="t('platform.route.start')"
             class="platform-primary-button"
+            @click="goToDetail"
         />
-        <button type="button" class="route-card-more">
+        <button type="button" class="route-card-more" @click="goToDetail">
           {{ t("platform.route.see-more") }}
         </button>
       </div>
