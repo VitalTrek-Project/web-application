@@ -9,6 +9,8 @@ import navigationRoutes from "./navigation/presentation/navigation-routes.js";
 import iotRoutes from "./iot/presentation/iot-routes.js";
 
 const RoutesPage = () => import("./shared/presentation/views/routes-page.vue");
+const RouteDetailPage = () =>
+  import("./shared/presentation/views/route-detail.vue");
 const CommunityPage = () => import("./shared/presentation/views/community.vue");
 const pageNotFound = () =>
   import("./shared/presentation/views/page-not-found.vue");
@@ -26,6 +28,12 @@ const routes = [
     name: "routes",
     component: RoutesPage,
     meta: { title: "Routes" }
+  },
+  {
+    path: "/routes/:id",
+    name: "route-detail",
+    component: RouteDetailPage,
+    meta: { title: "Route detail" }
   },
   {
     path: "/community",

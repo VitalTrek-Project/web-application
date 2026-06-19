@@ -223,8 +223,19 @@ export const useNavigationStore = defineStore("navigation", () => {
     console.log("Checkpoint registered:", checkpointId);
   }
 
+  /**
+   * Simulates downloading a route bundle for offline use. Resolves after a short
+   * delay so the UI can show in-progress and completed feedback.
+   * @param {number|string} tourId
+   * @returns {Promise<number|string>}
+   */
   function downloadOfflineRoute(tourId) {
-    console.log("Download offline route:", tourId);
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        console.log("Offline route ready:", tourId);
+        resolve(tourId);
+      }, 1400);
+    });
   }
 
   return {

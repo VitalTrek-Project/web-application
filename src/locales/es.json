@@ -84,7 +84,29 @@
       },
       "create": "Crear tour",
       "update": "Actualizar tour",
-      "cancel": "Cancelar"
+      "cancel": "Cancelar",
+      "checkpoints": {
+        "title": "Checkpoints",
+        "subtitle": "Define los puntos de control de la ruta en orden de recorrido.",
+        "add": "Agregar checkpoint",
+        "empty": "Aún no hay checkpoints. Agrega el primero para definir la ruta.",
+        "name": "Nombre",
+        "name-placeholder": "Ej. Campamento Wayllabamba",
+        "latitude": "Latitud",
+        "longitude": "Longitud",
+        "beacon": "Beacon BLE",
+        "beacon-placeholder": "ID opcional",
+        "move-up": "Mover arriba",
+        "move-down": "Mover abajo",
+        "remove": "Eliminar checkpoint"
+      },
+      "toast": {
+        "created-summary": "Tour creado",
+        "updated-summary": "Tour actualizado",
+        "detail": "\"{title}\" se guardó correctamente.",
+        "error-summary": "No se pudo guardar",
+        "error-detail": "Ocurrió un error al guardar el tour. Inténtalo de nuevo."
+      }
     }
   },
   "tours": {
@@ -99,6 +121,8 @@
     "capacity": "Capacidad",
     "actions": "Acciones",
     "confirm-delete": "¿Seguro que deseas eliminar {title}?",
+    "confirm-delete-native": "¿Estás seguro de que deseas eliminar este tour?",
+    "deleted": "Tour eliminado",
     "delete-header": "Eliminar tour"
   },
   "tourists": {
@@ -246,12 +270,20 @@
       "placeholder": "Vista de mapa (mock)",
       "waypoints": "Waypoints",
       "download-offline": "Descargar ruta offline",
+      "downloading": "Descargando...",
+      "download-start-summary": "Descargando ruta",
+      "download-start-detail": "Guardando mapa y checkpoints para uso sin conexión.",
+      "download-done-summary": "Ruta descargada",
+      "download-done-detail": "La ruta está disponible offline en este dispositivo.",
       "no-checkpoints": "No hay waypoints para este tour.",
       "completed": "Completado",
       "pending": "Pendiente",
+      "current": "Estás aquí",
+      "next": "Próximo checkpoint",
       "stats-total": "Waypoints",
       "stats-done": "Completados",
-      "stats-pending": "Pendientes"
+      "stats-pending": "Pendientes",
+      "progress": "Avance de la ruta"
     }
   },
   "expedition": {
@@ -271,7 +303,24 @@
     "stats-progress": "Avance",
     "status-planned": "Planificada",
     "status-active": "En curso",
-    "status-finished": "Finalizada"
+    "status-finished": "Finalizada",
+    "alert-banner": {
+      "critical": "Alerta crítica",
+      "tourist": "Turista #{id}",
+      "view-detail": "Ver detalle",
+      "contact": "Contactar",
+      "contacting-summary": "Contactando al turista",
+      "contacting-detail": "Estableciendo contacto con el turista #{tourist}..."
+    },
+    "tourists-title": "Estado de los turistas",
+    "tourists-subtitle": "Seguimiento individual de cada integrante de la expedición.",
+    "tourists-empty": "No hay turistas en esta expedición.",
+    "tourist-status": {
+      "on_route": "En ruta",
+      "stopped": "Detenido",
+      "completed": "Completado",
+      "alert": "En alerta"
+    }
   },
   "weather": {
     "title": "Clima en ruta",
@@ -405,6 +454,25 @@
       "days": "días",
       "start": "Iniciar ruta",
       "see-more": "Ver más"
+    },
+    "detail": {
+      "back": "Volver al catálogo",
+      "back-to-catalog": "Ver otras rutas",
+      "not-found": "No encontramos esta ruta.",
+      "distance": "Distancia",
+      "duration": "Duración",
+      "altitude": "Altitud máx.",
+      "difficulty": "Dificultad",
+      "price": "Precio por persona",
+      "enroll-note": "Incluye monitoreo biométrico, guía certificado y soporte de emergencia.",
+      "enroll": "Inscribirme en la ruta",
+      "enrolled": "¡Inscripción confirmada!",
+      "enroll-header": "Confirmar inscripción",
+      "enroll-confirm": "¿Deseas inscribirte en \"{title}\"?",
+      "enroll-accept": "Confirmar inscripción",
+      "enroll-cancel": "Cancelar",
+      "enroll-success-summary": "Inscripción exitosa",
+      "enroll-success-detail": "Te inscribiste en \"{title}\". Revisa tu correo para los detalles."
     }
   },
   "page-not-found": {
@@ -474,6 +542,17 @@
     "save": "Guardar",
     "cancel": "Cancelar",
     "delete": "Eliminar"
+  },
+  "incident": {
+    "report": "Reportar incidente",
+    "confirm-header": "Reportar incidente",
+    "confirm-message": "¿Confirmas que necesitas ayuda? Enviaremos tu ubicación y estado a la agencia y al equipo de monitoreo.",
+    "confirm-accept": "Enviar alerta",
+    "confirm-reject": "Cancelar",
+    "sending-summary": "Enviando alerta...",
+    "sending-detail": "Compartiendo tu ubicación con el equipo de monitoreo.",
+    "sent-summary": "Incidente reportado",
+    "sent-detail": "La agencia fue notificada. Mantente en tu posición si es seguro."
   },
   "errors": {
     "occurred": "Ocurrieron errores"
