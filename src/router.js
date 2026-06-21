@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { useAppModeStore } from "./shared/application/app-mode.store.js";
 
 import Home from "./shared/presentation/views/home.vue";
 import TourList from "./tour-management/presentation/views/tour-list.vue";
@@ -16,6 +17,9 @@ const pageNotFound = () =>
   import("./shared/presentation/views/page-not-found.vue");
 
 // Routes version when IAM is not implemented
+// TODO [IAM]: Cuando se implemente autenticación real, reemplazar `requiredMode`
+// por guards que lean el claim `role` del JWT. Ver useAppModeStore y el plan de
+// implementación del bounded context IAM en el backend.
 const routes = [
   {
     path: "/home",
@@ -51,13 +55,13 @@ const routes = [
     path: "/agencies",
     name: "agencies",
     component: pageNotFound,
-    meta: { title: "Page 404 not found" }
+    meta: { title: "Page 404 not found", requiredMode: "empresa" }
   },
   {
     path: "/plans",
     name: "plans",
     component: pageNotFound,
-    meta: { title: "Page 404 not found" }
+    meta: { title: "Page 404 not found", requiredMode: "empresa" }
   },
   {
     path: "/identity",
@@ -81,25 +85,25 @@ const routes = [
     path: "/tours",
     name: "tour-management-tours",
     component: TourList,
-    meta: { title: "Tour" }
+    meta: { title: "Tour", requiredMode: "empresa" }
   },
   {
     path: "/tours/new",
     name: "tour-management-tour-new",
     component: TourForm,
-    meta: { title: "New Tour" }
+    meta: { title: "New Tour", requiredMode: "empresa" }
   },
   {
     path: "/tours/:id/edit",
     name: "tour-management-tour-edit",
     component: TourForm,
-    meta: { title: "Edit Tour" }
+    meta: { title: "Edit Tour", requiredMode: "empresa" }
   },
   {
     path: "/tourists-assignment",
     name: "tour-management-tourists-assignment",
     component: TouristsAssignment,
-    meta: { title: "Tourists Assignment" }
+    meta: { title: "Tourists Assignment", requiredMode: "empresa" }
   },
   {
     path: "/monitoring",
@@ -117,6 +121,7 @@ const routes = [
     path: "/iot",
     name: "iot",
     redirect: { name: "iot-devices" },
+    meta: { requiredMode: "empresa" },
     children: iotRoutes
   },
   {
@@ -137,9 +142,23 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  console.log(`Navigating from ${from.name} to ${to.name}`);
   const baseTitle = "VitalTrek";
   document.title = `${baseTitle} - ${to.meta.title}`;
+
+  // Buscar requiredMode en toda la cadena de rutas matched (padres e hijos)
+  const requiredMode = to.matched
+    .map(record => record.meta.requiredMode)
+    .find(Boolean);
+
+  if (requiredMode) {
+    const modeStore = useAppModeStore();
+    const currentMode = modeStore.mode;
+    // Solo bloquear si el usuario YA eligió un modo y no coincide
+    if (currentMode && currentMode !== requiredMode) {
+      return next("/home");
+    }
+  }
+
   return next();
 });
 

@@ -36,6 +36,13 @@
   "sidebar": {
     "sos": "! S.O.S."
   },
+  "mode-selector": {
+    "label": "App mode",
+    "prompt": "Who are you?",
+    "mode": "Mode",
+    "trekker": "Trekker",
+    "empresa": "Agency"
+  },
   "tour-management": {
     "context": "TOUR MANAGEMENT",
     "title": "Tour management",

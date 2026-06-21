@@ -3,29 +3,42 @@ import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
 import LanguageSwitcher from "./language-switcher.vue";
+import ModeSelector from "./mode-selector.vue";
 import FooterContent from "./footer-content.vue";
 import VitalTrekLogo from "./vital-trek-logo.vue";
 import { useIncidentReport } from "../composables/use-incident-report.js";
+import { useAppModeStore } from "../../application/app-mode.store.js";
 
 const { t } = useI18n();
 const route = useRoute();
 const { reportIncident } = useIncidentReport();
+const modeStore = useAppModeStore();
 
+// modes: qué roles pueden ver este ítem ('trekker' | 'empresa')
 const items = [
-  { label: "option.home", to: "/home" },
-  { label: "option.routes", to: "/routes" },
-  { label: "option.navigation-expedition", to: "/navigation" },
-  { label: "option.iot", to: "/iot" },
-  { label: "option.tour-management", to: "/tours" },
-  { label: "option.monitoring", to: "/monitoring/signs" },
-  { label: "option.community", to: "/community" },
-  { label: "option.agencies", to: "/agencies" },
-  { label: "option.plans", to: "/plans" },
-  { label: "option.identity-access", to: "/identity" },
-  { label: "option.notifications-profile", to: "/notifications" },
-  { label: "option.my-profile", to: "/profile" },
-  { label: "option.about", to: "/about" }
+  { label: "option.home",                  to: "/home",             modes: ['trekker', 'empresa'] },
+  { label: "option.routes",                to: "/routes",           modes: ['trekker', 'empresa'] },
+  { label: "option.navigation-expedition", to: "/navigation",       modes: ['trekker', 'empresa'] },
+  { label: "option.monitoring",            to: "/monitoring/signs", modes: ['trekker', 'empresa'] },
+  { label: "option.community",             to: "/community",        modes: ['trekker', 'empresa'] },
+  { label: "option.tour-management",       to: "/tours",            modes: ['empresa'] },
+  { label: "option.iot",                   to: "/iot",              modes: ['empresa'] },
+  { label: "option.agencies",              to: "/agencies",         modes: ['empresa'] },
+  { label: "option.plans",                 to: "/plans",            modes: ['empresa'] },
+  { label: "option.identity-access",       to: "/identity",         modes: ['trekker', 'empresa'] },
+  { label: "option.notifications-profile", to: "/notifications",    modes: ['trekker', 'empresa'] },
+  { label: "option.my-profile",            to: "/profile",          modes: ['trekker', 'empresa'] },
+  { label: "option.about",                 to: "/about",            modes: ['trekker', 'empresa'] }
 ];
+
+// Sin modo seleccionado se muestran todos los ítems (estado neutral)
+const visibleItems = computed(() => {
+  if (!modeStore.mode) return items;
+  return items.filter(item => item.modes.includes(modeStore.mode));
+});
+
+// El botón SOS es exclusivo del trekker (emergencia en campo)
+const showSos = computed(() => !modeStore.mode || modeStore.mode === 'trekker');
 
 const hideShellHero = computed(() =>
   ["/home", "/routes", "/community"].includes(route.path)
@@ -80,10 +93,11 @@ const hero = computed(() => {
       </div>
 
       <language-switcher />
+      <mode-selector />
 
       <nav class="sidebar-nav">
         <router-link
-            v-for="item in items"
+            v-for="item in visibleItems"
             :key="item.label"
             :to="item.to"
             class="sidebar-link"
@@ -101,6 +115,7 @@ const hero = computed(() => {
 
       <div class="sidebar-bottom">
         <pv-button
+            v-if="showSos"
             type="button"
             :label="t('sidebar.sos')"
             severity="danger"
