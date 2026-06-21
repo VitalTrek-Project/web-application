@@ -4,11 +4,11 @@ export class ExpeditionAssembler {
     static toEntityFromResource(resource) {
         return new Expedition(
             resource.id,
-            resource.tourId,
-            resource.guideId,
+            resource.tourID ?? resource.tourId,
+            resource.guideID ?? resource.guideId,
             resource.status,
-            resource.startedAt,
-            resource.finishedAt
+            resource.startedAt ?? null,
+            resource.finishedAt ?? null
         );
     }
 

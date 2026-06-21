@@ -4,11 +4,11 @@ export class ExperienceAssembler {
     static toEntityFromResource(resource) {
         return new TouristExperience(
             resource.id,
-            resource.expeditionId,
-            resource.touristId,
+            resource.expeditionID ?? resource.expeditionId,
+            resource.touristID ?? resource.touristId,
             resource.note,
             resource.mediaUrl,
-            resource.createdAt
+            resource.createdAt ?? null
         );
     }
 

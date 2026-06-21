@@ -56,16 +56,13 @@ export class IoTApi extends BaseApi {
   }
 
   /**
-   * MockAPI does not expose actions; modelled as PUT on the device (merge with current resource).
+   * Dispatches a command to a device via PUT /devices/{deviceId}.
+   * Backend reads only { lastCommand, lastSeen } from the body.
    * @param {number|string} deviceId
-   * @param {Object} command
+   * @param {string} command
    */
-  async sendCommand(deviceId, command) {
-    const current = await this.#devicesEndpoint.getById(deviceId);
-    const resource = current.data ?? {};
-
+  sendCommand(deviceId, command) {
     return this.#devicesEndpoint.update(deviceId, {
-      ...resource,
       lastCommand: command,
       lastSeen: new Date().toISOString()
     });
