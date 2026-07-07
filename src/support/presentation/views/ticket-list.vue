@@ -3,7 +3,6 @@ import { computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
-import { useConfirm } from "primevue/useconfirm";
 import useSupportStore from "../../application/support.store.js";
 import SupportPanel from "../components/support-panel.vue";
 import { useBcSearch } from "../../../shared/presentation/composables/use-bc-search.js";
@@ -17,10 +16,9 @@ import {
 
 const { t } = useI18n();
 const router = useRouter();
-const confirm = useConfirm();
 const store = useSupportStore();
 const { tickets, errors, ticketsLoaded } = storeToRefs(store);
-const { fetchTickets, deleteTicket } = store;
+const { fetchTickets } = store;
 const { filteredItems: filteredTickets } = useBcSearch(tickets);
 
 const stats = computed(() => summarizeTicketStats(tickets.value));
@@ -29,23 +27,10 @@ const navigateToNew = () => router.push({ name: "support-ticket-new" });
 const navigateToDetail = (id) => router.push({ name: "support-ticket-detail", params: { id } });
 const navigateToEdit = (id) => router.push({ name: "support-ticket-edit", params: { id } });
 
-const confirmDelete = (ticket) => {
-  confirm.require({
-    message: t("tickets.confirm-delete", { subject: ticket.subject }),
-    header: t("tickets.delete-header"),
-    icon: "pi pi-exclamation-triangle",
-    rejectProps: {
-      label: t("ticket.cancel"),
-      severity: "secondary",
-      outlined: true
-    },
-    acceptProps: {
-      label: t("ticket.delete"),
-      severity: "danger"
-    },
-    accept: () => deleteTicket(ticket)
-  });
-};
+function userModeLabel(userMode) {
+  const key = String(userMode ?? "").toLowerCase();
+  return t(`ticket.user-modes.${key}`);
+}
 
 onMounted(() => {
   if (!ticketsLoaded.value) fetchTickets();
@@ -100,10 +85,15 @@ onMounted(() => {
             <pv-column
                 :header="t('tickets.id')"
                 field="id"
-                sortable
                 header-class="col-id"
                 body-class="col-id"
-            />
+            >
+              <template #body="slotProps">
+                <span class="support-table-cell" :title="slotProps.data.id">
+                  {{ String(slotProps.data.id).slice(0, 8) }}
+                </span>
+              </template>
+            </pv-column>
             <pv-column
                 :header="t('tickets.userMode')"
                 field="userMode"
@@ -113,7 +103,7 @@ onMounted(() => {
             >
               <template #body="slotProps">
                 <span class="support-table-cell">
-                  {{ t(`mode-selector.${slotProps.data.userMode}`) }}
+                  {{ userModeLabel(slotProps.data.userMode) }}
                 </span>
               </template>
             </pv-column>
@@ -215,15 +205,6 @@ onMounted(() => {
                       class="edit-button"
                       :aria-label="t('ticket.edit')"
                       @click.stop="navigateToEdit(slotProps.data.id)"
-                  />
-                  <pv-button
-                      type="button"
-                      icon="pi pi-trash"
-                      rounded
-                      text
-                      class="delete-button"
-                      :aria-label="t('ticket.delete')"
-                      @click.stop="confirmDelete(slotProps.data)"
                   />
                 </div>
               </template>

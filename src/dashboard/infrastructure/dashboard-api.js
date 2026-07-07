@@ -1,10 +1,10 @@
 import {BaseApi} from "../../shared/infrastructure/base-api.js";
 
 const adminSummaryPath = "/dashboard/admin/summary";
-const alertsDistributionPath = "/dashboard/admin/alerts-distribution";
-const expeditionsTimeSeriesPath = "/dashboard/admin/expeditions-timeseries";
-const alertsAttentionPath = "/dashboard/admin/alerts-attention";
-const activeExpeditionsPath = "/dashboard/admin/expeditions-active";
+const alertsDistributionPath = "/dashboard/admin/alerts/distribution";
+const expeditionsTimeSeriesPath = "/dashboard/admin/expeditions/timeseries";
+const alertsAttentionPath = "/dashboard/admin/alerts/attention";
+const activeExpeditionsPath = "/dashboard/admin/expeditions/active";
 
 /**
  * Infrastructure adapter for Dashboard HTTP endpoints.
@@ -36,6 +36,6 @@ export class DashboardApi extends BaseApi {
     }
 
     getTouristSummary(touristId) {
-        return this.http.get(`/dashboard/tourist/${touristId}/summary`);
+        return this.http.get(`/dashboard/tourists/${touristId}/summary`);
     }
 }

@@ -32,8 +32,7 @@ const useSupportStore = defineStore('support', () => {
     }
 
     function getTicketById(id) {
-        let idNum = parseInt(id);
-        return tickets.value.find(ticket => ticket["id"] === idNum);
+        return tickets.value.find(ticket => String(ticket.id) === String(id));
     }
 
     function addTicket(ticket) {
@@ -47,22 +46,17 @@ const useSupportStore = defineStore('support', () => {
         });
     }
 
-    function updateTicket(ticket) {
-        return supportApi.updateTicket(ticket).then(response => {
+    /**
+     * @param {string} ticketId
+     * @param {{status?: string, priority?: string}} patch - at least one of status/priority
+     */
+    function updateTicket(ticketId, patch) {
+        return supportApi.updateTicket(ticketId, patch).then(response => {
             const resource = response.data;
             const updatedTicket = TicketAssembler.toEntityFromResource(resource);
-            const index = tickets.value.findIndex(t => t["id"] === updatedTicket.id);
+            const index = tickets.value.findIndex(t => String(t.id) === String(updatedTicket.id));
             if (index !== -1) tickets.value[index] = updatedTicket;
             return updatedTicket;
-        }).catch(error => {
-            errors.value.push(error);
-        });
-    }
-
-    function deleteTicket(ticket) {
-        return supportApi.deleteTicket(ticket.id).then(() => {
-            const index = tickets.value.findIndex(t => t["id"] === ticket.id);
-            if (index !== -1) tickets.value.splice(index, 1);
         }).catch(error => {
             errors.value.push(error);
         });
@@ -98,7 +92,6 @@ const useSupportStore = defineStore('support', () => {
         getTicketById,
         addTicket,
         updateTicket,
-        deleteTicket,
 
         replies,
         repliesLoaded,

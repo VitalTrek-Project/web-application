@@ -11,7 +11,8 @@ import {
   formatSupportDate,
   formatTicketCategory,
   getTicketPriorityKey,
-  getTicketStatusKey
+  getTicketStatusKey,
+  mapAppModeToTicketUserMode
 } from "../utils/support-presenter.js";
 
 const { t } = useI18n();
@@ -33,15 +34,20 @@ const sortedReplies = computed(() =>
 const navigateBack = () => router.push({ name: "support-tickets" });
 const navigateToEdit = () => router.push({ name: "support-ticket-edit", params: { id: route.params.id } });
 
+function userModeLabel(userMode) {
+  const key = String(userMode ?? "").toLowerCase();
+  return t(`ticket.user-modes.${key}`);
+}
+
 const sendReply = () => {
   const message = replyMessage.value.trim();
   if (!message) return;
+  const authorMode = mapAppModeToTicketUserMode(modeStore.mode);
   const reply = new TicketReply({
     ticketId: route.params.id,
-    authorName: t(`mode-selector.${modeStore.mode || "trekker"}`),
-    authorMode: modeStore.mode || "trekker",
-    message,
-    createdAt: new Date().toISOString()
+    authorName: userModeLabel(authorMode),
+    authorMode,
+    message
   });
   addReply(reply).then(() => {
     replyMessage.value = "";
@@ -97,7 +103,7 @@ onMounted(async () => {
             {{ ticket.status }}
           </span>
           <span class="support-detail-tag">{{ formatTicketCategory(ticket.category) }}</span>
-          <span class="support-detail-tag">{{ t(`mode-selector.${ticket.userMode}`) }}</span>
+          <span class="support-detail-tag">{{ userModeLabel(ticket.userMode) }}</span>
         </div>
         <p class="support-detail-description">{{ ticket.description }}</p>
       </section>
@@ -112,7 +118,7 @@ onMounted(async () => {
           <li v-for="reply in sortedReplies" :key="reply.id" class="support-thread-item">
             <div class="support-thread-item-header">
               <strong>{{ reply.authorName }}</strong>
-              <span class="support-detail-tag">{{ t(`mode-selector.${reply.authorMode}`) }}</span>
+              <span class="support-detail-tag">{{ userModeLabel(reply.authorMode) }}</span>
               <time class="support-thread-item-date">{{ formatSupportDate(reply.createdAt) }}</time>
             </div>
             <p>{{ reply.message }}</p>

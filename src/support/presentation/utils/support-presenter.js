@@ -10,13 +10,22 @@ export function getTicketStatusKey(status) {
   const value = String(status ?? "").toLowerCase();
   if (value === "open" || value === "pending") return "active";
   if (value === "resolved" || value === "closed") return "resolved";
-  if (value === "in_progress" || value === "in-progress") return "acknowledged";
+  if (value === "in_progress" || value === "in-progress" || value === "inprogress") return "acknowledged";
   return "neutral";
 }
 
 export function formatTicketCategory(category) {
   const value = String(category ?? "");
   return value.replace(/_/g, " ");
+}
+
+/**
+ * The backend's Support bounded context uses its own actor vocabulary
+ * (Tourist/Guide/Support), separate from the app-wide trekker/empresa mode
+ * selector. This maps the app mode to a value the backend actually accepts.
+ */
+export function mapAppModeToTicketUserMode(appMode) {
+  return appMode === "empresa" ? "Guide" : "Tourist";
 }
 
 export function summarizeTicketStats(tickets) {

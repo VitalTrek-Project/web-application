@@ -34,22 +34,22 @@ export class SupportApi extends BaseApi {
         return this.#ticketsEndpoint.create(resource);
     }
 
-    updateTicket(resource) {
-        return this.#ticketsEndpoint.update(resource.id, resource);
+    /**
+     * The backend only allows changing status/priority after creation, via PATCH
+     * (not PUT — there is no full-resource replace, and no DELETE at all for tickets).
+     * @param {string} ticketId
+     * @param {{status?: string, priority?: string}} patch
+     */
+    updateTicket(ticketId, patch) {
+        return this.http.patch(`${ticketsEndpointPath}/${ticketId}`, patch);
     }
 
-    deleteTicket(id) {
-        return this.#ticketsEndpoint.delete(id);
-    }
-
+    /**
+     * ticketId is a required query parameter on the backend (GET /support-ticket-replies?ticketId=...),
+     * not a path segment, and requests without it are rejected with 400.
+     */
     getTicketReplies(ticketId) {
-        return this.#ticketRepliesEndpoint.getAll().then((response) => {
-            const records = Array.isArray(response.data) ? response.data : [];
-            return {
-                ...response,
-                data: records.filter((reply) => String(reply.ticketId) === String(ticketId))
-            };
-        });
+        return this.http.get(ticketRepliesEndpointPath, {params: {ticketId}});
     }
 
     createTicketReply(resource) {
