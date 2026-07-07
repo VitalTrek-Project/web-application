@@ -17,6 +17,8 @@ const modeStore = useAppModeStore();
 // modes: qué roles pueden ver este ítem ('trekker' | 'empresa')
 const items = [
   { label: "option.home",                  to: "/home",             modes: ['trekker', 'empresa'] },
+  { label: "option.dashboard",             to: "/dashboard",        modes: ['empresa'] },
+  { label: "option.my-expedition",         to: "/mi-expedicion",    modes: ['trekker'] },
   { label: "option.routes",                to: "/routes",           modes: ['trekker', 'empresa'] },
   { label: "option.navigation-expedition", to: "/navigation",       modes: ['trekker', 'empresa'] },
   { label: "option.monitoring",            to: "/monitoring/signs", modes: ['trekker', 'empresa'] },
@@ -80,6 +82,20 @@ const hero = computed(() => {
       eyebrow: t("support.context"),
       title: t("support.title"),
       subtitle: t("support.subtitle")
+    };
+  }
+  if (path.startsWith("/dashboard")) {
+    return {
+      eyebrow: t("dashboard.admin.context"),
+      title: t("dashboard.admin.title"),
+      subtitle: t("dashboard.admin.subtitle")
+    };
+  }
+  if (path.startsWith("/mi-expedicion")) {
+    return {
+      eyebrow: t("dashboard.tourist.context"),
+      title: t("dashboard.tourist.title"),
+      subtitle: t("dashboard.tourist.subtitle")
     };
   }
   return {

@@ -50,7 +50,8 @@ body {
 .monitoring-page,
 .navigation-page,
 .iot-page,
-.support-page {
+.support-page,
+.dashboard-page {
   width: min(1080px, 100%);
   margin: 0 auto;
   text-align: left;
@@ -275,7 +276,8 @@ body {
 .monitoring-page .p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-link):not(.delete-button),
 .tour-page .p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-link):not(.delete-button):not(.unassign-action-btn),
 .iot-page .p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-link):not(.delete-button),
-.support-page .p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-link):not(.delete-button) {
+.support-page .p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-link):not(.delete-button),
+.dashboard-page .p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-link):not(.delete-button) {
   background: #ff7a30;
   border-color: #ff7a30;
   color: #0f1419;
@@ -284,7 +286,8 @@ body {
 .monitoring-page .p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-link):not(.delete-button):hover,
 .tour-page .p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-link):not(.delete-button):not(.unassign-action-btn):hover,
 .iot-page .p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-link):not(.delete-button):hover,
-.support-page .p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-link):not(.delete-button):hover {
+.support-page .p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-link):not(.delete-button):hover,
+.dashboard-page .p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-link):not(.delete-button):hover {
   background: #ff8f4f;
   border-color: #ff8f4f;
   color: #0f1419;

@@ -11,9 +11,9 @@ import {
     Checkbox,
     Column,
     ConfirmationService,
-    ConfirmDialog, DataTable, Dialog,
+    ConfirmDialog, DataTable, DatePicker, Dialog,
     DialogService, Drawer, FileUpload, FloatLabel, IconField, InputIcon, InputNumber, InputText, Menu,
-    Rating, Row, Select, SelectButton, Tag, Textarea, Toast,
+    Rating, Row, Select, SelectButton, Skeleton, Tag, Textarea, Toast,
     ToastService, Toolbar, Tooltip
 } from "primevue";
 import i18n from "./i18n.js";
@@ -34,6 +34,7 @@ createApp(App)
     .component('pv-confirm-dialog', ConfirmDialog)
     .component('pv-checkbox', Checkbox)
     .component('pv-data-table', DataTable)
+    .component('pv-date-picker', DatePicker)
     .component('pv-dialog', Dialog)
     .component('pv-drawer', Drawer)
     .component('pv-file-upload', FileUpload)
@@ -47,6 +48,7 @@ createApp(App)
     .component('pv-row', Row)
     .component('pv-select', Select)
     .component('pv-select-button', SelectButton)
+    .component('pv-skeleton', Skeleton)
     .component('pv-tag', Tag)
     .component('pv-textarea', Textarea)
     .component('pv-toast', Toast)
