@@ -10,6 +10,7 @@ import navigationRoutes from "./navigation/presentation/navigation-routes.js";
 import iotRoutes from "./iot/presentation/iot-routes.js";
 import supportRoutes from "./support/presentation/support-routes.js";
 import dashboardRoutes from "./dashboard/presentation/dashboard-routes.js";
+import loyaltyRoutes from "./loyalty/presentation/loyalty-routes.js";
 
 const RoutesPage = () => import("./shared/presentation/views/routes-page.vue");
 const RouteDetailPage = () =>
@@ -133,6 +134,7 @@ const routes = [
     children: supportRoutes
   },
   ...dashboardRoutes,
+  ...loyaltyRoutes,
   {
     path: "/",
     redirect: "/home"
