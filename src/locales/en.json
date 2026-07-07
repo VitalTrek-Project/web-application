@@ -667,6 +667,11 @@
     "no-replies": "No messages yet. Start the conversation below.",
     "reply-placeholder": "Write a reply...",
     "reply-send": "Send reply",
+    "user-modes": {
+      "tourist": "Trekker",
+      "guide": "Agency",
+      "support": "Support team"
+    },
     "categories": {
       "general": "General inquiry",
       "technical": "Technical issue",
