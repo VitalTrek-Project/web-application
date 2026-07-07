@@ -100,7 +100,11 @@ export class MonitoringApi extends BaseApi {
         return this.#alertsEndpoint.delete(id);
     }
 
-    
+    acknowledgeAlert(alertId, userId) {
+        return this.http.put(`${alertsEndpointPath}/${alertId}/acknowledge`, null, {params: {userId}});
+    }
+
+
     
     getIncidents() {
         return this.#incidentsEndpoint.getAll();

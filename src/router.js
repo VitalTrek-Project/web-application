@@ -9,6 +9,7 @@ import monitoringRoutes from "./monitoring/presentation/monitoring-routes.js";
 import navigationRoutes from "./navigation/presentation/navigation-routes.js";
 import iotRoutes from "./iot/presentation/iot-routes.js";
 import supportRoutes from "./support/presentation/support-routes.js";
+import dashboardRoutes from "./dashboard/presentation/dashboard-routes.js";
 
 const RoutesPage = () => import("./shared/presentation/views/routes-page.vue");
 const RouteDetailPage = () =>
@@ -131,6 +132,7 @@ const routes = [
     redirect: { name: "support-tickets" },
     children: supportRoutes
   },
+  ...dashboardRoutes,
   {
     path: "/",
     redirect: "/home"

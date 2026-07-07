@@ -225,6 +225,18 @@ const useMonitoringStore = defineStore('monitoring', () => {
         });
     }
 
+    function acknowledgeAlert(alertId, userId) {
+        return monitoringApi.acknowledgeAlert(alertId, userId).then(response => {
+            const resource = response.data;
+            const updatedAlert = AlertAssembler.toEntityFromResource(resource);
+            const index = alerts.value.findIndex(t => t["id"] === updatedAlert.id);
+            if (index !== -1) alerts.value[index] = updatedAlert;
+            return updatedAlert;
+        }).catch(error => {
+            errors.value.push(error);
+        });
+    }
+
 
     return {
         signs,
@@ -249,6 +261,7 @@ const useMonitoringStore = defineStore('monitoring', () => {
         updateAlert,
         deleteAlert,
         getAlertById,
+        acknowledgeAlert,
         alertsLoaded,
         alerts,
         alertsCount,
