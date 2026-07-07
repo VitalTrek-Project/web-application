@@ -17,7 +17,9 @@
     "notifications-profile": "Notifications & profile",
     "my-profile": "My profile",
     "monitoring": "Monitoring",
-    "support": "Support"
+    "support": "Support",
+    "dashboard": "Dashboard",
+    "my-expedition": "My expedition"
   },
   "app-shell": {
     "context": "VITALTREK",
@@ -551,6 +553,70 @@
     "save": "Save",
     "cancel": "Cancel",
     "delete": "Delete"
+  },
+  "date-range": {
+    "today": "Today",
+    "7d": "7 days",
+    "30d": "30 days",
+    "custom": "Custom",
+    "from": "From",
+    "to": "To"
+  },
+  "dashboard": {
+    "retry": "Retry",
+    "empty-generic": "No data for this period yet.",
+    "empty-expeditions": "No expeditions were created in this period.",
+    "empty-alerts": "No alerts were raised in this period.",
+    "admin": {
+      "context": "DASHBOARD",
+      "title": "Dashboard",
+      "subtitle": "Expeditions, alerts and agency activity at a glance.",
+      "kpi": {
+        "expeditions-active": "Active expeditions",
+        "expeditions-completed": "Completed expeditions",
+        "alerts-open": "Open alerts",
+        "tourists-active": "Active tourists",
+        "staff-assigned": "Staff assigned"
+      },
+      "charts": {
+        "expeditions-timeseries": "Expeditions per week",
+        "alerts-by-severity": "Alerts by severity",
+        "alerts-by-type": "Alerts by type"
+      },
+      "attention": {
+        "title": "Requires attention",
+        "subtitle": "Unacknowledged alerts, ordered by severity and age.",
+        "empty": "No alerts require attention right now.",
+        "tourist": "Tourist #{id}",
+        "acknowledge": "Acknowledge"
+      },
+      "expeditions": {
+        "title": "Expeditions in progress",
+        "name": "Expedition",
+        "status": "Status",
+        "tourists": "Tourists",
+        "empty": "No expeditions in progress right now."
+      }
+    },
+    "tourist": {
+      "context": "MY EXPEDITION",
+      "title": "My expedition",
+      "subtitle": "Your current expedition, alerts and past trips.",
+      "id-prompt": "Enter your tourist ID to see your dashboard. Sign-in isn't available yet.",
+      "id-label": "Tourist ID",
+      "id-confirm": "Continue",
+      "change-id": "Not #{id}? Change",
+      "current-expedition": "Current expedition",
+      "no-active-expedition": "You don't have an active expedition right now.",
+      "guide": "Guide #{id}",
+      "view-itinerary": "View map & itinerary",
+      "active-alerts": "Active alerts",
+      "no-active-alerts": "No active alerts.",
+      "alert-history": "Alert history",
+      "no-historical-alerts": "No past alerts.",
+      "past-expeditions": "Past expeditions",
+      "no-past-expeditions": "No past expeditions yet."
+    }
   },
   "support": {
     "context": "SUPPORT",

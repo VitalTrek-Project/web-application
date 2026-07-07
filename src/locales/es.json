@@ -17,7 +17,9 @@
     "notifications-profile": "Notificaciones y perfil",
     "my-profile": "Mi perfil",
     "monitoring": "Monitoreo",
-    "support": "Soporte"
+    "support": "Soporte",
+    "dashboard": "Dashboard",
+    "my-expedition": "Mi expedición"
   },
   "app-shell": {
     "context": "VITALTREK",
@@ -550,6 +552,70 @@
     "save": "Guardar",
     "cancel": "Cancelar",
     "delete": "Eliminar"
+  },
+  "date-range": {
+    "today": "Hoy",
+    "7d": "7 días",
+    "30d": "30 días",
+    "custom": "Personalizado",
+    "from": "Desde",
+    "to": "Hasta"
+  },
+  "dashboard": {
+    "retry": "Reintentar",
+    "empty-generic": "Aún no hay datos para este período.",
+    "empty-expeditions": "No se crearon expediciones en este período.",
+    "empty-alerts": "No se generaron alertas en este período.",
+    "admin": {
+      "context": "DASHBOARD",
+      "title": "Dashboard",
+      "subtitle": "Expediciones, alertas y actividad de la agencia de un vistazo.",
+      "kpi": {
+        "expeditions-active": "Expediciones activas",
+        "expeditions-completed": "Expediciones completadas",
+        "alerts-open": "Alertas abiertas",
+        "tourists-active": "Turistas activos",
+        "staff-assigned": "Personal asignado"
+      },
+      "charts": {
+        "expeditions-timeseries": "Expediciones por semana",
+        "alerts-by-severity": "Alertas por severidad",
+        "alerts-by-type": "Alertas por tipo"
+      },
+      "attention": {
+        "title": "Requiere atención",
+        "subtitle": "Alertas sin reconocer, ordenadas por severidad y antigüedad.",
+        "empty": "No hay alertas que requieran atención en este momento.",
+        "tourist": "Turista #{id}",
+        "acknowledge": "Reconocer"
+      },
+      "expeditions": {
+        "title": "Expediciones en curso",
+        "name": "Expedición",
+        "status": "Estado",
+        "tourists": "Turistas",
+        "empty": "No hay expediciones en curso en este momento."
+      }
+    },
+    "tourist": {
+      "context": "MI EXPEDICIÓN",
+      "title": "Mi expedición",
+      "subtitle": "Tu expedición actual, alertas y viajes anteriores.",
+      "id-prompt": "Ingresa tu ID de turista para ver tu panel. El inicio de sesión aún no está disponible.",
+      "id-label": "ID de turista",
+      "id-confirm": "Continuar",
+      "change-id": "¿No eres #{id}? Cambiar",
+      "current-expedition": "Expedición actual",
+      "no-active-expedition": "No tienes una expedición activa en este momento.",
+      "guide": "Guía #{id}",
+      "view-itinerary": "Ver mapa e itinerario",
+      "active-alerts": "Alertas activas",
+      "no-active-alerts": "Sin alertas activas.",
+      "alert-history": "Historial de alertas",
+      "no-historical-alerts": "Sin alertas anteriores.",
+      "past-expeditions": "Expediciones anteriores",
+      "no-past-expeditions": "Aún no hay expediciones anteriores."
+    }
   },
   "support": {
     "context": "SOPORTE",
