@@ -19,7 +19,9 @@
     "monitoring": "Monitoring",
     "support": "Support",
     "dashboard": "Dashboard",
-    "my-expedition": "My expedition"
+    "my-expedition": "My expedition",
+    "loyalty": "Loyalty",
+    "loyalty-admin": "Loyalty program"
   },
   "app-shell": {
     "context": "VITALTREK",
@@ -596,6 +598,12 @@
         "status": "Status",
         "tourists": "Tourists",
         "empty": "No expeditions in progress right now."
+      },
+      "loyalty": {
+        "title": "Loyalty",
+        "points-issued": "Points issued",
+        "points-redeemed": "Points redeemed",
+        "enrolled-tourists": "Enrolled tourists"
       }
     },
     "tourist": {
@@ -616,6 +624,121 @@
       "no-historical-alerts": "No past alerts.",
       "past-expeditions": "Past expeditions",
       "no-past-expeditions": "No past expeditions yet."
+    }
+  },
+  "loyalty": {
+    "context": "LOYALTY",
+    "title": "Loyalty",
+    "subtitle": "Earn points, unlock badges and redeem rewards.",
+    "adminTitle": "Loyalty program",
+    "adminSubtitle": "Configure your program, rewards and redemptions.",
+    "tabs": {
+      "points": "My points",
+      "rewards": "Rewards",
+      "collectibles": "Badges & redemptions",
+      "referral": "Referral",
+      "settings": "Settings",
+      "redemptions": "Redemptions"
+    },
+    "points": {
+      "title": "My points",
+      "subtitle": "Your balance, tier progress and history.",
+      "balance": "points",
+      "no-tier": "No tier yet",
+      "points-to-next": "{points} points to {tier}",
+      "history": "History",
+      "no-history": "No movements yet."
+    },
+    "rewards": {
+      "title": "Rewards",
+      "subtitle": "You have {points} points to spend.",
+      "empty": "No rewards available right now.",
+      "cost": "{points} pts",
+      "redeem": "Redeem",
+      "insufficient": "Not enough points yet.",
+      "redeemed-summary": "Reward redeemed!",
+      "redeemed-detail": "Your code is {code}. Show it to the agency to claim it.",
+      "redeem-error": "Could not redeem this reward."
+    },
+    "collectibles": {
+      "title": "Badges & redemptions",
+      "subtitle": "What you've unlocked and claimed so far.",
+      "badges": "Badges",
+      "no-badges": "No badges yet — complete an expedition to earn your first one.",
+      "redemptions": "My redemptions",
+      "no-redemptions": "No redemptions yet.",
+      "unknown-reward": "Reward"
+    },
+    "referral": {
+      "title": "Referral",
+      "subtitle": "Invite a friend — you both win when they finish their first expedition.",
+      "your-code": "Your referral code",
+      "copy": "Copy",
+      "copied": "Code copied!",
+      "have-code": "Have a friend's code?",
+      "friend-code-label": "Referral code",
+      "redeem": "Redeem code",
+      "redeem-success": "Code redeemed! Your friend will earn points once you complete your first expedition.",
+      "redeem-error": "Could not redeem this code."
+    },
+    "settings": {
+      "title": "Loyalty settings",
+      "subtitle": "Points per action, expiration policy and tiers.",
+      "program": "Program configuration",
+      "points-completed": "Points per completed expedition",
+      "points-booked": "Points per booked expedition",
+      "points-referral": "Points per referral",
+      "points-review": "Points per review",
+      "expiration": "Points expiration",
+      "expiration-never": "Never",
+      "expiration-12": "12 months",
+      "expiration-24": "24 months",
+      "save": "Save",
+      "saved": "Program updated",
+      "tiers": "Tiers",
+      "add-tier": "Add tier",
+      "edit-tier": "Edit tier",
+      "tier-name": "Name",
+      "tier-min-points": "Min. points",
+      "tier-benefits": "Benefits",
+      "confirm-delete-tier": "Delete tier \"{name}\"?",
+      "delete-tier-header": "Delete tier"
+    },
+    "rewardsManager": {
+      "title": "Rewards",
+      "subtitle": "Manage your redeemable rewards catalog.",
+      "new": "New reward",
+      "edit": "Edit reward",
+      "name": "Name",
+      "description": "Description",
+      "cost": "Cost",
+      "stock": "Stock",
+      "stock-optional": "Stock (optional, blank = unlimited)",
+      "unlimited": "Unlimited",
+      "status": "Status",
+      "active": "Active",
+      "inactive": "Inactive",
+      "confirm-deactivate": "Deactivate \"{name}\"?",
+      "deactivate-header": "Deactivate reward",
+      "deactivate": "Deactivate"
+    },
+    "redemptionsManager": {
+      "title": "Redemptions",
+      "subtitle": "Look up a code and mark it as delivered.",
+      "code-placeholder": "Enter redemption code",
+      "search": "Search",
+      "not-found": "No redemption matches this code.",
+      "code": "Code",
+      "points-spent": "Points spent",
+      "created-at": "Created",
+      "status": "Status",
+      "mark-used": "Mark as used",
+      "marked-used": "Redemption marked as used",
+      "mark-error": "Could not update this redemption."
+    },
+    "notifications": {
+      "title": "Notifications",
+      "empty": "No notifications yet."
     }
   },
   "support": {

@@ -19,7 +19,9 @@
     "monitoring": "Monitoreo",
     "support": "Soporte",
     "dashboard": "Dashboard",
-    "my-expedition": "Mi expedición"
+    "my-expedition": "Mi expedición",
+    "loyalty": "Fidelización",
+    "loyalty-admin": "Programa de fidelización"
   },
   "app-shell": {
     "context": "VITALTREK",
@@ -595,6 +597,12 @@
         "status": "Estado",
         "tourists": "Turistas",
         "empty": "No hay expediciones en curso en este momento."
+      },
+      "loyalty": {
+        "title": "Fidelización",
+        "points-issued": "Puntos emitidos",
+        "points-redeemed": "Puntos canjeados",
+        "enrolled-tourists": "Turistas inscritos"
       }
     },
     "tourist": {
@@ -615,6 +623,121 @@
       "no-historical-alerts": "Sin alertas anteriores.",
       "past-expeditions": "Expediciones anteriores",
       "no-past-expeditions": "Aún no hay expediciones anteriores."
+    }
+  },
+  "loyalty": {
+    "context": "FIDELIZACIÓN",
+    "title": "Fidelización",
+    "subtitle": "Gana puntos, desbloquea badges y canjea recompensas.",
+    "adminTitle": "Programa de fidelización",
+    "adminSubtitle": "Configura tu programa, recompensas y canjes.",
+    "tabs": {
+      "points": "Mis puntos",
+      "rewards": "Recompensas",
+      "collectibles": "Badges y canjes",
+      "referral": "Referidos",
+      "settings": "Configuración",
+      "redemptions": "Canjes"
+    },
+    "points": {
+      "title": "Mis puntos",
+      "subtitle": "Tu balance, progreso de nivel e historial.",
+      "balance": "puntos",
+      "no-tier": "Aún sin nivel",
+      "points-to-next": "{points} puntos para {tier}",
+      "history": "Historial",
+      "no-history": "Aún no hay movimientos."
+    },
+    "rewards": {
+      "title": "Recompensas",
+      "subtitle": "Tienes {points} puntos para gastar.",
+      "empty": "No hay recompensas disponibles en este momento.",
+      "cost": "{points} pts",
+      "redeem": "Canjear",
+      "insufficient": "Aún no tienes suficientes puntos.",
+      "redeemed-summary": "¡Recompensa canjeada!",
+      "redeemed-detail": "Tu código es {code}. Muéstralo en la agencia para reclamarlo.",
+      "redeem-error": "No se pudo canjear esta recompensa."
+    },
+    "collectibles": {
+      "title": "Badges y canjes",
+      "subtitle": "Lo que has desbloqueado y reclamado hasta ahora.",
+      "badges": "Badges",
+      "no-badges": "Aún no tienes badges — completa una expedición para ganar el primero.",
+      "redemptions": "Mis canjes",
+      "no-redemptions": "Aún no hay canjes.",
+      "unknown-reward": "Recompensa"
+    },
+    "referral": {
+      "title": "Referidos",
+      "subtitle": "Invita a un amigo — ambos ganan cuando complete su primera expedición.",
+      "your-code": "Tu código de referido",
+      "copy": "Copiar",
+      "copied": "¡Código copiado!",
+      "have-code": "¿Tienes el código de un amigo?",
+      "friend-code-label": "Código de referido",
+      "redeem": "Canjear código",
+      "redeem-success": "¡Código canjeado! Tu amigo ganará puntos cuando completes tu primera expedición.",
+      "redeem-error": "No se pudo canjear este código."
+    },
+    "settings": {
+      "title": "Configuración de fidelización",
+      "subtitle": "Puntos por acción, política de expiración y niveles.",
+      "program": "Configuración del programa",
+      "points-completed": "Puntos por expedición completada",
+      "points-booked": "Puntos por expedición reservada",
+      "points-referral": "Puntos por referido",
+      "points-review": "Puntos por reseña",
+      "expiration": "Expiración de puntos",
+      "expiration-never": "Nunca",
+      "expiration-12": "12 meses",
+      "expiration-24": "24 meses",
+      "save": "Guardar",
+      "saved": "Programa actualizado",
+      "tiers": "Niveles",
+      "add-tier": "Agregar nivel",
+      "edit-tier": "Editar nivel",
+      "tier-name": "Nombre",
+      "tier-min-points": "Puntos mínimos",
+      "tier-benefits": "Beneficios",
+      "confirm-delete-tier": "¿Eliminar el nivel \"{name}\"?",
+      "delete-tier-header": "Eliminar nivel"
+    },
+    "rewardsManager": {
+      "title": "Recompensas",
+      "subtitle": "Administra tu catálogo de recompensas canjeables.",
+      "new": "Nueva recompensa",
+      "edit": "Editar recompensa",
+      "name": "Nombre",
+      "description": "Descripción",
+      "cost": "Costo",
+      "stock": "Stock",
+      "stock-optional": "Stock (opcional, vacío = ilimitado)",
+      "unlimited": "Ilimitado",
+      "status": "Estado",
+      "active": "Activa",
+      "inactive": "Inactiva",
+      "confirm-deactivate": "¿Desactivar \"{name}\"?",
+      "deactivate-header": "Desactivar recompensa",
+      "deactivate": "Desactivar"
+    },
+    "redemptionsManager": {
+      "title": "Canjes",
+      "subtitle": "Busca un código y márcalo como entregado.",
+      "code-placeholder": "Ingresa el código de canje",
+      "search": "Buscar",
+      "not-found": "Ningún canje coincide con este código.",
+      "code": "Código",
+      "points-spent": "Puntos gastados",
+      "created-at": "Creado",
+      "status": "Estado",
+      "mark-used": "Marcar como usado",
+      "marked-used": "Canje marcado como usado",
+      "mark-error": "No se pudo actualizar este canje."
+    },
+    "notifications": {
+      "title": "Notificaciones",
+      "empty": "Aún no hay notificaciones."
     }
   },
   "support": {
