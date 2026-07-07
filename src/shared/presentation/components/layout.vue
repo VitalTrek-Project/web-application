@@ -8,6 +8,7 @@ import FooterContent from "./footer-content.vue";
 import VitalTrekLogo from "./vital-trek-logo.vue";
 import { useIncidentReport } from "../composables/use-incident-report.js";
 import { useAppModeStore } from "../../application/app-mode.store.js";
+import NotificationBell from "../../../loyalty/presentation/components/notification-bell.vue";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -19,6 +20,8 @@ const items = [
   { label: "option.home",                  to: "/home",             modes: ['trekker', 'empresa'] },
   { label: "option.dashboard",             to: "/dashboard",        modes: ['empresa'] },
   { label: "option.my-expedition",         to: "/mi-expedicion",    modes: ['trekker'] },
+  { label: "option.loyalty",               to: "/loyalty/points",   modes: ['trekker'] },
+  { label: "option.loyalty-admin",         to: "/loyalty-admin/settings", modes: ['empresa'] },
   { label: "option.routes",                to: "/routes",           modes: ['trekker', 'empresa'] },
   { label: "option.navigation-expedition", to: "/navigation",       modes: ['trekker', 'empresa'] },
   { label: "option.monitoring",            to: "/monitoring/signs", modes: ['trekker', 'empresa'] },
@@ -42,6 +45,9 @@ const visibleItems = computed(() => {
 
 // El botón SOS es exclusivo del trekker (emergencia en campo)
 const showSos = computed(() => !modeStore.mode || modeStore.mode === 'trekker');
+
+// Las notificaciones hoy solo las genera Loyalty (eventos del turista)
+const showNotificationBell = computed(() => !modeStore.mode || modeStore.mode === 'trekker');
 
 const hideShellHero = computed(() =>
   ["/home", "/routes", "/community"].includes(route.path)
@@ -98,6 +104,20 @@ const hero = computed(() => {
       subtitle: t("dashboard.tourist.subtitle")
     };
   }
+  if (path.startsWith("/loyalty-admin")) {
+    return {
+      eyebrow: t("loyalty.context"),
+      title: t("loyalty.adminTitle"),
+      subtitle: t("loyalty.adminSubtitle")
+    };
+  }
+  if (path.startsWith("/loyalty")) {
+    return {
+      eyebrow: t("loyalty.context"),
+      title: t("loyalty.title"),
+      subtitle: t("loyalty.subtitle")
+    };
+  }
   return {
     eyebrow: t("app-shell.context"),
     title: t("app-shell.title"),
@@ -131,7 +151,9 @@ const hero = computed(() => {
                 (item.to === '/monitoring/signs' && route.path.startsWith('/monitoring')) ||
                 (item.to === '/navigation' && route.path.startsWith('/navigation')) ||
                 (item.to === '/iot' && route.path.startsWith('/iot')) ||
-                (item.to === '/support/tickets' && route.path.startsWith('/support'))
+                (item.to === '/support/tickets' && route.path.startsWith('/support')) ||
+                (item.to === '/loyalty/points' && route.path.startsWith('/loyalty/')) ||
+                (item.to === '/loyalty-admin/settings' && route.path.startsWith('/loyalty-admin'))
             }"
         >
           {{ t(item.label) }}
@@ -148,6 +170,8 @@ const hero = computed(() => {
             class="sos-button"
             @click="reportIncident({ source: 'sidebar-sos' })"
         />
+
+        <NotificationBell v-if="showNotificationBell" />
 
         <div class="user-avatar" :aria-label="t('option.my-profile')">
           <i class="pi pi-user" aria-hidden="true" />

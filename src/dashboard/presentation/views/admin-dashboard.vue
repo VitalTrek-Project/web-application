@@ -4,6 +4,8 @@ import { useI18n } from "vue-i18n";
 import { storeToRefs } from "pinia";
 import useDashboardStore from "../../application/dashboard.store.js";
 import useMonitoringStore from "../../../monitoring/application/monitoring.store.js";
+import useLoyaltyStore from "../../../loyalty/application/loyalty.store.js";
+import { getLocalAgencyId } from "../../../shared/infrastructure/local-identity.js";
 import KpiCard from "../../../shared/presentation/components/kpi-card.vue";
 import ChartCard from "../../../shared/presentation/components/chart-card.vue";
 import LineChart from "../../../shared/presentation/components/line-chart.vue";
@@ -21,6 +23,9 @@ import {
 const { t } = useI18n();
 const store = useDashboardStore();
 const monitoringStore = useMonitoringStore();
+const loyaltyStore = useLoyaltyStore();
+const { metrics: loyaltyMetrics, metricsLoading: loyaltyMetricsLoading } = storeToRefs(loyaltyStore);
+const loyaltyAgencyId = getLocalAgencyId();
 
 const {
   dateRange,
@@ -51,6 +56,7 @@ function loadAll() {
   fetchExpeditionsTimeSeries("week");
   fetchAlertsRequiringAttention();
   fetchActiveExpeditions();
+  loyaltyStore.fetchMetrics(loyaltyAgencyId);
 }
 
 onMounted(loadAll);
@@ -246,6 +252,35 @@ const typeData = computed(() => Object.values(alertsDistribution.value?.byType ?
         </pv-data-table>
       </div>
     </section>
+
+    <section class="monitoring-info-card admin-dashboard__loyalty">
+      <h2>{{ t("dashboard.admin.loyalty.title") }}</h2>
+      <div class="admin-dashboard__kpis admin-dashboard__kpis--loyalty">
+        <KpiCard
+            variant="teal"
+            :label="t('dashboard.admin.loyalty.points-issued')"
+            :value="loyaltyMetrics?.pointsIssued ?? 0"
+            :loading="loyaltyMetricsLoading"
+        />
+        <KpiCard
+            :label="t('dashboard.admin.loyalty.points-redeemed')"
+            :value="loyaltyMetrics?.pointsRedeemed ?? 0"
+            :loading="loyaltyMetricsLoading"
+        />
+        <KpiCard
+            variant="muted"
+            :label="t('dashboard.admin.loyalty.enrolled-tourists')"
+            :value="loyaltyMetrics?.enrolledTourists ?? 0"
+            :loading="loyaltyMetricsLoading"
+        />
+      </div>
+
+      <div v-if="loyaltyMetrics?.touristsPerTier?.length" class="admin-dashboard__tier-distribution">
+        <span v-for="tier in loyaltyMetrics.touristsPerTier" :key="tier.tierName" class="admin-dashboard__tier-chip">
+          {{ tier.tierName }}: {{ tier.touristCount }}
+        </span>
+      </div>
+    </section>
   </section>
 </template>
 
@@ -375,6 +410,35 @@ const typeData = computed(() => Object.values(alertsDistribution.value?.byType ?
 
 .admin-dashboard__expeditions h2 {
   margin-bottom: 14px;
+}
+
+.admin-dashboard__loyalty h2 {
+  margin: 0 0 14px;
+  color: #ffffff;
+  font-family: var(--heading);
+  font-size: 1.1rem;
+}
+
+.admin-dashboard__kpis--loyalty {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-bottom: 0;
+}
+
+.admin-dashboard__tier-distribution {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.admin-dashboard__tier-chip {
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.12);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  color: #cbd5e1;
+  font-size: 0.72rem;
+  font-weight: 700;
 }
 
 @media (max-width: 1100px) {
