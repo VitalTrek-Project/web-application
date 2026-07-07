@@ -16,7 +16,8 @@
     "identity-access": "Identity & access",
     "notifications-profile": "Notifications & profile",
     "my-profile": "My profile",
-    "monitoring": "Monitoring"
+    "monitoring": "Monitoring",
+    "support": "Support"
   },
   "app-shell": {
     "context": "VITALTREK",
@@ -550,6 +551,76 @@
     "save": "Save",
     "cancel": "Cancel",
     "delete": "Delete"
+  },
+  "support": {
+    "context": "SUPPORT",
+    "title": "Support",
+    "subtitle": "Help for tourists and tourism agency administrators.",
+    "tabs": {
+      "tickets": "My tickets",
+      "new-ticket": "New ticket"
+    }
+  },
+  "tickets": {
+    "title": "Support tickets",
+    "subtitle": "Requests raised by trekkers and agency administrators.",
+    "stats-total": "Total",
+    "stats-open": "Open",
+    "stats-urgent": "Urgent",
+    "id": "ID",
+    "userMode": "Raised by",
+    "subject": "Subject",
+    "category": "Category",
+    "priority": "Priority",
+    "status": "Status",
+    "updatedAt": "Updated",
+    "actions": "Actions",
+    "new": "New ticket",
+    "confirm-delete": "Are you sure you want to delete the ticket \"{subject}\"?",
+    "delete-header": "Delete ticket"
+  },
+  "ticket": {
+    "new-title": "Create support ticket",
+    "edit-title": "Edit support ticket",
+    "userMode": "I am a",
+    "fullName": "Full name",
+    "email": "Email",
+    "subject": "Subject",
+    "category": "Category",
+    "priority": "Priority",
+    "status": "Status",
+    "description": "Description",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "view": "View ticket",
+    "edit": "Edit ticket",
+    "back": "Back to tickets",
+    "requested-by": "Requested by {name}",
+    "conversation": "Conversation",
+    "no-replies": "No messages yet. Start the conversation below.",
+    "reply-placeholder": "Write a reply...",
+    "reply-send": "Send reply",
+    "categories": {
+      "general": "General inquiry",
+      "technical": "Technical issue",
+      "billing": "Billing",
+      "tour": "Tour or booking",
+      "account": "Account",
+      "other": "Other"
+    },
+    "priorities": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "urgent": "Urgent"
+    },
+    "statuses": {
+      "open": "Open",
+      "in_progress": "In progress",
+      "resolved": "Resolved",
+      "closed": "Closed"
+    }
   },
   "incident": {
     "report": "Report incident",

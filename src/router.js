@@ -8,6 +8,7 @@ import TouristsAssignment from "./tour-management/presentation/views/tourists-as
 import monitoringRoutes from "./monitoring/presentation/monitoring-routes.js";
 import navigationRoutes from "./navigation/presentation/navigation-routes.js";
 import iotRoutes from "./iot/presentation/iot-routes.js";
+import supportRoutes from "./support/presentation/support-routes.js";
 
 const RoutesPage = () => import("./shared/presentation/views/routes-page.vue");
 const RouteDetailPage = () =>
@@ -123,6 +124,12 @@ const routes = [
     redirect: { name: "iot-devices" },
     meta: { requiredMode: "empresa" },
     children: iotRoutes
+  },
+  {
+    path: "/support",
+    name: "support",
+    redirect: { name: "support-tickets" },
+    children: supportRoutes
   },
   {
     path: "/",

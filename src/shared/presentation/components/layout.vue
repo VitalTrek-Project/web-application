@@ -28,6 +28,7 @@ const items = [
   { label: "option.identity-access",       to: "/identity",         modes: ['trekker', 'empresa'] },
   { label: "option.notifications-profile", to: "/notifications",    modes: ['trekker', 'empresa'] },
   { label: "option.my-profile",            to: "/profile",          modes: ['trekker', 'empresa'] },
+  { label: "option.support",               to: "/support/tickets",  modes: ['trekker', 'empresa'] },
   { label: "option.about",                 to: "/about",            modes: ['trekker', 'empresa'] }
 ];
 
@@ -74,6 +75,13 @@ const hero = computed(() => {
       subtitle: t("tour-management.subtitle")
     };
   }
+  if (path.startsWith("/support")) {
+    return {
+      eyebrow: t("support.context"),
+      title: t("support.title"),
+      subtitle: t("support.subtitle")
+    };
+  }
   return {
     eyebrow: t("app-shell.context"),
     title: t("app-shell.title"),
@@ -106,7 +114,8 @@ const hero = computed(() => {
               'sidebar-link-active':
                 (item.to === '/monitoring/signs' && route.path.startsWith('/monitoring')) ||
                 (item.to === '/navigation' && route.path.startsWith('/navigation')) ||
-                (item.to === '/iot' && route.path.startsWith('/iot'))
+                (item.to === '/iot' && route.path.startsWith('/iot')) ||
+                (item.to === '/support/tickets' && route.path.startsWith('/support'))
             }"
         >
           {{ t(item.label) }}

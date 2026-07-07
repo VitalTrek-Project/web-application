@@ -49,7 +49,8 @@ body {
 .tour-page,
 .monitoring-page,
 .navigation-page,
-.iot-page {
+.iot-page,
+.support-page {
   width: min(1080px, 100%);
   margin: 0 auto;
   text-align: left;
@@ -58,7 +59,8 @@ body {
 .tour-panel,
 .monitoring-panel,
 .navigation-panel,
-.iot-panel {
+.iot-panel,
+.support-panel {
   background: #121a26;
   border: 1px solid rgba(148, 163, 184, 0.1);
   border-radius: 20px;
@@ -71,7 +73,8 @@ body {
 .tour-tabs,
 .monitoring-tabs,
 .navigation-tabs,
-.iot-tabs {
+.iot-tabs,
+.support-tabs {
   display: flex;
   align-items: stretch;
   gap: 0;
@@ -84,7 +87,8 @@ body {
 .tour-tab,
 .monitoring-tab,
 .navigation-tab,
-.iot-tab {
+.iot-tab,
+.support-tab {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -104,7 +108,8 @@ body {
 .tour-tab:hover,
 .monitoring-tab:hover,
 .navigation-tab:hover,
-.iot-tab:hover {
+.iot-tab:hover,
+.support-tab:hover {
   color: #c8d4e4;
   background: rgba(255, 255, 255, 0.03);
 }
@@ -112,7 +117,8 @@ body {
 .tour-tab-active,
 .monitoring-tab-active,
 .navigation-tab-active,
-.iot-tab-active {
+.iot-tab-active,
+.support-tab-active {
   color: #ffffff;
   font-weight: 700;
   background: rgba(255, 122, 48, 0.06);
@@ -121,7 +127,8 @@ body {
 .tour-tab-active::before,
 .monitoring-tab-active::before,
 .navigation-tab-active::before,
-.iot-tab-active::before {
+.iot-tab-active::before,
+.support-tab-active::before {
   content: "";
   position: absolute;
   top: 0;
@@ -135,7 +142,8 @@ body {
 .tour-tab-active::after,
 .monitoring-tab-active::after,
 .navigation-tab-active::after,
-.iot-tab-active::after {
+.iot-tab-active::after,
+.support-tab-active::after {
   content: "";
   position: absolute;
   left: 20px;
@@ -195,7 +203,8 @@ body {
 .tour-card,
 .monitoring-card,
 .navigation-card,
-.iot-card {
+.iot-card,
+.support-card {
   background: transparent;
   border: none;
   border-radius: 0;
@@ -205,7 +214,8 @@ body {
 
 .tour-card-header,
 .monitoring-card-header,
-.navigation-card-header {
+.navigation-card-header,
+.support-card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -216,7 +226,8 @@ body {
 
 .tour-card-header h2,
 .monitoring-card-header h2,
-.navigation-card-header h2 {
+.navigation-card-header h2,
+.support-card-header h2 {
   color: #ffffff;
   font-family: var(--heading);
   font-size: 1.45rem;
@@ -236,7 +247,8 @@ body {
 .tour-primary-button,
 .monitoring-primary-button,
 .navigation-primary-button,
-.iot-primary-button {
+.iot-primary-button,
+.support-primary-button {
   background: #ff7a30;
   border: none;
   color: #0f1419;
@@ -251,7 +263,8 @@ body {
 .tour-primary-button:hover,
 .monitoring-primary-button:hover,
 .navigation-primary-button:hover,
-.iot-primary-button:hover {
+.iot-primary-button:hover,
+.support-primary-button:hover {
   background: #ff8f4f;
   border: none;
   color: #0f1419;
@@ -261,7 +274,8 @@ body {
 /* PrimeVue buttons in bounded contexts — orange palette */
 .monitoring-page .p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-link):not(.delete-button),
 .tour-page .p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-link):not(.delete-button):not(.unassign-action-btn),
-.iot-page .p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-link):not(.delete-button) {
+.iot-page .p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-link):not(.delete-button),
+.support-page .p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-link):not(.delete-button) {
   background: #ff7a30;
   border-color: #ff7a30;
   color: #0f1419;
@@ -269,7 +283,8 @@ body {
 
 .monitoring-page .p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-link):not(.delete-button):hover,
 .tour-page .p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-link):not(.delete-button):not(.unassign-action-btn):hover,
-.iot-page .p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-link):not(.delete-button):hover {
+.iot-page .p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-link):not(.delete-button):hover,
+.support-page .p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-link):not(.delete-button):hover {
   background: #ff8f4f;
   border-color: #ff8f4f;
   color: #0f1419;
@@ -294,7 +309,8 @@ body {
 
 .bc-error,
 .tour-error,
-.monitoring-error {
+.monitoring-error,
+.support-error {
   margin-top: 16px;
   color: #fecaca;
   font-size: 0.8rem;
@@ -346,7 +362,8 @@ body {
 
 .tour-table-mock .p-datatable-thead > tr > th,
 .monitoring-table-mock .p-datatable-thead > tr > th,
-.iot-table-mock .p-datatable-thead > tr > th {
+.iot-table-mock .p-datatable-thead > tr > th,
+.support-table-mock .p-datatable-thead > tr > th {
   background: transparent;
   color: #94a3b8;
   border: none;
@@ -360,7 +377,8 @@ body {
 
 .tour-table-mock .p-datatable-tbody > tr > td,
 .monitoring-table-mock .p-datatable-tbody > tr > td,
-.iot-table-mock .p-datatable-tbody > tr > td {
+.iot-table-mock .p-datatable-tbody > tr > td,
+.support-table-mock .p-datatable-tbody > tr > td {
   background: transparent;
   color: #f1f5f9;
   border: none;
@@ -378,39 +396,46 @@ body {
 }
 
 .tour-table-mock .p-datatable-tbody > tr:last-child > td,
-.monitoring-table-mock .p-datatable-tbody > tr:last-child > td {
+.monitoring-table-mock .p-datatable-tbody > tr:last-child > td,
+.support-table-mock .p-datatable-tbody > tr:last-child > td {
   border-bottom: none;
 }
 
 .tour-table-mock .p-datatable-tbody > tr:nth-child(odd) > td,
-.monitoring-table-mock .p-datatable-tbody > tr:nth-child(odd) > td {
+.monitoring-table-mock .p-datatable-tbody > tr:nth-child(odd) > td,
+.support-table-mock .p-datatable-tbody > tr:nth-child(odd) > td {
   background: transparent;
 }
 
 .tour-table-mock .p-datatable-tbody > tr:nth-child(even) > td,
-.monitoring-table-mock .p-datatable-tbody > tr:nth-child(even) > td {
+.monitoring-table-mock .p-datatable-tbody > tr:nth-child(even) > td,
+.support-table-mock .p-datatable-tbody > tr:nth-child(even) > td {
   background: rgba(255, 255, 255, 0.025);
 }
 
 .tour-table-mock .p-datatable-tbody > tr:hover > td,
-.monitoring-table-mock .p-datatable-tbody > tr:hover > td {
+.monitoring-table-mock .p-datatable-tbody > tr:hover > td,
+.support-table-mock .p-datatable-tbody > tr:hover > td {
   background: rgba(255, 255, 255, 0.05);
 }
 
 .tour-table-mock .p-datatable-table,
-.monitoring-table-mock .p-datatable-table {
+.monitoring-table-mock .p-datatable-table,
+.support-table-mock .p-datatable-table {
   background: transparent;
   table-layout: fixed;
   width: 100%;
 }
 
 .tour-table-mock .p-datatable,
-.monitoring-table-mock .p-datatable {
+.monitoring-table-mock .p-datatable,
+.support-table-mock .p-datatable {
   background: transparent;
 }
 
 .tour-table-mock .p-paginator,
-.monitoring-table-mock .p-paginator {
+.monitoring-table-mock .p-paginator,
+.support-table-mock .p-paginator {
   background: transparent;
   border: none;
   color: #94a3b8;
@@ -419,7 +444,8 @@ body {
 
 .tour-table-mock .p-paginator .p-paginator-page.p-highlight,
 .monitoring-table-mock .p-paginator .p-paginator-page.p-highlight,
-.iot-table-mock .p-paginator .p-paginator-page.p-highlight {
+.iot-table-mock .p-paginator .p-paginator-page.p-highlight,
+.support-table-mock .p-paginator .p-paginator-page.p-highlight {
   background: #ff7a30;
   color: #0f1419;
   border-color: #ff7a30;
@@ -874,7 +900,8 @@ body {
 
 /* Tour Management & Monitoring — dashboard UI (aligned with IoT / Navigation) */
 .tour-section-title,
-.monitoring-section-title {
+.monitoring-section-title,
+.support-section-title {
   margin: 0 0 6px;
   color: #ffffff;
   font-family: var(--heading);
@@ -882,7 +909,8 @@ body {
 }
 
 .tour-meta,
-.monitoring-meta {
+.monitoring-meta,
+.support-meta {
   margin: 0;
   color: #94a3b8;
   font-size: 0.84rem;
@@ -890,7 +918,8 @@ body {
 }
 
 .tour-dashboard-header,
-.monitoring-dashboard-header {
+.monitoring-dashboard-header,
+.support-dashboard-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -900,14 +929,16 @@ body {
 }
 
 .tour-dashboard-actions,
-.monitoring-dashboard-actions {
+.monitoring-dashboard-actions,
+.support-dashboard-actions {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
 }
 
 .tour-stats-row,
-.monitoring-stats-row {
+.monitoring-stats-row,
+.support-stats-row {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
@@ -915,7 +946,8 @@ body {
 }
 
 .tour-stat-card,
-.monitoring-stat-card {
+.monitoring-stat-card,
+.support-stat-card {
   border-radius: 14px;
   padding: 16px 18px;
   background: rgba(255, 122, 48, 0.08);
@@ -923,7 +955,8 @@ body {
 }
 
 .tour-stat-card strong,
-.monitoring-stat-card strong {
+.monitoring-stat-card strong,
+.support-stat-card strong {
   display: block;
   font-size: 1.55rem;
   font-family: var(--heading);
@@ -932,7 +965,8 @@ body {
 }
 
 .tour-stat-card span,
-.monitoring-stat-card span {
+.monitoring-stat-card span,
+.support-stat-card span {
   display: block;
   margin-top: 6px;
   font-size: 0.68rem;
@@ -943,19 +977,22 @@ body {
 }
 
 .tour-stat-card--teal,
-.monitoring-stat-card--teal {
+.monitoring-stat-card--teal,
+.support-stat-card--teal {
   background: rgba(20, 184, 166, 0.08);
   border-color: rgba(20, 184, 166, 0.22);
 }
 
 .tour-stat-card--muted,
-.monitoring-stat-card--muted {
+.monitoring-stat-card--muted,
+.support-stat-card--muted {
   background: rgba(148, 163, 184, 0.06);
   border-color: rgba(148, 163, 184, 0.16);
 }
 
 .tour-outline-button,
-.monitoring-outline-button {
+.monitoring-outline-button,
+.support-outline-button {
   background: transparent;
   border: 1px solid #ff7a30;
   color: #ff9a5c;
@@ -963,14 +1000,16 @@ body {
 }
 
 .tour-outline-button:hover,
-.monitoring-outline-button:hover {
+.monitoring-outline-button:hover,
+.support-outline-button:hover {
   background: rgba(255, 122, 48, 0.08);
   border-color: #ff8f4f;
   color: #ffb07a;
 }
 
 .tour-info-card,
-.monitoring-info-card {
+.monitoring-info-card,
+.support-info-card {
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(148, 163, 184, 0.14);
@@ -980,7 +1019,8 @@ body {
 }
 
 .tour-info-card h3,
-.monitoring-info-card h3 {
+.monitoring-info-card h3,
+.support-info-card h3 {
   margin: 0 0 14px;
   color: #ffffff;
   font-family: var(--heading);
@@ -988,7 +1028,9 @@ body {
 }
 
 .monitoring-severity-pill,
-.monitoring-status-pill {
+.monitoring-status-pill,
+.support-severity-pill,
+.support-status-pill {
   display: inline-flex;
   align-items: center;
   padding: 0.28rem 0.65rem;
@@ -999,70 +1041,84 @@ body {
   text-transform: uppercase;
 }
 
-.monitoring-severity-pill--critical {
+.monitoring-severity-pill--critical,
+.support-severity-pill--critical {
   background: rgba(239, 68, 68, 0.15);
   color: #fca5a5;
   border: 1px solid rgba(239, 68, 68, 0.35);
 }
 
-.monitoring-severity-pill--warning {
+.monitoring-severity-pill--warning,
+.support-severity-pill--warning {
   background: rgba(255, 122, 48, 0.12);
   color: #ffb07a;
   border: 1px solid rgba(255, 122, 48, 0.35);
 }
 
-.monitoring-severity-pill--low {
+.monitoring-severity-pill--low,
+.support-severity-pill--low {
   background: rgba(34, 197, 94, 0.12);
   color: #86efac;
   border: 1px solid rgba(34, 197, 94, 0.3);
 }
 
 .monitoring-severity-pill--neutral,
-.monitoring-status-pill--neutral {
+.monitoring-status-pill--neutral,
+.support-severity-pill--neutral,
+.support-status-pill--neutral {
   background: rgba(148, 163, 184, 0.1);
   color: #94a3b8;
 }
 
-.monitoring-status-pill--active {
+.monitoring-status-pill--active,
+.support-status-pill--active {
   background: rgba(255, 122, 48, 0.12);
   color: #ffb07a;
   border: 1px solid rgba(255, 122, 48, 0.35);
 }
 
-.monitoring-status-pill--resolved {
+.monitoring-status-pill--resolved,
+.support-status-pill--resolved {
   background: rgba(34, 197, 94, 0.12);
   color: #86efac;
   border: 1px solid rgba(34, 197, 94, 0.3);
 }
 
-.monitoring-status-pill--acknowledged {
+.monitoring-status-pill--acknowledged,
+.support-status-pill--acknowledged {
   background: rgba(148, 163, 184, 0.14);
   color: #cbd5e1;
   border: 1px solid rgba(148, 163, 184, 0.28);
 }
 
-.monitoring-info-card--table {
+.monitoring-info-card--table,
+.support-info-card--table {
   padding: 0;
   overflow: hidden;
 }
 
 .monitoring-table-scroll,
-.tour-table-scroll {
+.tour-table-scroll,
+.support-table-scroll {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
 
-.monitoring-table-mock .p-datatable-table {
+.monitoring-table-mock .p-datatable-table,
+.support-table-mock .p-datatable-table {
   min-width: 1080px;
 }
 
 .monitoring-table-mock .p-datatable-tbody > tr > td,
-.monitoring-table-mock .p-datatable-thead > tr > th {
+.monitoring-table-mock .p-datatable-thead > tr > th,
+.support-table-mock .p-datatable-tbody > tr > td,
+.support-table-mock .p-datatable-thead > tr > th {
   overflow: hidden;
   vertical-align: middle;
 }
 
-.monitoring-table-cell {
+.monitoring-table-cell,
+.support-table-cell {
   display: block;
   max-width: 100%;
   overflow: hidden;
@@ -1070,13 +1126,15 @@ body {
   white-space: nowrap;
 }
 
-.monitoring-table-cell--type {
+.monitoring-table-cell--type,
+.support-table-cell--type {
   text-transform: lowercase;
   font-size: 0.8rem;
   color: #cbd5e1;
 }
 
-.monitoring-table-cell--message {
+.monitoring-table-cell--message,
+.support-table-cell--message {
   white-space: normal;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -1086,7 +1144,8 @@ body {
   color: #e2e8f0;
 }
 
-.monitoring-table-cell--pill {
+.monitoring-table-cell--pill,
+.support-table-cell--pill {
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -1095,13 +1154,16 @@ body {
 }
 
 .monitoring-table-mock .monitoring-severity-pill,
-.monitoring-table-mock .monitoring-status-pill {
+.monitoring-table-mock .monitoring-status-pill,
+.support-table-mock .support-severity-pill,
+.support-table-mock .support-status-pill {
   flex-shrink: 0;
   max-width: 100%;
   white-space: nowrap;
 }
 
-.monitoring-table-mock .col-id {
+.monitoring-table-mock .col-id,
+.support-table-mock .col-id {
   width: 52px;
 }
 
@@ -1118,22 +1180,31 @@ body {
   width: 108px;
 }
 
-.monitoring-table-mock .col-status {
+.monitoring-table-mock .col-status,
+.support-table-mock .col-status,
+.support-table-mock .col-priority {
   width: 120px;
 }
 
-.monitoring-table-mock .col-raised {
+.monitoring-table-mock .col-raised,
+.support-table-mock .col-updated {
   width: 148px;
   white-space: nowrap;
 }
 
-.monitoring-table-mock .col-message {
+.monitoring-table-mock .col-message,
+.support-table-mock .col-subject {
   width: auto;
   min-width: 200px;
 }
 
-.monitoring-table-mock .col-actions {
+.monitoring-table-mock .col-actions,
+.support-table-mock .col-actions {
   width: 88px;
+}
+
+.support-table-mock .col-category {
+  width: 140px;
 }
 
 .monitoring-vital-preview {
@@ -1182,7 +1253,11 @@ body {
 .monitoring-page ::deep(.p-inputtext),
 .monitoring-page ::deep(.p-textarea),
 .monitoring-page ::deep(.p-select),
-.monitoring-page ::deep(.p-inputnumber-input) {
+.monitoring-page ::deep(.p-inputnumber-input),
+.support-page ::deep(.p-inputtext),
+.support-page ::deep(.p-textarea),
+.support-page ::deep(.p-select),
+.support-page ::deep(.p-inputnumber-input) {
   background: #1a2433;
   border-color: rgba(148, 163, 184, 0.22);
   color: #f1f5f9;
@@ -1191,6 +1266,7 @@ body {
 @media (max-width: 900px) {
   .tour-stats-row,
   .monitoring-stats-row,
+  .support-stats-row,
   .monitoring-vital-preview {
     grid-template-columns: 1fr;
   }
@@ -2206,7 +2282,8 @@ body {
   .tour-tabs,
   .monitoring-tabs,
   .navigation-tabs,
-  .iot-tabs {
+  .iot-tabs,
+  .support-tabs {
     overflow-x: auto;
     padding: 0 12px;
     scrollbar-width: thin;
@@ -2215,7 +2292,8 @@ body {
   .tour-tab,
   .monitoring-tab,
   .navigation-tab,
-  .iot-tab {
+  .iot-tab,
+  .support-tab {
     min-height: 48px;
     padding: 0 18px;
     font-size: 0.76rem;
@@ -2223,7 +2301,8 @@ body {
 
   .tour-card-header,
   .monitoring-card-header,
-  .navigation-card-header {
+  .navigation-card-header,
+  .support-card-header {
     flex-direction: column;
     align-items: stretch;
   }
@@ -2231,7 +2310,8 @@ body {
   .tour-primary-button,
   .monitoring-primary-button,
   .navigation-primary-button,
-  .iot-primary-button {
+  .iot-primary-button,
+  .support-primary-button {
     width: 100%;
   }
 

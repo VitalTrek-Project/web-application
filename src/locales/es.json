@@ -16,7 +16,8 @@
     "identity-access": "Identidad y acceso",
     "notifications-profile": "Notificaciones y perfil",
     "my-profile": "Mi perfil",
-    "monitoring": "Monitoreo"
+    "monitoring": "Monitoreo",
+    "support": "Soporte"
   },
   "app-shell": {
     "context": "VITALTREK",
@@ -549,6 +550,76 @@
     "save": "Guardar",
     "cancel": "Cancelar",
     "delete": "Eliminar"
+  },
+  "support": {
+    "context": "SOPORTE",
+    "title": "Soporte",
+    "subtitle": "Ayuda para turistas y administradores de agencias de turismo.",
+    "tabs": {
+      "tickets": "Mis tickets",
+      "new-ticket": "Nuevo ticket"
+    }
+  },
+  "tickets": {
+    "title": "Tickets de soporte",
+    "subtitle": "Solicitudes enviadas por trekkers y administradores de agencias.",
+    "stats-total": "Total",
+    "stats-open": "Abiertos",
+    "stats-urgent": "Urgentes",
+    "id": "ID",
+    "userMode": "Enviado por",
+    "subject": "Asunto",
+    "category": "Categoría",
+    "priority": "Prioridad",
+    "status": "Estado",
+    "updatedAt": "Actualizado",
+    "actions": "Acciones",
+    "new": "Nuevo ticket",
+    "confirm-delete": "¿Seguro que deseas eliminar el ticket \"{subject}\"?",
+    "delete-header": "Eliminar ticket"
+  },
+  "ticket": {
+    "new-title": "Crear ticket de soporte",
+    "edit-title": "Editar ticket de soporte",
+    "userMode": "Soy",
+    "fullName": "Nombre completo",
+    "email": "Correo",
+    "subject": "Asunto",
+    "category": "Categoría",
+    "priority": "Prioridad",
+    "status": "Estado",
+    "description": "Descripción",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "view": "Ver ticket",
+    "edit": "Editar ticket",
+    "back": "Volver a tickets",
+    "requested-by": "Solicitado por {name}",
+    "conversation": "Conversación",
+    "no-replies": "Aún no hay mensajes. Inicia la conversación abajo.",
+    "reply-placeholder": "Escribe una respuesta...",
+    "reply-send": "Enviar respuesta",
+    "categories": {
+      "general": "Consulta general",
+      "technical": "Problema técnico",
+      "billing": "Facturación",
+      "tour": "Tour o reserva",
+      "account": "Cuenta",
+      "other": "Otro"
+    },
+    "priorities": {
+      "low": "Baja",
+      "medium": "Media",
+      "high": "Alta",
+      "urgent": "Urgente"
+    },
+    "statuses": {
+      "open": "Abierto",
+      "in_progress": "En progreso",
+      "resolved": "Resuelto",
+      "closed": "Cerrado"
+    }
   },
   "incident": {
     "report": "Reportar incidente",
