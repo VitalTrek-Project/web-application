@@ -1,5 +1,3 @@
-const LOCAL_USER_ID_KEY = "vitaltrek_local_user_id";
-
 function generateUuid() {
     if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
         return crypto.randomUUID();
@@ -12,30 +10,16 @@ function generateUuid() {
     });
 }
 
-/**
- * Returns a per-browser identifier persisted in localStorage. There is no
- * authentication yet (IAM bounded context pending), so this is used as a
- * stand-in "current user id" wherever the backend expects one (e.g. Support
- * tickets' userId, Loyalty's touristId), consistent with the rest of the app
- * not having real per-user identity today.
- */
-export function getLocalUserId() {
-    let id = localStorage.getItem(LOCAL_USER_ID_KEY);
-    if (!id) {
-        id = generateUuid();
-        localStorage.setItem(LOCAL_USER_ID_KEY, id);
-    }
-    return id;
-}
-
 const LOCAL_AGENCY_ID_KEY = "vitaltrek_local_agency_id";
 
 /**
- * Same stand-in idea as {@link getLocalUserId}, but for "the agency this
- * browser session belongs to". There is no Agency entity or agency login
- * anywhere in the system yet (TourManagement's AgencyId is itself an
- * unbacked Guid) — this lets the admin (empresa) and tourist (trekker) sides
- * of one browser profile exercise the same loyalty program end-to-end.
+ * Returns a per-browser identifier persisted in localStorage, standing in for
+ * "the agency whose loyalty program a tourist is currently browsing". There
+ * is no multi-agency directory or booking flow yet to derive this from, so
+ * tourist-facing Loyalty views still use this placeholder even though real
+ * user identity now comes from the IAM bounded context (see iam.store.js).
+ * Agency-role users' own agencyId comes from their authenticated session
+ * (useIamStore().currentAgencyId), not from here.
  */
 export function getLocalAgencyId() {
     let id = localStorage.getItem(LOCAL_AGENCY_ID_KEY);

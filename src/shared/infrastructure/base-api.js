@@ -30,6 +30,14 @@ export class BaseApi {
       timeout: 10000
     });
 
+    // Dynamic import breaks the circular dependency between Shared (BaseApi, used by every
+    // bounded context's *-api.js, including IamApi itself) and Iam (whose interceptor needs
+    // the IAM store, which in turn depends on IamApi extending BaseApi).
+    this.#http.interceptors.request.use(async (config) => {
+      const {iamInterceptor} = await import("../../iam/infrastructure/iam.interceptor.js");
+      return iamInterceptor(config);
+    });
+
     this.#http.interceptors.response.use(
       (response) => response,
       (error) => Promise.reject(error?.response ?? error)

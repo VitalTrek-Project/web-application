@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useAppModeStore } from "./shared/application/app-mode.store.js";
+import useIamStore from "./iam/application/iam.store.js";
 
 import Home from "./shared/presentation/views/home.vue";
 import TourList from "./tour-management/presentation/views/tour-list.vue";
@@ -11,6 +12,7 @@ import iotRoutes from "./iot/presentation/iot-routes.js";
 import supportRoutes from "./support/presentation/support-routes.js";
 import dashboardRoutes from "./dashboard/presentation/dashboard-routes.js";
 import loyaltyRoutes from "./loyalty/presentation/loyalty-routes.js";
+import iamRoutes from "./iam/presentation/iam-routes.js";
 
 const RoutesPage = () => import("./shared/presentation/views/routes-page.vue");
 const RouteDetailPage = () =>
@@ -19,10 +21,6 @@ const CommunityPage = () => import("./shared/presentation/views/community.vue");
 const pageNotFound = () =>
   import("./shared/presentation/views/page-not-found.vue");
 
-// Routes version when IAM is not implemented
-// TODO [IAM]: Cuando se implemente autenticación real, reemplazar `requiredMode`
-// por guards que lean el claim `role` del JWT. Ver useAppModeStore y el plan de
-// implementación del bounded context IAM en el backend.
 const routes = [
   {
     path: "/home",
@@ -131,7 +129,14 @@ const routes = [
     path: "/support",
     name: "support",
     redirect: { name: "support-tickets" },
+    meta: { requiresAuth: true },
     children: supportRoutes
+  },
+  {
+    path: "/iam",
+    name: "iam",
+    redirect: { name: "iam-sign-in" },
+    children: iamRoutes
   },
   ...dashboardRoutes,
   ...loyaltyRoutes,
@@ -152,17 +157,33 @@ const router = createRouter({
   routes
 });
 
+const ROLE_TO_MODE = { Agency: "empresa", Tourist: "trekker" };
+
 router.beforeEach((to, from, next) => {
   const baseTitle = "VitalTrek";
   document.title = `${baseTitle} - ${to.meta.title}`;
+
+  const iamStore = useIamStore();
+  const modeStore = useAppModeStore();
+
+  // Once authenticated, the mode is derived from the user's real role rather
+  // than the manual mode-selector (kept for pre-authentication browsing).
+  if (iamStore.isSignedIn && iamStore.currentRole) {
+    const derivedMode = ROLE_TO_MODE[iamStore.currentRole];
+    if (derivedMode && modeStore.mode !== derivedMode) modeStore.setMode(derivedMode);
+  }
 
   // Buscar requiredMode en toda la cadena de rutas matched (padres e hijos)
   const requiredMode = to.matched
     .map(record => record.meta.requiredMode)
     .find(Boolean);
+  const requiresAuth = Boolean(requiredMode) || to.matched.some(record => record.meta.requiresAuth);
+
+  if (requiresAuth && !iamStore.isSignedIn) {
+    return next({ name: "iam-sign-in", query: { redirect: to.fullPath } });
+  }
 
   if (requiredMode) {
-    const modeStore = useAppModeStore();
     const currentMode = modeStore.mode;
     // Solo bloquear si el usuario YA eligió un modo y no coincide
     if (currentMode && currentMode !== requiredMode) {

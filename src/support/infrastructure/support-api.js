@@ -22,8 +22,13 @@ export class SupportApi extends BaseApi {
         this.#ticketRepliesEndpoint = new BaseEndpoint(this, ticketRepliesEndpointPath);
     }
 
-    getTickets() {
-        return this.#ticketsEndpoint.getAll();
+    /**
+     * @param {string} [userId] - When provided, filters the collection to tickets opened by this user.
+     *   Tourists must always pass their own id — the backend rejects an unfiltered or mismatched
+     *   request from a Tourist-role caller; only agency staff may omit it to browse the full queue.
+     */
+    getTickets(userId) {
+        return this.http.get(ticketsEndpointPath, {params: userId ? {userId} : {}});
     }
 
     getTicketById(id) {

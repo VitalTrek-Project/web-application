@@ -5,11 +5,13 @@
  */
 export class SignInResource {
     /**
-     * @param {{id: number|string, username: string, token: string}} params - Resource payload.
+     * @param {{id: string, username: string, role: string, agencyId: string|null, token: string}} params - Resource payload.
      */
-    constructor({id, username, token}) {
+    constructor({id, username, role, agencyId, token}) {
         this.id = id;
         this.username = username;
+        this.role = role;
+        this.agencyId = agencyId ?? null;
         this.token = token;
     }
 }
