@@ -3,7 +3,6 @@ import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
 import LanguageSwitcher from "./language-switcher.vue";
-import ModeSelector from "./mode-selector.vue";
 import FooterContent from "./footer-content.vue";
 import VitalTrekLogo from "./vital-trek-logo.vue";
 import { useIncidentReport } from "../composables/use-incident-report.js";
@@ -138,7 +137,7 @@ const hero = computed(() => {
       </div>
 
       <language-switcher />
-      <mode-selector />
+      <AuthenticationSection class="sidebar-auth" />
 
       <nav class="sidebar-nav">
         <router-link
@@ -173,8 +172,6 @@ const hero = computed(() => {
         />
 
         <NotificationBell v-if="showNotificationBell" />
-
-        <AuthenticationSection />
       </div>
     </aside>
 
@@ -239,11 +236,21 @@ const hero = computed(() => {
   flex-shrink: 0;
 }
 
+.sidebar-auth {
+  flex-shrink: 0;
+  margin-bottom: 8px;
+}
+
 .sidebar-nav {
   display: flex;
   flex-direction: column;
   gap: 6px;
   margin-top: 28px;
+  /* Scrolls internally so a long item list can never push sidebar-bottom
+     (SOS, notifications) off screen — brand/auth stay fixed, this flexes. */
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .sidebar-link {

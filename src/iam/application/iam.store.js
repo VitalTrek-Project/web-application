@@ -6,6 +6,7 @@ import {UserAssembler} from "../infrastructure/user.assembler.js";
 import {SignUpAssembler} from "../infrastructure/sign-up.assembler.js";
 import {SignInCommand} from "../domain/sign-in.command.js";
 import {SignUpCommand} from "../domain/sign-up.command.js";
+import {useAppModeStore} from "../../shared/application/app-mode.store.js";
 
 const iamApi = new IamApi();
 const SESSION_STORAGE_KEY = "vitaltrek_iam_session";
@@ -134,6 +135,7 @@ const useIamStore = defineStore('iam', () => {
         isSignedIn.value = false;
         localStorage.removeItem(SESSION_STORAGE_KEY);
         errors.value = [];
+        useAppModeStore().clearMode();
         if (router) router.push({name: 'iam-sign-in'});
     }
 

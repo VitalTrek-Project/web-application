@@ -11,16 +11,20 @@ const store = useLoyaltyStore();
 const { notifications, unreadCount } = storeToRefs(store);
 const { fetchNotifications, markNotificationRead } = store;
 
-const touristId = useIamStore().currentUserId;
+const iamStore = useIamStore();
+const touristId = iamStore.currentUserId;
 const open = ref(false);
 
 onMounted(() => {
-  fetchNotifications(touristId);
+  // notification-bell is always mounted in the sidebar, including on public pages
+  // (home, community, ...) browsed anonymously — don't call an authenticated
+  // endpoint until there's actually a signed-in tourist to fetch notifications for.
+  if (iamStore.isSignedIn) fetchNotifications(touristId);
 });
 
 function toggle() {
   open.value = !open.value;
-  if (open.value) fetchNotifications(touristId);
+  if (open.value && iamStore.isSignedIn) fetchNotifications(touristId);
 }
 
 function readAndClose(notification) {

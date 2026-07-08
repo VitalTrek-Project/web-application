@@ -5,6 +5,12 @@
     "cancel": "Cancelar",
     "confirm": "Confirmar"
   },
+  "auth": {
+    "sign-in": "Iniciar sesión",
+    "sign-up": "Crear cuenta",
+    "sign-out": "Cerrar sesión",
+    "signed-in-as": "Sesión iniciada como"
+  },
   "option": {
     "home": "Inicio",
     "about": "Acerca de",
@@ -43,13 +49,6 @@
   },
   "sidebar": {
     "sos": "! S.O.S."
-  },
-  "mode-selector": {
-    "label": "Modo de uso",
-    "prompt": "¿Quién eres?",
-    "mode": "Modo",
-    "trekker": "Trekker",
-    "empresa": "Empresa"
   },
   "tour-management": {
     "context": "GESTIÓN DE TOURS",
@@ -187,6 +186,119 @@
     "copyright": "© 2026 VitalTrek. Todos los derechos reservados.",
     "app-store": "App Store",
     "google-play": "Google Play"
+  },
+  "legal": {
+    "terms": {
+      "eyebrow": "LEGAL",
+      "title": "Términos y Condiciones de Servicio",
+      "last-updated": "Última actualización: 8 de julio de 2026",
+      "intro": "Estos Términos y Condiciones de Servicio (los \"Términos\") regulan el acceso y uso de la plataforma VitalTrek, operada por NexumDevs. Al crear una cuenta o utilizar la Plataforma aceptas estos Términos en su totalidad. Si actúas en representación de una agencia de turismo, declaras contar con facultades suficientes para obligarla a estos Términos.",
+      "sections": [
+        {
+          "heading": "1. Aceptación de los Términos",
+          "paragraphs": [
+            "El uso de la Plataforma, ya sea como Turista o como Agencia, implica la aceptación plena de estos Términos y de la Política de Privacidad. Si no estás de acuerdo con alguna disposición, debes abstenerte de registrarte o de continuar utilizando el servicio."
+          ]
+        },
+        {
+          "heading": "2. Descripción del Servicio",
+          "paragraphs": [
+            "VitalTrek es una plataforma que conecta a agencias de turismo y viajeros para la planificación de rutas y expediciones, el monitoreo de signos vitales y ubicación mediante dispositivos IoT, la navegación durante el trekking, la fidelización de usuarios y el soporte técnico, con el propósito de mejorar la seguridad y la experiencia durante actividades de senderismo."
+          ]
+        },
+        {
+          "heading": "3. Cuentas y Roles de Usuario",
+          "paragraphs": [
+            "La Plataforma distingue dos roles principales: Turista y Agencia. Cada usuario es responsable de la veracidad de la información proporcionada durante el registro y de mantener la confidencialidad de sus credenciales de acceso. El rol asignado determina las funcionalidades y los datos a los que puede acceder dentro de la Plataforma; cualquier intento de acceder a datos fuera del alcance del propio rol constituye un incumplimiento de estos Términos."
+          ]
+        },
+        {
+          "heading": "4. Uso Aceptable",
+          "paragraphs": [
+            "Al utilizar VitalTrek, te comprometes a no incurrir en las siguientes conductas:"
+          ],
+          "list": [
+            "Suplantar la identidad de otra persona, guía o agencia.",
+            "Manipular, falsificar o interferir con las lecturas de dispositivos IoT o sensores de signos vitales.",
+            "Intentar acceder, sin autorización, a datos de otras agencias o turistas.",
+            "Utilizar la Plataforma con fines ilícitos o contrarios a la buena fe.",
+            "Realizar ingeniería inversa, sobrecargar o comprometer la seguridad de la infraestructura del servicio."
+          ]
+        },
+        {
+          "heading": "5. Monitoreo de Signos Vitales, Ubicación y Límites del Servicio",
+          "paragraphs": [
+            "Las herramientas de monitoreo de VitalTrek (frecuencia cardíaca, ubicación GPS, alertas de expedición) están diseñadas para complementar —nunca reemplazar— los protocolos profesionales de rescate, primeros auxilios y atención médica de emergencia.",
+            "La conectividad en zonas de montaña o remotas puede ser intermitente o inexistente, y los sensores de terceros conectados a la Plataforma pueden presentar márgenes de error. VitalTrek no garantiza la disponibilidad ininterrumpida de señal ni la exactitud absoluta de dichas lecturas. Ante una emergencia real, contacta de inmediato a los servicios de rescate o emergencia locales; no dependas exclusivamente de la Plataforma."
+          ]
+        },
+        {
+          "heading": "6. Responsabilidades de las Agencias de Turismo",
+          "paragraphs": [
+            "Las agencias registradas son responsables de la idoneidad y capacitación de sus guías, del mantenimiento adecuado de los dispositivos IoT que asignan a cada expedición, y de la veracidad de la información publicada sobre tours, rutas y disponibilidad."
+          ]
+        },
+        {
+          "heading": "7. Propiedad Intelectual",
+          "paragraphs": [
+            "El software, el diseño, la marca VitalTrek y los contenidos originales de la Plataforma son propiedad de NexumDevs o de sus respectivos licenciantes. Queda prohibida su reproducción, distribución o modificación sin autorización previa por escrito."
+          ]
+        },
+        {
+          "heading": "8. Privacidad y Protección de Datos",
+          "paragraphs": [
+            "Los datos de salud (signos vitales), ubicación y demás información personal son tratados como datos sensibles conforme a nuestra Política de Privacidad: se recopilan únicamente para las finalidades declaradas (seguridad durante la expedición, mejora del servicio), no se comercializan con terceros y se conservan solo durante el tiempo necesario para dichos fines."
+          ]
+        },
+        {
+          "heading": "9. Compromiso Ético y Profesional del Equipo de Ingeniería",
+          "paragraphs": [
+            "El equipo de ingeniería de VitalTrek declara adherirse voluntariamente al Código de Ética y Práctica Profesional de Ingeniería de Software de ACM/IEEE-CS, así como al Código de Ética y Deontología Profesional del Colegio de Ingenieros del Perú (CIP). Este compromiso no es meramente declarativo: guía las decisiones técnicas y de producto detrás de esta Plataforma, en particular:",
+            "En concordancia con el Código de Ética del CIP, el equipo asume además su responsabilidad social como profesionales de la ingeniería, el deber de secreto profesional sobre los datos de usuarios y agencias, y el compromiso de mejora continua de sus competencias técnicas."
+          ],
+          "list": [
+            "Público: priorizamos la seguridad, la salud y el bienestar de las personas que realizan actividades de trekking por encima de cualquier interés comercial.",
+            "Cliente y empleador: actuamos con honestidad e integridad frente a las agencias y usuarios que dependen de la Plataforma.",
+            "Producto: documentamos abiertamente las limitaciones conocidas del sistema (cobertura de red, precisión de sensores) en lugar de ocultarlas o minimizarlas.",
+            "Juicio: mantenemos independencia e integridad profesional al evaluar y comunicar los riesgos técnicos del sistema.",
+            "Gestión: promovemos un proceso de desarrollo ético, priorizando la calidad de la ingeniería sobre plazos o costos cuando la seguridad está en juego.",
+            "Profesión: actuamos conforme al interés público para contribuir a la reputación de la ingeniería de software como disciplina.",
+            "Colegas: fomentamos la colaboración justa y el reconocimiento del trabajo técnico de terceros.",
+            "Autoformación: mantenemos aprendizaje continuo en buenas prácticas de ingeniería, ciberseguridad y ética aplicada."
+          ]
+        },
+        {
+          "heading": "10. Limitación de Responsabilidad",
+          "paragraphs": [
+            "En la máxima medida permitida por la ley peruana, VitalTrek no será responsable por daños indirectos, incidentales o consecuentes derivados del uso de la Plataforma, incluyendo fallas de conectividad, imprecisiones de sensores de terceros o decisiones tomadas por el usuario durante una expedición."
+          ]
+        },
+        {
+          "heading": "11. Modificaciones a los Términos",
+          "paragraphs": [
+            "Podemos actualizar estos Términos periódicamente para reflejar cambios normativos, técnicos o de producto. Notificaremos cambios sustanciales a través de la Plataforma o del correo registrado. El uso continuado del servicio tras la publicación de los cambios constituye la aceptación de los mismos."
+          ]
+        },
+        {
+          "heading": "12. Terminación de Cuenta",
+          "paragraphs": [
+            "VitalTrek podrá suspender o cancelar cuentas que incumplan estos Términos, en particular aquellas que pongan en riesgo la seguridad de otros usuarios o vulneren las reglas de uso aceptable."
+          ]
+        },
+        {
+          "heading": "13. Ley Aplicable y Jurisdicción",
+          "paragraphs": [
+            "Estos Términos se rigen por las leyes de la República del Perú. Cualquier controversia derivada de su interpretación o cumplimiento se someterá a los jueces y tribunales de Lima, Perú, sin perjuicio de recurrir a mecanismos de resolución alternativa de conflictos."
+          ]
+        },
+        {
+          "heading": "14. Contacto",
+          "paragraphs": [
+            "Para consultas sobre estos Términos, o para reportar una inquietud ética relacionada con la Plataforma, escríbenos a legal@vitaltrek.pe."
+          ]
+        }
+      ]
+    }
   },
   "iot": {
     "context": "IOT",

@@ -19,6 +19,8 @@ const RoutesPage = () => import("./shared/presentation/views/routes-page.vue");
 const RouteDetailPage = () =>
   import("./shared/presentation/views/route-detail.vue");
 const CommunityPage = () => import("./shared/presentation/views/community.vue");
+const TermsOfServicePage = () =>
+  import("./shared/presentation/views/terms-of-service.vue");
 const pageNotFound = () =>
   import("./shared/presentation/views/page-not-found.vue");
 
@@ -52,6 +54,12 @@ const routes = [
     name: "about",
     component: pageNotFound,
     meta: { title: "Page 404 not found" }
+  },
+  {
+    path: "/legal/terms-of-service",
+    name: "terms-of-service",
+    component: TermsOfServicePage,
+    meta: { title: "Terms of Service" }
   },
   {
     path: "/agencies",
@@ -105,12 +113,14 @@ const routes = [
     path: "/monitoring",
     name: "monitoring",
     redirect: { name: "monitoring-signs" },
+    meta: { requiresAuth: true },
     children: monitoringRoutes
   },
   {
     path: "/navigation",
     name: "navigation",
     redirect: { name: "navigation-map" },
+    meta: { requiresAuth: true },
     children: navigationRoutes
   },
   {
@@ -162,8 +172,7 @@ router.beforeEach((to, from, next) => {
   const iamStore = useIamStore();
   const modeStore = useAppModeStore();
 
-  // Once authenticated, the mode is derived from the user's real role rather
-  // than the manual mode-selector (kept for pre-authentication browsing).
+  // The mode is derived exclusively from the authenticated user's role.
   if (iamStore.isSignedIn && iamStore.currentRole) {
     const derivedMode = ROLE_TO_MODE[iamStore.currentRole];
     if (derivedMode && modeStore.mode !== derivedMode) modeStore.setMode(derivedMode);

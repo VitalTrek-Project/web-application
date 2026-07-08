@@ -69,7 +69,7 @@ const { t } = useI18n();
       <a href="#">{{ t('footer.support.help-center') }}</a>
       <a href="#">{{ t('footer.support.contact') }}</a>
       <a href="#">{{ t('footer.support.privacy') }}</a>
-      <a href="#">{{ t('footer.support.terms') }}</a>
+      <router-link :to="{ name: 'terms-of-service' }">{{ t('footer.support.terms') }}</router-link>
       <a href="#">{{ t('footer.support.iot-security') }}</a>
     </div>
   </div>

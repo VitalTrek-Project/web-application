@@ -40,7 +40,21 @@ export class BaseApi {
 
     this.#http.interceptors.response.use(
       (response) => response,
-      (error) => Promise.reject(error?.response ?? error)
+      async (error) => {
+        if (error?.response?.status === 401 && !window.location.pathname.startsWith("/iam")) {
+          // Several public pages (home, community, ...) call endpoints that require auth in
+          // the background (e.g. the sidebar's notification bell) — an anonymous visitor
+          // hitting 401 there is expected, not a session expiring, so only force a redirect
+          // when the user actually believed they had an active session.
+          const { default: useIamStore } = await import("../../iam/application/iam.store.js");
+          const iamStore = useIamStore();
+          if (iamStore.isSignedIn) {
+            iamStore.signOut();
+            window.location.href = "/iam/sign-in";
+          }
+        }
+        return Promise.reject(error?.response ?? error);
+      }
     );
   }
 

@@ -5,6 +5,12 @@
     "cancel": "Cancel",
     "confirm": "Confirm"
   },
+  "auth": {
+    "sign-in": "Sign In",
+    "sign-up": "Create account",
+    "sign-out": "Sign Out",
+    "signed-in-as": "Signed in as"
+  },
   "option": {
     "home": "Home",
     "about": "About",
@@ -43,13 +49,6 @@
   },
   "sidebar": {
     "sos": "! S.O.S."
-  },
-  "mode-selector": {
-    "label": "App mode",
-    "prompt": "Who are you?",
-    "mode": "Mode",
-    "trekker": "Trekker",
-    "empresa": "Agency"
   },
   "tour-management": {
     "context": "TOUR MANAGEMENT",
@@ -187,6 +186,119 @@
     "copyright": "© 2026 VitalTrek. All rights reserved.",
     "app-store": "App Store",
     "google-play": "Google Play"
+  },
+  "legal": {
+    "terms": {
+      "eyebrow": "LEGAL",
+      "title": "Terms of Service",
+      "last-updated": "Last updated: July 8, 2026",
+      "intro": "These Terms of Service (the \"Terms\") govern access to and use of the VitalTrek platform, operated by NexumDevs. By creating an account or using the Platform you accept these Terms in full. If you act on behalf of a tourism agency, you represent that you have sufficient authority to bind it to these Terms.",
+      "sections": [
+        {
+          "heading": "1. Acceptance of the Terms",
+          "paragraphs": [
+            "Using the Platform, whether as a Tourist or as an Agency, implies full acceptance of these Terms and of the Privacy Policy. If you do not agree with any provision, you must refrain from registering or continuing to use the service."
+          ]
+        },
+        {
+          "heading": "2. Service Description",
+          "paragraphs": [
+            "VitalTrek is a platform that connects tourism agencies and travelers for route and expedition planning, vital-sign and location monitoring through IoT devices, on-trail navigation, loyalty rewards, and technical support, with the purpose of improving safety and the overall trekking experience."
+          ]
+        },
+        {
+          "heading": "3. Accounts and User Roles",
+          "paragraphs": [
+            "The Platform distinguishes two main roles: Tourist and Agency. Each user is responsible for the accuracy of the information provided during registration and for keeping their access credentials confidential. The assigned role determines the functionality and data a user may access; any attempt to access data outside the scope of one's own role constitutes a breach of these Terms."
+          ]
+        },
+        {
+          "heading": "4. Acceptable Use",
+          "paragraphs": [
+            "By using VitalTrek, you agree not to:"
+          ],
+          "list": [
+            "Impersonate another person, guide, or agency.",
+            "Manipulate, falsify, or interfere with IoT device or vital-sign sensor readings.",
+            "Attempt to access another agency's or tourist's data without authorization.",
+            "Use the Platform for unlawful purposes or in bad faith.",
+            "Reverse-engineer, overload, or otherwise compromise the security of the service's infrastructure."
+          ]
+        },
+        {
+          "heading": "5. Vital-Sign Monitoring, Location, and Service Limits",
+          "paragraphs": [
+            "VitalTrek's monitoring tools (heart rate, GPS location, expedition alerts) are designed to complement — never replace — professional rescue, first-aid, and emergency medical protocols.",
+            "Connectivity in mountainous or remote areas may be intermittent or unavailable, and third-party sensors connected to the Platform may have margins of error. VitalTrek does not guarantee uninterrupted signal availability or the absolute accuracy of such readings. In a real emergency, contact local rescue or emergency services immediately; do not rely exclusively on the Platform."
+          ]
+        },
+        {
+          "heading": "6. Responsibilities of Tourism Agencies",
+          "paragraphs": [
+            "Registered agencies are responsible for the suitability and training of their guides, for the proper maintenance of the IoT devices they assign to each expedition, and for the accuracy of the information they publish about tours, routes, and availability."
+          ]
+        },
+        {
+          "heading": "7. Intellectual Property",
+          "paragraphs": [
+            "The software, design, VitalTrek brand, and original content of the Platform are the property of NexumDevs or its respective licensors. Reproduction, distribution, or modification without prior written authorization is prohibited."
+          ]
+        },
+        {
+          "heading": "8. Privacy and Data Protection",
+          "paragraphs": [
+            "Health data (vital signs), location, and other personal information are treated as sensitive data under our Privacy Policy: they are collected only for the stated purposes (expedition safety, service improvement), are never sold to third parties, and are retained only for as long as necessary for those purposes."
+          ]
+        },
+        {
+          "heading": "9. Ethical and Professional Commitment of the Engineering Team",
+          "paragraphs": [
+            "VitalTrek's engineering team declares its voluntary adherence to the ACM/IEEE-CS Software Engineering Code of Ethics and Professional Practice, as well as to the Code of Ethics and Professional Deontology of the Colegio de Ingenieros del Perú (CIP). This commitment is not merely declarative: it guides the technical and product decisions behind this Platform, in particular:",
+            "In line with the CIP Code of Ethics, the team also assumes its social responsibility as engineering professionals, the duty of professional confidentiality over user and agency data, and the commitment to continuously improve its technical competencies."
+          ],
+          "list": [
+            "Public: we prioritize the safety, health, and well-being of people engaging in trekking activities above any commercial interest.",
+            "Client and employer: we act with honesty and integrity toward the agencies and users who depend on the Platform.",
+            "Product: we openly document known system limitations (network coverage, sensor accuracy) rather than hiding or minimizing them.",
+            "Judgment: we maintain independence and professional integrity when assessing and communicating the system's technical risks.",
+            "Management: we promote an ethical development process, prioritizing engineering quality over deadlines or cost when safety is at stake.",
+            "Profession: we act consistently with the public interest to help build the reputation of software engineering as a discipline.",
+            "Colleagues: we foster fair collaboration and proper recognition of others' technical work.",
+            "Self: we pursue continuous learning in engineering best practices, cybersecurity, and applied ethics."
+          ]
+        },
+        {
+          "heading": "10. Limitation of Liability",
+          "paragraphs": [
+            "To the maximum extent permitted by Peruvian law, VitalTrek shall not be liable for indirect, incidental, or consequential damages arising from use of the Platform, including connectivity failures, inaccuracies from third-party sensors, or decisions made by the user during an expedition."
+          ]
+        },
+        {
+          "heading": "11. Changes to the Terms",
+          "paragraphs": [
+            "We may update these Terms periodically to reflect regulatory, technical, or product changes. We will notify substantial changes through the Platform or the registered email address. Continued use of the service after such changes are published constitutes acceptance of them."
+          ]
+        },
+        {
+          "heading": "12. Account Termination",
+          "paragraphs": [
+            "VitalTrek may suspend or cancel accounts that breach these Terms, particularly those that endanger the safety of other users or violate the acceptable-use rules."
+          ]
+        },
+        {
+          "heading": "13. Governing Law and Jurisdiction",
+          "paragraphs": [
+            "These Terms are governed by the laws of the Republic of Peru. Any dispute arising from their interpretation or performance will be submitted to the courts of Lima, Peru, without prejudice to alternative dispute resolution mechanisms."
+          ]
+        },
+        {
+          "heading": "14. Contact",
+          "paragraphs": [
+            "For questions about these Terms, or to report an ethical concern related to the Platform, write to us at legal@vitaltrek.pe."
+          ]
+        }
+      ]
+    }
   },
   "iot": {
     "context": "IOT",

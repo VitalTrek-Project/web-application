@@ -1,11 +1,10 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-// Once a user is authenticated, the router derives `mode` automatically from
-// their IAM role claim (see router.js). This store still holds `mode` for
-// unauthenticated/pre-sign-in browsing via the manual mode-selector.
+// `mode` is derived exclusively from the authenticated user's IAM role claim
+// (see router.js). It is null while signed out, showing every nav item.
 export const useAppModeStore = defineStore('appMode', () => {
-  // null = sin modo seleccionado; 'trekker' | 'empresa' una vez elegido
+  // null = sin sesión iniciada; 'trekker' | 'empresa' según el rol autenticado
   const mode = ref(null);
 
   function setMode(newMode) {
