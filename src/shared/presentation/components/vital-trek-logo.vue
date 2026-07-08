@@ -6,7 +6,7 @@ defineProps({
   variant: {
     type: String,
     default: "sidebar",
-    validator: (value) => ["sidebar", "footer"].includes(value)
+    validator: (value) => ["sidebar", "footer", "auth"].includes(value)
   }
 });
 
@@ -48,6 +48,11 @@ const imageFailed = ref(false);
   height: 32px;
 }
 
+.vital-trek-logo--auth {
+  width: 36px;
+  height: 36px;
+}
+
 .vital-trek-logo-fallback {
   display: grid;
   place-items: center;
@@ -66,5 +71,10 @@ const imageFailed = ref(false);
 .vital-trek-logo-fallback--footer {
   width: 32px;
   height: 32px;
+}
+
+.vital-trek-logo-fallback--auth {
+  width: 36px;
+  height: 36px;
 }
 </style>

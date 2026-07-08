@@ -19,6 +19,8 @@ const RoutesPage = () => import("./shared/presentation/views/routes-page.vue");
 const RouteDetailPage = () =>
   import("./shared/presentation/views/route-detail.vue");
 const CommunityPage = () => import("./shared/presentation/views/community.vue");
+const PlansPage = () =>
+  import("./subscriptions/presentation/views/plans.vue");
 const pageNotFound = () =>
   import("./shared/presentation/views/page-not-found.vue");
 
@@ -48,34 +50,10 @@ const routes = [
     meta: { title: "Community" }
   },
   {
-    path: "/about",
-    name: "about",
-    component: pageNotFound,
-    meta: { title: "Page 404 not found" }
-  },
-  {
-    path: "/agencies",
-    name: "agencies",
-    component: pageNotFound,
-    meta: { title: "Page 404 not found", requiredMode: "empresa" }
-  },
-  {
     path: "/plans",
     name: "plans",
-    component: pageNotFound,
-    meta: { title: "Page 404 not found", requiredMode: "empresa" }
-  },
-  {
-    path: "/identity",
-    name: "identity-access",
-    component: pageNotFound,
-    meta: { title: "Page 404 not found" }
-  },
-  {
-    path: "/notifications",
-    name: "notifications-profile",
-    component: pageNotFound,
-    meta: { title: "Page 404 not found" }
+    component: PlansPage,
+    meta: { title: "Plans", requiredMode: "empresa", requiresAuth: true }
   },
   {
     path: "/tours",
@@ -130,7 +108,8 @@ const routes = [
   {
     path: "/iam",
     name: "iam",
-    redirect: { name: "iam-sign-in" },
+    component: () => import("./iam/presentation/views/iam-shell.vue"),
+    redirect: { name: "iam-sign-up" },
     children: iamRoutes
   },
   ...dashboardRoutes,
@@ -138,7 +117,7 @@ const routes = [
   ...profilesRoutes,
   {
     path: "/",
-    redirect: "/home"
+    redirect: "/iam/sign-up"
   },
   {
     path: "/:pathMatch(.*)*",
@@ -167,6 +146,11 @@ router.beforeEach((to, from, next) => {
   if (iamStore.isSignedIn && iamStore.currentRole) {
     const derivedMode = ROLE_TO_MODE[iamStore.currentRole];
     if (derivedMode && modeStore.mode !== derivedMode) modeStore.setMode(derivedMode);
+  }
+
+  // Authenticated users landing on auth screens go straight to home.
+  if (iamStore.isSignedIn && to.path.startsWith("/iam")) {
+    return next({ name: "home" });
   }
 
   // Buscar requiredMode en toda la cadena de rutas matched (padres e hijos)

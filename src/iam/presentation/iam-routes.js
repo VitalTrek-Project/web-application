@@ -7,8 +7,8 @@ const signUpForm = () => import('./views/sign-up-form.vue')
  * @type {import('vue-router').RouteRecordRaw[]}
  */
 const iamRoutes = [
-    { path: 'sign-in', name: 'iam-sign-in', component: signInForm, meta: { title: 'Sign-In' } },
-    { path: 'sign-up', name: 'iam-sign-up', component: signUpForm, meta: { title: 'Sign-Up' } }
+    { path: 'sign-up', name: 'iam-sign-up', component: signUpForm, meta: { title: 'Registro' } },
+    { path: 'sign-in', name: 'iam-sign-in', component: signInForm, meta: { title: 'Iniciar sesión' } }
 ];
 
 export default iamRoutes;

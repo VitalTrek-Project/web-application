@@ -5,6 +5,114 @@
     "cancel": "Cancel",
     "confirm": "Confirm"
   },
+  "iam": {
+    "sign-up": {
+      "eyebrow": "Sign up",
+      "title": "Create your account",
+      "profile-title": "Complete your profile",
+      "step": "Step {current} of {total}",
+      "role-label": "Account type",
+      "role-trekker": "I am a trekker",
+      "role-trekker-desc": "Explore routes and monitor my biometrics",
+      "role-agency": "I am a tour operator",
+      "role-agency-desc": "Publish tours, routes and manage groups safely",
+      "full-name": "Full name",
+      "full-name-placeholder": "Your name",
+      "email": "Email",
+      "email-placeholder": "email{'@'}example.com",
+      "password": "Password",
+      "password-placeholder": "At least 8 characters",
+      "phone": "Phone",
+      "emergency-phone": "Emergency phone",
+      "phone-placeholder": "+51 999 999 999",
+      "experience-level": "Experience level",
+      "select-placeholder": "Select...",
+      "emergency-note": "Your emergency phone is used exclusively for SOS alerts and is never shared.",
+      "ruc": "Company RUC",
+      "ruc-placeholder": "20XXXXXXXXX",
+      "region": "Main operating region",
+      "commercial-phone": "Business phone",
+      "commercial-phone-placeholder": "+51 (01) 999-9999",
+      "agency-description": "Agency description",
+      "agency-description-placeholder": "Brief description of your services and specialties...",
+      "choose-plan": "Choose your plan",
+      "recommended": "Recommended",
+      "continue": "Continue",
+      "guest": "Continue as guest",
+      "create-account": "Create account",
+      "back": "Back",
+      "have-account": "Already have an account?",
+      "sign-in-link": "Sign in",
+      "experience": {
+        "beginner": "Beginner",
+        "intermediate": "Intermediate",
+        "advanced": "Advanced"
+      },
+      "regions": {
+        "Lima": "Lima",
+        "Cusco": "Cusco",
+        "Arequipa": "Arequipa",
+        "Puno": "Puno",
+        "Ancash": "Ancash",
+        "Cajamarca": "Cajamarca",
+        "Other": "Other region"
+      },
+      "plans": {
+        "trekker": {
+          "explorer": {
+            "name": "Explorer",
+            "badge": "Free for everyone",
+            "description": "Everything essential to join a tour with basic monitoring.",
+            "price": "Free"
+          },
+          "recommended": {
+            "name": "Adventurer",
+            "badge": "The full experience",
+            "description": "For adventurers who want to record and relive every route.",
+            "price": "S/ 19 Monthly | 7-day free trial"
+          },
+          "expedition": {
+            "name": "Expedition",
+            "badge": "For frequent adventurers",
+            "description": "Multiple tours a year with priority support and alerts.",
+            "price": "S/ 39 Monthly"
+          }
+        },
+        "agency": {
+          "base": {
+            "name": "Base",
+            "badge": "For agencies getting started",
+            "description": "Publish tours, assign groups and manage core operations.",
+            "price": "S/ 299 Monthly"
+          },
+          "recommended": {
+            "name": "Pro",
+            "badge": "Full IoT operations",
+            "description": "Monitoring, devices and advanced tools for your operation.",
+            "price": "S/ 599 Monthly"
+          },
+          "enterprise": {
+            "name": "Enterprise",
+            "badge": "For large operators",
+            "description": "Multi-agency scale with dedicated support and custom plans.",
+            "price": "Custom"
+          }
+        }
+      }
+    },
+    "sign-in": {
+      "eyebrow": "Access",
+      "title": "Sign in",
+      "subtitle": "Enter your email and password to continue.",
+      "email": "Email",
+      "email-placeholder": "email{'@'}example.com",
+      "password": "Password",
+      "password-placeholder": "Your password",
+      "submit": "Sign in",
+      "no-account": "Don't have an account yet?",
+      "sign-up-link": "Sign up"
+    }
+  },
   "option": {
     "home": "Home",
     "about": "About",
@@ -42,7 +150,13 @@
     }
   },
   "sidebar": {
-    "sos": "! S.O.S."
+    "sos": "! S.O.S.",
+    "section": {
+      "main": "Main",
+      "operations": "Operations",
+      "engagement": "Community",
+      "account": "Account"
+    }
   },
   "mode-selector": {
     "label": "App mode",
@@ -831,7 +945,9 @@
     "sent-detail": "The agency has been notified. Stay in place if it is safe."
   },
   "profile": {
+    "context": "PROFILE",
     "title": "Profile",
+    "subtitle": "Personal information, documents and account preferences.",
     "tabs": {
       "profile": "My profile",
       "preferences": "My preferences"
@@ -956,6 +1072,21 @@
   },
   "errors": {
     "occurred": "Errors occurred"
+  },
+  "subscriptions": {
+    "eyebrow": "BILLING",
+    "title": "Plans and subscription",
+    "subtitle": "Manage your agency plan with Stripe Checkout.",
+    "current": "Current subscription",
+    "loading": "Loading subscription...",
+    "none": "No active subscription",
+    "plan": "Plan",
+    "status": "Status",
+    "start": "Start",
+    "end": "End",
+    "checkout": "Change or start a plan",
+    "choose-plan": "Choose a plan",
+    "start-checkout": "Go to checkout",
+    "cancel": "Cancel subscription"
   }
-
 }

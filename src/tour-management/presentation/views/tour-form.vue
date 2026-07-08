@@ -6,6 +6,7 @@ import { useToast } from "primevue/usetoast";
 
 import useTourManagementStore
   from "../../application/tourManagement.store.js";
+import useIamStore from "../../../iam/application/iam.store.js";
 import TourPanel from "../components/tour-panel.vue";
 
 const { t } = useI18n();
@@ -13,6 +14,7 @@ const route = useRoute();
 const router = useRouter();
 const toast = useToast();
 const store = useTourManagementStore();
+const iamStore = useIamStore();
 
 const loading = ref(false);
 
@@ -28,6 +30,8 @@ const form = reactive({
   difficulty: 'easy',
   status: 'available',
   capacity: 1,
+  estimatedDurationMinutes: 60,
+  distanceKm: 0,
   checkpoints: []
 });
 
@@ -61,6 +65,8 @@ const fillForm = (tour) => {
   form.difficulty = tour.difficulty ?? 'easy';
   form.status = tour.status ?? 'available';
   form.capacity = Number(tour.capacity ?? 1);
+  form.estimatedDurationMinutes = Number(tour.estimatedDurationMinutes ?? 60);
+  form.distanceKm = Number(tour.distanceKm ?? 0);
   form.checkpoints = tour.checkpoints ?? [];
 };
 
@@ -123,6 +129,9 @@ const saveTour = async () => {
     difficulty: form.difficulty,
     status: form.status,
     capacity: Number(form.capacity),
+    estimatedDurationMinutes: Number(form.estimatedDurationMinutes),
+    distanceKm: Number(form.distanceKm),
+    // Kept locally for UX; platform CreateTourResource does not persist checkpoints yet.
     checkpoints: normalizeCheckpoints()
   };
 
@@ -158,7 +167,10 @@ const saveTour = async () => {
 };
 
 onMounted(async () => {
-  if (!isEditMode.value) return;
+  if (!isEditMode.value) {
+    form.agencyId = iamStore.currentAgencyId ?? '';
+    return;
+  }
 
   loading.value = true;
 

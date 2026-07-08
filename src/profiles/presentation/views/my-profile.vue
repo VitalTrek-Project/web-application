@@ -127,36 +127,36 @@ const emergencyContacts = computed(() => profile.value?.emergencyContacts ?? [])
       <template v-else>
         <CompletenessMeter :completeness="completeness" />
 
-        <section class="support-info-card">
+        <section class="support-info-card profile-section">
           <h3>{{ t("profile.sections.personal") }}</h3>
           <div class="p-fluid profile-form-grid">
             <div class="field">
               <label for="fullName">{{ t("profile.fields.fullName") }}</label>
-              <pv-input-text id="fullName" v-model="personalForm.fullName" />
+              <pv-input-text id="fullName" v-model="personalForm.fullName" class="w-full" />
             </div>
             <div class="field">
               <label for="photoUrl">{{ t("profile.fields.photoUrl") }}</label>
-              <pv-input-text id="photoUrl" v-model="personalForm.photoUrl" :placeholder="t('profile.fields.photoUrl-placeholder')" />
+              <pv-input-text id="photoUrl" v-model="personalForm.photoUrl" class="w-full" :placeholder="t('profile.fields.photoUrl-placeholder')" />
             </div>
             <div class="field">
               <label for="dateOfBirth">{{ t("profile.fields.dateOfBirth") }}</label>
-              <pv-date-picker id="dateOfBirth" v-model="personalForm.dateOfBirth" date-format="yy-mm-dd" show-icon />
+              <pv-date-picker id="dateOfBirth" v-model="personalForm.dateOfBirth" class="w-full" date-format="yy-mm-dd" show-icon />
             </div>
             <div class="field">
               <label for="nationality">{{ t("profile.fields.nationality") }}</label>
-              <pv-input-text id="nationality" v-model="personalForm.nationality" />
+              <pv-input-text id="nationality" v-model="personalForm.nationality" class="w-full" />
             </div>
             <div class="field">
               <label for="phoneNumber">{{ t("profile.fields.phoneNumber") }}</label>
-              <pv-input-text id="phoneNumber" v-model="personalForm.phoneNumber" />
+              <pv-input-text id="phoneNumber" v-model="personalForm.phoneNumber" class="w-full" />
             </div>
             <div class="field">
               <label for="preferredLanguage">{{ t("profile.fields.preferredLanguage") }}</label>
-              <pv-input-text id="preferredLanguage" v-model="personalForm.preferredLanguage" :placeholder="t('profile.fields.preferredLanguage-placeholder')" />
+              <pv-input-text id="preferredLanguage" v-model="personalForm.preferredLanguage" class="w-full" :placeholder="t('profile.fields.preferredLanguage-placeholder')" />
             </div>
-            <div class="field">
+            <div class="field profile-form-grid__span-2">
               <label for="experienceLevel">{{ t("profile.fields.experienceLevel") }}</label>
-              <pv-select id="experienceLevel" v-model="personalForm.experienceLevel" :options="experienceLevels">
+              <pv-select id="experienceLevel" v-model="personalForm.experienceLevel" :options="experienceLevels" class="w-full experience-select">
                 <template #option="{ option }">{{ t(`profile.experience-levels.${option}`) }}</template>
                 <template #value="{ value }">{{ t(`profile.experience-levels.${value}`) }}</template>
               </pv-select>
@@ -165,26 +165,26 @@ const emergencyContacts = computed(() => profile.value?.emergencyContacts ?? [])
           <pv-button :label="t('common.save')" :disabled="!personalForm.fullName" @click="savePersonalData" />
         </section>
 
-        <section class="support-info-card">
+        <section class="support-info-card profile-section">
           <h3>{{ t("profile.sections.document") }}</h3>
           <p class="support-meta">{{ t("profile.sections.document-note") }}</p>
-          <div class="p-fluid profile-form-grid">
+          <div class="p-fluid profile-form-grid profile-form-grid--2">
             <div class="field">
               <label for="documentType">{{ t("profile.fields.documentType") }}</label>
-              <pv-select id="documentType" v-model="documentForm.type" :options="documentTypes">
+              <pv-select id="documentType" v-model="documentForm.type" :options="documentTypes" class="w-full">
                 <template #option="{ option }">{{ t(`profile.document-types.${option}`) }}</template>
                 <template #value="{ value }">{{ t(`profile.document-types.${value}`) }}</template>
               </pv-select>
             </div>
             <div class="field">
               <label for="documentNumber">{{ t("profile.fields.documentNumber") }}</label>
-              <pv-input-text id="documentNumber" v-model="documentForm.number" />
+              <pv-input-text id="documentNumber" v-model="documentForm.number" class="w-full" />
             </div>
           </div>
           <pv-button :label="t('common.save')" :disabled="!documentForm.number" @click="saveDocument" />
         </section>
 
-        <section class="support-info-card">
+        <section class="support-info-card profile-section">
           <h3>{{ t("profile.sections.emergency-contacts") }}</h3>
           <p class="support-meta">{{ t("profile.sections.emergency-contacts-note") }}</p>
           <ul v-if="emergencyContacts.length" class="emergency-contact-list">
@@ -207,25 +207,25 @@ const emergencyContacts = computed(() => profile.value?.emergencyContacts ?? [])
         <section class="support-info-card medical-card">
           <h3>{{ t("profile.sections.medical") }}</h3>
           <p class="support-meta medical-disclaimer">{{ t("profile.sections.medical-note") }}</p>
-          <div class="p-fluid profile-form-grid">
-            <div class="field">
+          <div class="p-fluid medical-form-grid">
+            <div class="field medical-form-grid__blood">
               <label for="bloodType">{{ t("profile.fields.bloodType") }}</label>
-              <pv-select id="bloodType" v-model="medicalForm.bloodType" :options="bloodTypes">
+              <pv-select id="bloodType" v-model="medicalForm.bloodType" :options="bloodTypes" class="w-full">
                 <template #option="{ option }">{{ t(`profile.blood-types.${option}`) }}</template>
                 <template #value="{ value }">{{ t(`profile.blood-types.${value}`) }}</template>
               </pv-select>
             </div>
             <div class="field">
               <label for="allergies">{{ t("profile.fields.allergies") }}</label>
-              <pv-textarea id="allergies" v-model="medicalForm.allergies" rows="2" />
+              <pv-textarea id="allergies" v-model="medicalForm.allergies" rows="3" auto-resize class="w-full" />
             </div>
             <div class="field">
               <label for="medicalConditions">{{ t("profile.fields.medicalConditions") }}</label>
-              <pv-textarea id="medicalConditions" v-model="medicalForm.medicalConditions" rows="2" />
+              <pv-textarea id="medicalConditions" v-model="medicalForm.medicalConditions" rows="3" auto-resize class="w-full" />
             </div>
-            <div class="field">
+            <div class="field medical-form-grid__medications">
               <label for="medications">{{ t("profile.fields.medications") }}</label>
-              <pv-textarea id="medications" v-model="medicalForm.medications" rows="2" />
+              <pv-textarea id="medications" v-model="medicalForm.medications" rows="3" auto-resize class="w-full" />
             </div>
           </div>
           <pv-button :label="t('common.save')" @click="saveMedicalInfo" />
@@ -242,17 +242,56 @@ const emergencyContacts = computed(() => profile.value?.emergencyContacts ?? [])
 </template>
 
 <style scoped>
-.profile-form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px 18px;
-  margin-bottom: 16px;
+.profile-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-@media (max-width: 640px) {
-  .profile-form-grid {
-    grid-template-columns: 1fr;
-  }
+.profile-form-grid,
+.medical-form-grid {
+  display: grid;
+  gap: 18px 20px;
+  margin: 14px 0 18px;
+  align-items: start;
+}
+
+.profile-form-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.profile-form-grid--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.profile-form-grid .field,
+.medical-form-grid .field {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.profile-form-grid .field label,
+.medical-form-grid .field label {
+  color: #cbd5e1;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.profile-form-grid__span-2 {
+  grid-column: span 2;
+  max-width: 420px;
+}
+
+.experience-select,
+.profile-form-grid :deep(.p-inputtext),
+.profile-form-grid :deep(.p-select),
+.profile-form-grid :deep(.p-datepicker),
+.medical-form-grid :deep(.p-select),
+.medical-form-grid :deep(.p-textarea),
+.medical-form-grid :deep(textarea) {
+  width: 100%;
 }
 
 .medical-card {
@@ -261,6 +300,46 @@ const emergencyContacts = computed(() => profile.value?.emergencyContacts ?? [])
 
 .medical-disclaimer {
   color: #fbbf24;
+  margin-bottom: 4px;
+}
+
+.medical-form-grid {
+  grid-template-columns: 1fr 1fr;
+}
+
+.medical-form-grid__blood {
+  grid-column: 1 / -1;
+  max-width: 320px;
+}
+
+.medical-form-grid__medications {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 1100px) {
+  .profile-form-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .profile-form-grid__span-2 {
+    grid-column: span 2;
+    max-width: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .profile-form-grid,
+  .profile-form-grid--2,
+  .medical-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-form-grid__span-2,
+  .medical-form-grid__blood,
+  .medical-form-grid__medications {
+    grid-column: auto;
+    max-width: none;
+  }
 }
 
 .emergency-contact-list {

@@ -3,126 +3,178 @@ import { computed, ref } from "vue";
 
 import { TourManagementApi } from "../infrastructure/tour-management-api.js";
 import { TourAssembler } from "../infrastructure/tour.assembler.js";
+import useIamStore from "../../iam/application/iam.store.js";
+import { getLocalAgencyId } from "../../shared/infrastructure/local-identity.js";
 
 const tourManagementApi = new TourManagementApi();
+
+function normalizeAssignmentIds(data) {
+    if (!Array.isArray(data)) return [];
+    return data
+        .map((item) => {
+            if (item == null) return null;
+            if (typeof item === "string" || typeof item === "number") return String(item);
+            return String(item.touristId ?? item.id ?? "");
+        })
+        .filter(Boolean);
+}
+
+function toCreateTourPayload(tour) {
+    const iam = useIamStore();
+    return {
+        agencyId: tour.agencyId || iam.currentAgencyId,
+        title: tour.title,
+        description: tour.description,
+        difficulty: tour.difficulty,
+        capacity: Number(tour.capacity ?? 1),
+        estimatedDurationMinutes: Number(tour.estimatedDurationMinutes ?? 0),
+        distanceKm: Number(tour.distanceKm ?? 0)
+    };
+}
+
+function toUpdateTourPayload(tour) {
+    return {
+        title: tour.title,
+        description: tour.description
+    };
+}
 
 const useTourManagementStore = defineStore(
     'tour-management',
     () => {
-
         const tours = ref([]);
-
         const tourists = ref([]);
-
         const selectedTour = ref(null);
-
         const assignedTourists = ref([]);
-
         const errors = ref([]);
-
         const toursLoaded = ref(false);
-
         const touristsLoaded = ref(false);
 
-        /**
-         * COMPUTED
-         */
+        const toursCount = computed(() =>
+            toursLoaded.value ? tours.value.length : 0
+        );
 
-        const toursCount = computed(() => {
-            return toursLoaded.value
-                ? tours.value.length
-                : 0;
-        });
+        const availableTours = computed(() =>
+            tours.value.filter((tour) =>
+                ['available', 'published', 'Available', 'Published'].includes(tour.status)
+            )
+        );
 
-        const availableTours = computed(() => {
-
-            return tours.value.filter(
-                tour => tour.status === 'available'
+        async function hydrateAssignments(tourList) {
+            const hydrated = await Promise.all(
+                tourList.map(async (tour) => {
+                    try {
+                        const response = await tourManagementApi.getAssignments(tour.id);
+                        tour.assignedTourists = normalizeAssignmentIds(response.data);
+                    } catch {
+                        tour.assignedTourists = Array.isArray(tour.assignedTourists)
+                            ? tour.assignedTourists
+                            : [];
+                    }
+                    return tour;
+                })
             );
-        });
-
-        /**
-         * METHODS
-         */
-
-        function fetchTours() {
-            tourManagementApi.getTours()
-                .then(response => {
-                    tours.value = TourAssembler.toEntitiesFromResponse(response);
-                    toursLoaded.value = true;
-                })
-                .catch(error => {
-                    errors.value.push(error);
-                })
+            return hydrated;
         }
 
-        function fetchTourists() {
+        async function fetchTours({hydrate = true, searchTerm = ""} = {}) {
+            const iam = useIamStore();
+            const agencyId = iam.currentAgencyId || getLocalAgencyId();
+            const query = String(searchTerm ?? "").trim();
+            // Platform search rejects empty term; catalog browse uses a broad matcher.
+            const CATALOG_SEARCH_TERM = "a";
 
-            return tourManagementApi.getTourists()
+            try {
+                let response = null;
 
-                .then(response => {
+                if (agencyId && !query) {
+                    response = await tourManagementApi.getToursByAgency(agencyId);
+                } else {
+                    response = await tourManagementApi.searchTours(query || CATALOG_SEARCH_TERM);
+                }
 
-                    tourists.value = response.data instanceof Array
-                        ? response.data
-                        : [response.data];
+                let list = TourAssembler.toEntitiesFromResponse(response);
+                if (hydrate) {
+                    list = await hydrateAssignments(list);
+                }
+                tours.value = list;
+                toursLoaded.value = true;
+                return list;
+            } catch (error) {
+                errors.value.push(error);
+                tours.value = [];
+                toursLoaded.value = true;
+                return tours.value;
+            }
+        }
 
-                    touristsLoaded.value = true;
-
-                    return tourists.value;
-                })
-
-                .catch(error => {
-
-                    errors.value.push(error);
-
-                    throw error;
-                });
+        async function fetchTourists() {
+            try {
+                const response = await tourManagementApi.getUsers();
+                const resources = Array.isArray(response.data)
+                    ? response.data
+                    : (response.data?.users ?? []);
+                tourists.value = resources
+                    .filter((user) => String(user.role ?? '').toLowerCase() === 'tourist')
+                    .map((user) => ({
+                        id: user.id,
+                        name: user.username,
+                        username: user.username,
+                        role: user.role
+                    }));
+                touristsLoaded.value = true;
+                return tourists.value;
+            } catch (error) {
+                errors.value.push(error);
+                throw error;
+            }
         }
 
         function fetchTourById(id) {
             return tourManagementApi.getTourById(id)
-                .then(response => {
-                    selectedTour.value =
-                        TourAssembler.toEntityFromResource(
-                            response.data
-                        );
+                .then(async (response) => {
+                    const tour = TourAssembler.toEntityFromResource(response.data);
+                    try {
+                        const assignments = await tourManagementApi.getAssignments(id);
+                        tour.assignedTourists = normalizeAssignmentIds(assignments.data);
+                    } catch {
+                        tour.assignedTourists = [];
+                    }
+                    selectedTour.value = tour;
                     return selectedTour.value;
                 })
-                .catch(error => {
+                .catch((error) => {
                     errors.value.push(error);
                     throw error;
                 });
         }
 
         function addTour(tour) {
-
-            return tourManagementApi.createTour(tour)
-                .then(response => {
-                    const newTour =
-                        TourAssembler.toEntityFromResource(
-                            response.data
-                        );
+            return tourManagementApi.createTour(toCreateTourPayload(tour))
+                .then((response) => {
+                    const newTour = TourAssembler.toEntityFromResource(response.data);
+                    newTour.assignedTourists = [];
+                    newTour.checkpoints = tour.checkpoints ?? [];
                     tours.value.push(newTour);
                     return newTour;
                 })
-
-                .catch(error => {
+                .catch((error) => {
                     errors.value.push(error);
                     throw error;
                 });
         }
 
         function updateTour(tour) {
-            return tourManagementApi.updateTour(tour.id, tour)
-                .then(response => {
-                    const updatedTour =
-                        TourAssembler.toEntityFromResource(
-                            response.data
-                        );
-                    const index =
-                        tours.value.findIndex(
-                            t => String(t.id) === String(updatedTour.id)
-                        );
+            return tourManagementApi.updateTour(tour.id, toUpdateTourPayload(tour))
+                .then((response) => {
+                    const updatedTour = TourAssembler.toEntityFromResource(
+                        response.data ?? {...tour, ...toUpdateTourPayload(tour)}
+                    );
+                    updatedTour.assignedTourists = tour.assignedTourists ?? [];
+                    updatedTour.checkpoints = tour.checkpoints ?? [];
+                    const index = tours.value.findIndex(
+                        (t) => String(t.id) === String(updatedTour.id)
+                    );
                     if (index !== -1) {
                         tours.value[index] = updatedTour;
                     } else {
@@ -131,244 +183,122 @@ const useTourManagementStore = defineStore(
                     selectedTour.value = updatedTour;
                     return updatedTour;
                 })
-                .catch(error => {
+                .catch((error) => {
                     errors.value.push(error);
                     throw error;
                 });
         }
 
         function deleteTour(id) {
-
-            tourManagementApi.deleteTour(id)
-
+            return tourManagementApi.deleteTour(id)
                 .then(() => {
-
-                    const index =
-                        tours.value.findIndex(
-                            t => t.id === id
-                        );
-
-                    if (index !== -1) {
-
-                        tours.value.splice(index, 1);
-                    }
+                    const index = tours.value.findIndex(
+                        (t) => String(t.id) === String(id)
+                    );
+                    if (index !== -1) tours.value.splice(index, 1);
                 })
-
-                .catch(error => {
-
+                .catch((error) => {
                     errors.value.push(error);
-
+                    throw error;
                 });
         }
 
         function duplicateTour(id) {
-
-            const tour =
-                tours.value.find(t => t.id === id);
-
-            if (!tour) return;
-
-            const duplicatedTour = {
-
-                ...tour,
-
-                id: null,
-
-                title: `${tour.title} Copy`
-            };
-
-            addTour(duplicatedTour);
+            return tourManagementApi.duplicateTour(id)
+                .then(async (response) => {
+                    const duplicated = TourAssembler.toEntityFromResource(response.data);
+                    duplicated.assignedTourists = [];
+                    tours.value.push(duplicated);
+                    return duplicated;
+                })
+                .catch((error) => {
+                    errors.value.push(error);
+                    throw error;
+                });
         }
 
         function assignTourist(tourId, touristId) {
-
             if (!tourId || !touristId) {
-
-                return Promise.reject(
-                    new Error('Tour id and tourist id are required.')
-                );
+                return Promise.reject(new Error('Tour id and tourist id are required.'));
             }
 
-            const tour =
-                tours.value.find(
-                    item => String(item.id) === String(tourId)
-                );
-
-            if (!tour) {
-
-                return Promise.reject(
-                    new Error('Tour not found.')
-                );
-            }
-
-            const currentAssignedTourists =
-                Array.isArray(tour.assignedTourists)
-                    ? tour.assignedTourists
-                    : [];
-
-            const alreadyAssigned =
-                currentAssignedTourists.some(
-                    id => String(id) === String(touristId)
-                );
-
-            if (alreadyAssigned) {
-
-                return Promise.resolve(tour);
-            }
-
-            const updatedTour = {
-                ...tour,
-                assignedTourists: [
-                    ...currentAssignedTourists,
-                    touristId
-                ]
-            };
-
-            return tourManagementApi.assignTourist(
-                tourId,
-                updatedTour
-            )
-
-                .then(response => {
-
-                    const index =
-                        tours.value.findIndex(
-                            item => String(item.id) === String(tourId)
-                        );
-
+            return tourManagementApi.assignTourist(tourId, touristId)
+                .then(() => {
+                    const index = tours.value.findIndex(
+                        (item) => String(item.id) === String(tourId)
+                    );
                     if (index !== -1) {
-
-                        tours.value[index] = {
-                            ...tours.value[index],
-                            assignedTourists: updatedTour.assignedTourists
-                        };
+                        const current = Array.isArray(tours.value[index].assignedTourists)
+                            ? tours.value[index].assignedTourists
+                            : [];
+                        if (!current.some((id) => String(id) === String(touristId))) {
+                            tours.value[index] = {
+                                ...tours.value[index],
+                                assignedTourists: [...current, touristId]
+                            };
+                        }
                     }
-
-                    if (
-                        !assignedTourists.value.some(
-                            id => String(id) === String(touristId)
-                        )
-                    ) {
+                    if (!assignedTourists.value.some((id) => String(id) === String(touristId))) {
                         assignedTourists.value.push(touristId);
                     }
-
-                    return response.data;
                 })
-
-                .catch(error => {
-
+                .catch((error) => {
                     errors.value.push(error);
-
                     throw error;
                 });
         }
 
         function unassignTourist(tourId, touristId) {
-
             if (!tourId || !touristId) {
-
-                return Promise.reject(
-                    new Error('Tour id and tourist id are required.')
-                );
+                return Promise.reject(new Error('Tour id and tourist id are required.'));
             }
 
-            const tour =
-                tours.value.find(
-                    item => String(item.id) === String(tourId)
-                );
-
-            if (!tour) {
-
-                return Promise.reject(
-                    new Error('Tour not found.')
-                );
-            }
-
-            const currentAssignedTourists =
-                Array.isArray(tour.assignedTourists)
-                    ? tour.assignedTourists
-                    : [];
-
-            const updatedTour = {
-                ...tour,
-                assignedTourists: currentAssignedTourists.filter(
-                    id => String(id) !== String(touristId)
-                )
-            };
-
-            return tourManagementApi.assignTourist(
-                tourId,
-                updatedTour
-            )
-
-                .then(response => {
-
-                    const index =
-                        tours.value.findIndex(
-                            item => String(item.id) === String(tourId)
-                        );
-
+            return tourManagementApi.unassignTourist(tourId, touristId)
+                .then(() => {
+                    const index = tours.value.findIndex(
+                        (item) => String(item.id) === String(tourId)
+                    );
                     if (index !== -1) {
-
+                        const current = Array.isArray(tours.value[index].assignedTourists)
+                            ? tours.value[index].assignedTourists
+                            : [];
                         tours.value[index] = {
                             ...tours.value[index],
-                            assignedTourists: updatedTour.assignedTourists
+                            assignedTourists: current.filter(
+                                (id) => String(id) !== String(touristId)
+                            )
                         };
                     }
-
-                    assignedTourists.value =
-                        assignedTourists.value.filter(
-                            id => String(id) !== String(touristId)
-                        );
-
-                    return response.data;
+                    assignedTourists.value = assignedTourists.value.filter(
+                        (id) => String(id) !== String(touristId)
+                    );
                 })
-
-                .catch(error => {
-
+                .catch((error) => {
                     errors.value.push(error);
-
                     throw error;
                 });
         }
 
         function changeTouristTour(currentTourId, newTourId, touristId) {
-
             if (!currentTourId || !newTourId || !touristId) {
-
                 return Promise.reject(
                     new Error('Current tour id, new tour id and tourist id are required.')
                 );
             }
 
             return unassignTourist(currentTourId, touristId)
-
-                .then(() =>
-                    assignTourist(newTourId, touristId)
-                )
-
-                .catch(error => {
-
+                .then(() => assignTourist(newTourId, touristId))
+                .catch((error) => {
                     errors.value.push(error);
-
                     throw error;
                 });
         }
 
         function searchTours(term) {
+            const normalizedTerm = String(term ?? '').trim().toLowerCase();
+            if (!normalizedTerm) return tours.value;
 
-            const normalizedTerm =
-                String(term ?? '')
-                    .trim()
-                    .toLowerCase();
-
-            if (!normalizedTerm) {
-
-                return tours.value;
-            }
-
-            return tours.value.filter(tour => {
-
+            return tours.value.filter((tour) => {
                 const searchableFields = [
                     tour.id,
                     tour.agencyId,
@@ -378,18 +308,13 @@ const useTourManagementStore = defineStore(
                     tour.status,
                     tour.capacity
                 ];
-
-                return searchableFields.some(field =>
-                    String(field ?? '')
-                        .toLowerCase()
-                        .includes(normalizedTerm)
+                return searchableFields.some((field) =>
+                    String(field ?? '').toLowerCase().includes(normalizedTerm)
                 );
             });
         }
 
         return {
-
-            // state
             tours,
             tourists,
             selectedTour,
@@ -397,12 +322,8 @@ const useTourManagementStore = defineStore(
             errors,
             toursLoaded,
             touristsLoaded,
-
-            // computed
             toursCount,
             availableTours,
-
-            // methods
             fetchTours,
             fetchTourists,
             fetchTourById,

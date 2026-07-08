@@ -5,6 +5,114 @@
     "cancel": "Cancelar",
     "confirm": "Confirmar"
   },
+  "iam": {
+    "sign-up": {
+      "eyebrow": "Registro",
+      "title": "Crea tu cuenta",
+      "profile-title": "Completa tu perfil",
+      "step": "Paso {current} de {total}",
+      "role-label": "Tipo de cuenta",
+      "role-trekker": "Soy trekker",
+      "role-trekker-desc": "Explorar rutas y monitorear mis biométricos",
+      "role-agency": "Soy operador turístico",
+      "role-agency-desc": "Publicar tours, rutas y gestionar grupos con seguridad",
+      "full-name": "Nombre completo",
+      "full-name-placeholder": "Tu nombre",
+      "email": "Correo electrónico",
+      "email-placeholder": "correo{'@'}ejemplo.com",
+      "password": "Contraseña",
+      "password-placeholder": "Mínimo 8 caracteres",
+      "phone": "Teléfono",
+      "emergency-phone": "Teléfono de emergencia",
+      "phone-placeholder": "+51 999 999 999",
+      "experience-level": "Nivel de experiencia",
+      "select-placeholder": "Selecciona...",
+      "emergency-note": "Tu teléfono de emergencia se usará exclusivamente para alertas SOS y nunca será compartido.",
+      "ruc": "RUC de la empresa",
+      "ruc-placeholder": "20XXXXXXXXX",
+      "region": "Región principal de operación",
+      "commercial-phone": "Teléfono comercial",
+      "commercial-phone-placeholder": "+51 (01) 999-9999",
+      "agency-description": "Descripción de la agencia",
+      "agency-description-placeholder": "Breve descripción de sus servicios y especialidades...",
+      "choose-plan": "Elige tu plan",
+      "recommended": "Recomendado",
+      "continue": "Continuar",
+      "guest": "Continuar como invitado",
+      "create-account": "Crear cuenta",
+      "back": "Atrás",
+      "have-account": "¿Ya tienes cuenta?",
+      "sign-in-link": "Inicia sesión",
+      "experience": {
+        "beginner": "Principiante",
+        "intermediate": "Intermedio",
+        "advanced": "Avanzado"
+      },
+      "regions": {
+        "Lima": "Lima",
+        "Cusco": "Cusco",
+        "Arequipa": "Arequipa",
+        "Puno": "Puno",
+        "Ancash": "Ancash",
+        "Cajamarca": "Cajamarca",
+        "Other": "Otra región"
+      },
+      "plans": {
+        "trekker": {
+          "explorer": {
+            "name": "Explorer",
+            "badge": "Gratis para todos",
+            "description": "Todo lo esencial para participar en un tour con monitoreo básico.",
+            "price": "Gratis"
+          },
+          "recommended": {
+            "name": "Adventurer",
+            "badge": "La experiencia completa",
+            "description": "Para aventureros que quieren registrar y revivir cada ruta.",
+            "price": "S/ 19 Mensual | Prueba gratis 7 días"
+          },
+          "expedition": {
+            "name": "Expedition",
+            "badge": "Para aventureros frecuentes",
+            "description": "Múltiples tours al año con prioridad en soporte y alertas.",
+            "price": "S/ 39 Mensual"
+          }
+        },
+        "agency": {
+          "base": {
+            "name": "Base",
+            "badge": "Para agencias que empiezan",
+            "description": "Publica tours, asigna grupos y gestiona operaciones esenciales.",
+            "price": "S/ 299 Mensual"
+          },
+          "recommended": {
+            "name": "Pro",
+            "badge": "Operación IoT completa",
+            "description": "Monitoreo, dispositivos y herramientas avanzadas para tu operación.",
+            "price": "S/ 599 Mensual"
+          },
+          "enterprise": {
+            "name": "Enterprise",
+            "badge": "Para operadores grandes",
+            "description": "Escala multi-agencia con soporte dedicado y planes a medida.",
+            "price": "Custom"
+          }
+        }
+      }
+    },
+    "sign-in": {
+      "eyebrow": "Acceso",
+      "title": "Inicia sesión",
+      "subtitle": "Entra con tu correo y contraseña para continuar.",
+      "email": "Correo electrónico",
+      "email-placeholder": "correo{'@'}ejemplo.com",
+      "password": "Contraseña",
+      "password-placeholder": "Tu contraseña",
+      "submit": "Iniciar sesión",
+      "no-account": "¿Aún no tienes cuenta?",
+      "sign-up-link": "Regístrate"
+    }
+  },
   "option": {
     "home": "Inicio",
     "about": "Acerca de",
@@ -29,7 +137,7 @@
   "app-shell": {
     "context": "VITALTREK",
     "title": "Plataforma",
-    "subtitle": "Explora rutas, tours, monitoreo y más desde un solo lugar."
+    "subtitle": "Opera tours, monitoreo, fidelización y soporte desde un solo lugar."
   },
   "monitoring": {
     "context": "MONITOREO",
@@ -42,7 +150,13 @@
     }
   },
   "sidebar": {
-    "sos": "! S.O.S."
+    "sos": "! S.O.S.",
+    "section": {
+      "main": "Principal",
+      "operations": "Operaciones",
+      "engagement": "Comunidad",
+      "account": "Cuenta"
+    }
   },
   "mode-selector": {
     "label": "Modo de uso",
@@ -830,7 +944,9 @@
     "sent-detail": "La agencia fue notificada. Mantente en tu posición si es seguro."
   },
   "profile": {
+    "context": "PERFIL",
     "title": "Perfil",
+    "subtitle": "Información personal, documentos y preferencias de tu cuenta.",
     "tabs": {
       "profile": "Mi perfil",
       "preferences": "Mis preferencias"
@@ -955,5 +1071,21 @@
   },
   "errors": {
     "occurred": "Ocurrieron errores"
+  },
+  "subscriptions": {
+    "eyebrow": "FACTURACIÓN",
+    "title": "Planes y suscripción",
+    "subtitle": "Administra el plan de tu agencia con Stripe Checkout.",
+    "current": "Suscripción actual",
+    "loading": "Cargando suscripción...",
+    "none": "Sin suscripción activa",
+    "plan": "Plan",
+    "status": "Estado",
+    "start": "Inicio",
+    "end": "Fin",
+    "checkout": "Cambiar o iniciar plan",
+    "choose-plan": "Elige un plan",
+    "start-checkout": "Ir a checkout",
+    "cancel": "Cancelar suscripción"
   }
 }

@@ -20,11 +20,13 @@ export class UserAssembler {
      * @returns {User[]} Collection of user entities.
      */
     static toEntitiesFromResponse(response) {
-        if (response.status !== 200) {
+        if (response.status < 200 || response.status >= 300) {
             console.error(`${response.status}, ${response.statusText}`);
             return [];
         }
-        let resources = response.data instanceof Array ? response.data : response.data['users'];
+        const resources = response.data instanceof Array
+            ? response.data
+            : (response.data?.users ?? [response.data]).filter(Boolean);
 
         return resources.map(resource => this.toEntityFromResource(resource));
     }

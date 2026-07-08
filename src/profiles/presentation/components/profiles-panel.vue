@@ -19,7 +19,7 @@ import ProfilesNavTabs from "./profiles-nav-tabs.vue";
 }
 
 .profiles-page {
-  width: min(560px, 100%);
+  width: min(1160px, 100%);
 }
 
 @media (max-width: 800px) {

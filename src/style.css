@@ -52,7 +52,7 @@ body {
 .iot-page,
 .support-page,
 .dashboard-page {
-  width: min(1080px, 100%);
+  width: min(1280px, 100%);
   margin: 0 auto;
   text-align: left;
 }
@@ -1641,7 +1641,7 @@ body {
 
 /* Platform — Home, Routes, Community */
 .platform-page {
-  width: min(1080px, 100%);
+  width: min(1280px, 100%);
   margin: 0 auto;
 }
 

@@ -11,10 +11,14 @@ export class SignUpAssembler {
      * @returns {SignUpResource|null} Parsed resource when the response is successful; otherwise null.
      */
     static toResourceFromResponse(response) {
-        if (response.status !== 200) {
+        if (response.status < 200 || response.status >= 300) {
             console.error(`${response.status}, ${response.statusText}`);
             return null;
         }
-        return new SignUpResource(response.data);
+        const data = response.data ?? {};
+        const message = typeof data.message === "string"
+            ? data.message
+            : data.message?.value ?? data.message?.name ?? "User created successfully";
+        return new SignUpResource({message});
     }
 }

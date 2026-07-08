@@ -14,7 +14,7 @@ export class CheckpointAssembler {
 
     static toEntitiesFromResponse(response) {
 
-        if (response.status !== 200) {
+        if (response.status < 200 || response.status >= 300) {
             console.error(`${response.status} - ${response.statusText}`);
             return [];
         }
@@ -22,7 +22,7 @@ export class CheckpointAssembler {
         const resources =
             response.data instanceof Array
                 ? response.data
-                : [response.data];
+                : [response.data].filter(Boolean);
 
         return resources.map(resource =>
             this.toEntityFromResource(resource)

@@ -23,7 +23,7 @@ defineProps({
 }
 
 .loyalty-page--tourist {
-  width: min(560px, 100%);
+  width: min(1080px, 100%);
 }
 
 @media (max-width: 800px) {

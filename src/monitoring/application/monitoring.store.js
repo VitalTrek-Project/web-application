@@ -2,241 +2,228 @@ import {defineStore} from "pinia";
 import {computed, ref} from "vue";
 import {MonitoringApi} from "../infrastructure/monitoring-api.js";
 import {SignAssembler} from "../infrastructure/sign.assembler.js";
-import{TouristAssembler} from "../infrastructure/tourist.assembler.js";
-import{AlertAssembler} from "../infrastructure/alert.assembler.js";
-
-import {Sign} from "../domain/model/sign.entity.js";
-import {Tourist} from "../domain/model/tourist.entity.js";
-import {Alert} from "../domain/model/alert.entity.js";
-
+import {TouristAssembler} from "../infrastructure/tourist.assembler.js";
+import {AlertAssembler} from "../infrastructure/alert.assembler.js";
 
 const monitoringApi = new MonitoringApi();
+const DEFAULT_EXPEDITION_ID_KEY = "vitaltrek_monitoring_expedition_id";
+
+function resolveExpeditionId(explicitId) {
+    if (explicitId != null && explicitId !== "") return explicitId;
+    const stored = localStorage.getItem(DEFAULT_EXPEDITION_ID_KEY);
+    return stored || null;
+}
 
 /**
- * Reactive store that exposes Monitoring commands and queries.
- *
- * @returns {Object} Reactive Monitoring state and use-case actions.
+ * Reactive store that exposes Monitoring commands and queries against VitalTrek Platform.
  */
 const useMonitoringStore = defineStore('monitoring', () => {
-    /**
-     * List of sign entities.
-     * @type {import('vue').Ref<Sign[]>}
-     */
     const signs = ref([]);
-    /**
-     * List of tourist entities.
-     * @type {import('vue').Ref<Tourist[]>}
-     */
     const tourists = ref([]);
-    /**
-     * List of errors encountered during API operations.
-     * @type {import('vue').Ref<Error[]>}
-     */
+    const alerts = ref([]);
+    const locations = ref([]);
+    const incidents = ref([]);
     const errors = ref([]);
-    /**
-     * Whether signs have been loaded from the API.
-     * @type {import('vue').Ref<boolean>}
-     */
     const signsLoaded = ref(false);
-    /**
-     * Whether tourists have been loaded from the API.
-     * @type {import('vue').Ref<boolean>}
-     */
     const touristsLoaded = ref(false);
-    /**
-     * Number of loaded signs.
-     * @type {import('vue').ComputedRef<number>}
-     */
-    const signsCount = computed(() => {
-        return signsLoaded ? signs.value.length : 0;
-    });
-    /**
-     * Number of loaded tourists.
-     * @type {import('vue').ComputedRef<number>}
-     */
+    const alertsLoaded = ref(false);
+    const currentExpeditionId = ref(resolveExpeditionId());
 
-    const touristsCount = computed(() => {
-        return touristsLoaded ? signs.value.length : 0;
-    });
-    
-    /**
-     * Loads signs from infrastructure and updates the application state.
-     * @returns {void}
-     */
-    function fetchSigns() {
+    const signsCount = computed(() => (signsLoaded.value ? signs.value.length : 0));
+    const touristsCount = computed(() => (touristsLoaded.value ? tourists.value.length : 0));
+    const alertsCount = computed(() => (alertsLoaded.value ? alerts.value.length : 0));
+
+    function setExpeditionId(expeditionId) {
+        currentExpeditionId.value = expeditionId;
+        if (expeditionId != null) {
+            localStorage.setItem(DEFAULT_EXPEDITION_ID_KEY, String(expeditionId));
+        }
+    }
+
+    function fetchSigns(expeditionId) {
         errors.value = [];
-        return monitoringApi.getSigns().then(response => {
+        const id = resolveExpeditionId(expeditionId ?? currentExpeditionId.value);
+        if (!id) {
+            signs.value = [];
+            signsLoaded.value = true;
+            return Promise.resolve([]);
+        }
+        setExpeditionId(id);
+        return monitoringApi.getSignsByExpedition(id).then((response) => {
             signs.value = SignAssembler.toEntitiesFromResponse(response);
             signsLoaded.value = true;
-            console.log(signsLoaded.value);
-            console.log(signs.value);
-        }).catch(error => {
+            return signs.value;
+        }).catch((error) => {
             errors.value.push(error);
+            throw error;
         });
     }
+
     function fetchTourists() {
         errors.value = [];
-        return monitoringApi.getTourists().then(response => {
-            tourists.value = TouristAssembler.toEntitiesFromResponse(response);
+        return monitoringApi.getUsers().then((response) => {
+            const resources = Array.isArray(response.data)
+                ? response.data
+                : (response.data?.users ?? []);
+            const touristResources = resources
+                .filter((user) => String(user.role ?? "").toLowerCase() === "tourist")
+                .map((user) => ({
+                    id: user.id,
+                    userId: user.id,
+                    fullName: user.username,
+                    email: "",
+                    phone: "",
+                    emergencyContact: "",
+                    assignmentStatus: ""
+                }));
+            tourists.value = touristResources.map((resource) =>
+                TouristAssembler.toEntityFromResource(resource)
+            );
             touristsLoaded.value = true;
-        }).catch(error => {
+            return tourists.value;
+        }).catch((error) => {
             errors.value.push(error);
+            throw error;
         });
     }
+
     function getTouristById(id) {
-        let idNum = parseInt(id);
-        return tourists.value.find(tourist => tourist["id"] === idNum);
+        return tourists.value.find((tourist) => String(tourist.id) === String(id));
     }
 
-    function addTourist(tourist) {
-        monitoringApi.createTourist(tourist).then(response => {
-            const resource = response.data;
-            const newTourist = TouristAssembler.toEntityFromResource(resource);
-            tourists.value.push(newTourist);
-        }).catch(error => {
-            errors.value.push(error);
-        });
-    }
-
-    function updateTourist(tourist) {
-        monitoringApi.updateTourist(tourist).then(response => {
-            const resource = response.data;
-            const updatedTourist = TouristAssembler.toEntityFromResource(resource);
-            const index = tourists.value.findIndex(t => t["id"] === updatedTourist.id);
-            if (index !== -1) tourists.value[index] = updatedTourist;
-        }).catch(error => {
-            errors.value.push(error);
-        });
-    }
-
-    function deleteTourist(tourist) {
-        monitoringApi.deleteTourist(tourist.id).then(() => {
-            const index = tourists.value.findIndex(t => t["id"] === tourist.id);
-            if (index !== -1) tourists.value.splice(index, 1);
-        }).catch(error => {
-            errors.value.push(error);
-        });
-    }
-
-    /**
-     * Loads tourists from infrastructure and updates the application state.
-     * @returns {void}
-     */
-
-
-    /**
-     * Finds a sign entity by identifier.
-     * @param {number|string} id - Sign identifier.
-     * @returns {Sign|undefined} Matching sign, if available.
-     */
     function getSignById(id) {
-        let idNum = parseInt(id);
-        return signs.value.find(sign => sign["id"] === idNum);
+        return signs.value.find((sign) => String(sign.id) === String(id));
     }
 
-    /**
-     * Creates a sign through infrastructure and appends it to the local state.
-     * @param {Sign} sign - Sign entity to persist.
-     * @returns {void}
-     */
     function addSign(sign) {
-        monitoringApi.createSign(sign).then(response => {
-            const resource = response.data;
-            const newSign = SignAssembler.toEntityFromResource(resource);
+        const payload = {
+            expeditionId: Number(sign.expeditionId ?? currentExpeditionId.value),
+            touristId: Number(sign.touristId ?? sign.tourist?.id),
+            heartRate: Number(sign.heartRate),
+            bloodOxygen: Number(sign.bloodOxygen),
+            bodyTemperature: Number(sign.bodyTemperature)
+        };
+        return monitoringApi.createSign(payload).then((response) => {
+            const newSign = SignAssembler.toEntityFromResource(response.data);
             signs.value.push(newSign);
-        }).catch(error => {
+            return newSign;
+        }).catch((error) => {
             errors.value.push(error);
+            throw error;
         });
     }
 
-    /**
-     * Updates an existing sign and synchronizes local state.
-     * @param {Sign} sign - Sign entity with updated data.
-     * @returns {void}
-     */
-    function updateSign(sign) {
-        monitoringApi.updateSign(sign).then(response => {
-            const resource = response.data;
-            const updatedSign = SignAssembler.toEntityFromResource(resource);
-            const index = signs.value.findIndex(c => c["id"] === updatedSign.id);
-            if (index !== -1) signs.value[index] = updatedSign;
-        }).catch(error => {
-            errors.value.push(error);
-        });
+    // Platform does not expose PUT/DELETE for vital-sign readings; keep no-ops for UI compatibility.
+    function updateSign() {
+        return Promise.resolve();
     }
 
-    /**
-     * Deletes a sign and removes it from the local state.
-     * @param {Sign} sign - Sign entity to remove.
-     * @returns {void}
-     */
-    function deleteSign(sign) {
-        monitoringApi.deleteSign(sign.id).then(() => {
-            const index = signs.value.findIndex(c => c["id"] === sign.id);
-            if (index !== -1) signs.value.splice(index, 1);
-        }).catch(error => {
-            errors.value.push(error);
-        });
+    function deleteSign() {
+        return Promise.resolve();
     }
 
-    const alerts = ref([]);
-    const alertsLoaded = ref(false);
-    const alertsCount = computed(() => {
-        return alertsLoaded ? alerts.value.length : 0;
-    });
-    function fetchAlerts() {
+    function fetchAlerts(expeditionId) {
         errors.value = [];
-        return monitoringApi.getAlerts().then(response => {
+        const id = resolveExpeditionId(expeditionId ?? currentExpeditionId.value);
+        if (!id) {
+            alerts.value = [];
+            alertsLoaded.value = true;
+            return Promise.resolve([]);
+        }
+        setExpeditionId(id);
+        return monitoringApi.getAlertsByExpedition(id).then((response) => {
             alerts.value = AlertAssembler.toEntitiesFromResponse(response);
             alertsLoaded.value = true;
-        }).catch(error => {
+            return alerts.value;
+        }).catch((error) => {
             errors.value.push(error);
+            throw error;
         });
     }
+
     function getAlertById(id) {
-        let idNum = parseInt(id);
-        return alerts.value.find(alert => alert["id"] === idNum);
+        return alerts.value.find((alert) => String(alert.id) === String(id));
     }
-    function updateAlert(alert) {
-        monitoringApi.updateAlert(alert).then(response => {
-            const resource = response.data;
-            const updatedAlert = AlertAssembler.toEntityFromResource(resource);
-            const index = alerts.value.findIndex(t => t["id"] === updatedAlert.id);
-            if (index !== -1) alerts.value[index] = updatedAlert;
-        }).catch(error => {
-            errors.value.push(error);
-        });
-    }
-    function deleteAlert(alert) {
-        monitoringApi.deleteAlert(alert.id).then(() => {
-            const index = alerts.value.findIndex(t => t["id"] === alert.id);
-            if (index !== -1) alerts.value.splice(index, 1);
-        }).catch(error => {
-            errors.value.push(error);
-        });
-    }
+
     function addAlert(alert) {
-        monitoringApi.createAlert(alert).then(response => {
-            const resource = response.data;
-            const newAlert = AlertAssembler.toEntityFromResource(resource);
+        const payload = {
+            expeditionId: Number(alert.expeditionId ?? currentExpeditionId.value),
+            touristId: Number(alert.touristId ?? alert.tourist?.id),
+            type: alert.type,
+            severity: alert.severity,
+            message: alert.message
+        };
+        return monitoringApi.createAlert(payload).then((response) => {
+            const newAlert = AlertAssembler.toEntityFromResource(response.data);
             alerts.value.push(newAlert);
-        }).catch(error => {
+            return newAlert;
+        }).catch((error) => {
             errors.value.push(error);
+            throw error;
         });
+    }
+
+    function updateAlert() {
+        return Promise.resolve();
+    }
+
+    function deleteAlert() {
+        return Promise.resolve();
     }
 
     function acknowledgeAlert(alertId, userId) {
-        return monitoringApi.acknowledgeAlert(alertId, userId).then(response => {
-            const resource = response.data;
-            const updatedAlert = AlertAssembler.toEntityFromResource(resource);
-            const index = alerts.value.findIndex(t => t["id"] === updatedAlert.id);
+        return monitoringApi.acknowledgeAlert(alertId, userId).then((response) => {
+            const updatedAlert = AlertAssembler.toEntityFromResource(response.data);
+            const index = alerts.value.findIndex((t) => String(t.id) === String(updatedAlert.id));
             if (index !== -1) alerts.value[index] = updatedAlert;
             return updatedAlert;
-        }).catch(error => {
+        }).catch((error) => {
             errors.value.push(error);
+            throw error;
         });
     }
 
+    function dismissAlert(alertId) {
+        return monitoringApi.dismissAlert(alertId).then((response) => {
+            const updatedAlert = AlertAssembler.toEntityFromResource(response.data);
+            const index = alerts.value.findIndex((t) => String(t.id) === String(updatedAlert.id));
+            if (index !== -1) alerts.value[index] = updatedAlert;
+            return updatedAlert;
+        }).catch((error) => {
+            errors.value.push(error);
+            throw error;
+        });
+    }
+
+    function fetchLocations(expeditionId) {
+        const id = resolveExpeditionId(expeditionId ?? currentExpeditionId.value);
+        if (!id) {
+            locations.value = [];
+            return Promise.resolve([]);
+        }
+        return monitoringApi.getLocationsByExpedition(id).then((response) => {
+            locations.value = Array.isArray(response.data) ? response.data : [response.data].filter(Boolean);
+            return locations.value;
+        }).catch((error) => {
+            errors.value.push(error);
+            throw error;
+        });
+    }
+
+    function fetchIncidents() {
+        return monitoringApi.getIncidents().then((response) => {
+            incidents.value = Array.isArray(response.data) ? response.data : [response.data].filter(Boolean);
+            return incidents.value;
+        }).catch((error) => {
+            errors.value.push(error);
+            throw error;
+        });
+    }
+
+    // Deprecated mockCRUD tourist mutations — directory is read-only from /users.
+    function addTourist() { return Promise.resolve(); }
+    function updateTourist() { return Promise.resolve(); }
+    function deleteTourist() { return Promise.resolve(); }
 
     return {
         signs,
@@ -246,6 +233,8 @@ const useMonitoringStore = defineStore('monitoring', () => {
         touristsLoaded,
         signsCount,
         touristsCount,
+        currentExpeditionId,
+        setExpeditionId,
         fetchSigns,
         fetchTourists,
         getSignById,
@@ -256,17 +245,21 @@ const useMonitoringStore = defineStore('monitoring', () => {
         updateTourist,
         deleteTourist,
         getTouristById,
-
         addAlert,
         updateAlert,
         deleteAlert,
         getAlertById,
         acknowledgeAlert,
+        dismissAlert,
         alertsLoaded,
         alerts,
         alertsCount,
-        fetchAlerts
-    }
+        fetchAlerts,
+        locations,
+        fetchLocations,
+        incidents,
+        fetchIncidents
+    };
 });
 
 export default useMonitoringStore;

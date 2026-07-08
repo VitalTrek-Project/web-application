@@ -1,113 +1,99 @@
 import { BaseApi } from '../../shared/infrastructure/base-api.js';
 import { BaseEndpoint } from '../../shared/infrastructure/base-endpoint.js';
 
-const toursEndpointPath = import.meta.env.VITE_TOUR_ENDPOINT_PATH;
-const touristsEndpointPath = import.meta.env.VITE_TOURIST_ENDPOINT_PATH;
-const checkpointsEndpointPath = import.meta.env.VITE_CHECKPOINTS_ENDPOINT_PATH;
+const toursEndpointPath = import.meta.env.VITE_TOUR_ENDPOINT_PATH || '/tours';
+const usersEndpointPath = import.meta.env.VITE_USERS_ENDPOINT_PATH || '/users';
 
 /**
- * Infrastructure adapter for Tour Management HTTP endpoints.
+ * Infrastructure adapter for Tour Management HTTP endpoints against VitalTrek Platform.
  *
  * @class TourManagementApi
  * @extends BaseApi
  */
 export class TourManagementApi extends BaseApi {
-
     /** @type {BaseEndpoint} */
     #toursEndpoint;
-
     /** @type {BaseEndpoint} */
-    #touristsEndpoint;
+    #usersEndpoint;
 
-    /** @type {BaseEndpoint} */
-    #checkpointsEndpoint;
-
-    /**
-     * Creates endpoint clients for tours and checkpoints resources.
-     */
     constructor() {
         super();
-
-        this.#toursEndpoint =
-            new BaseEndpoint(this, toursEndpointPath);
-
-        this.#touristsEndpoint =
-            new BaseEndpoint(this, touristsEndpointPath);
-
-        this.#checkpointsEndpoint =
-            new BaseEndpoint(this, checkpointsEndpointPath);
+        this.#toursEndpoint = new BaseEndpoint(this, toursEndpointPath);
+        this.#usersEndpoint = new BaseEndpoint(this, usersEndpointPath);
     }
 
     /**
-     * Retrieves tour resources.
-     * @returns {Promise}
+     * Lists tours for an agency (platform source of truth).
+     * @param {string} agencyId
      */
-    getTours() {
-        return this.#toursEndpoint.getAll();
+    getToursByAgency(agencyId) {
+        return this.http.get(`${toursEndpointPath}/agency/${agencyId}`);
     }
 
     /**
-     * Retrieves tourist resources.
-     * @returns {Promise}
+     * Searches tours by free-text term.
+     * Backend requires a non-empty `term` query parameter.
+     * @param {string} term
      */
-    getTourists() {
-        return this.#touristsEndpoint.getAll();
+    searchTours(term) {
+        const normalized = String(term ?? "").trim();
+        if (!normalized) {
+            return Promise.reject(new Error("Search term is required."));
+        }
+        return this.http.get(`${toursEndpointPath}/search`, {params: {term: normalized}});
     }
 
-    /**
-     * Retrieves one tour resource by identifier.
-     * @param {number|string} id
-     * @returns {Promise}
-     */
     getTourById(id) {
         return this.#toursEndpoint.getById(id);
     }
 
     /**
-     * Persists a new tour resource.
-     * @param {Object} resource
-     * @returns {Promise}
+     * @param {Object} resource - CreateTourResource payload
      */
     createTour(resource) {
         return this.#toursEndpoint.create(resource);
     }
 
     /**
-     * Updates an existing tour resource.
      * @param {number|string} id
-     * @param {Object} resource
-     * @returns {Promise}
+     * @param {Object} resource - UpdateTourResource payload ({ title, description })
      */
     updateTour(id, resource) {
         return this.#toursEndpoint.update(id, resource);
     }
 
-    /**
-     * Deletes one tour resource by identifier.
-     * @param {number|string} id
-     * @returns {Promise}
-     */
     deleteTour(id) {
         return this.#toursEndpoint.delete(id);
     }
 
-    /**
-     * Assigns a tourist to a tour.
-     * @param {number|string} tourId
-     * @param {Object} resource
-     * @returns {Promise}
-     */
-    assignTourist(tourId, resource) {
-        return this.#toursEndpoint.update(tourId, resource);
+    duplicateTour(tourId) {
+        return this.http.post(`${toursEndpointPath}/${tourId}/duplicate`);
+    }
+
+    getAssignments(tourId) {
+        return this.http.get(`${toursEndpointPath}/${tourId}/assignments`);
     }
 
     /**
-     * Updates a tourist resource.
-     * @param {number|string} touristId
-     * @param {Object} resource
-     * @returns {Promise}
+     * @param {number|string} tourId
+     * @param {string} touristId
      */
-    updateTourist(touristId, resource) {
-        return this.#touristsEndpoint.update(touristId, resource);
+    assignTourist(tourId, touristId) {
+        return this.http.post(`${toursEndpointPath}/${tourId}/assignments`, {touristId});
+    }
+
+    /**
+     * @param {number|string} tourId
+     * @param {string} touristId
+     */
+    unassignTourist(tourId, touristId) {
+        return this.http.delete(`${toursEndpointPath}/${tourId}/assignments/${touristId}`);
+    }
+
+    /**
+     * Platform users (tourists filtered in the store by role).
+     */
+    getUsers() {
+        return this.#usersEndpoint.getAll();
     }
 }

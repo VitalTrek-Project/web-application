@@ -4,7 +4,7 @@ import { toRouteCard } from "../utils/route-presenter.js";
 import { STATIC_ROUTES } from "../data/platform-static.js";
 
 /**
- * Loads route cards from MockAPI tours when available, with static fallback.
+ * Loads route cards from platform tours when available, with static fallback.
  */
 export function useRouteCatalog(options = {}) {
   const { limit = null, featuredOnly = false } = options;
@@ -16,8 +16,10 @@ export function useRouteCatalog(options = {}) {
     let items = [];
     if (store.tours.length) {
       items = store.tours.map((tour, index) => toRouteCard(tour, index));
+      usedApi.value = true;
     } else {
       items = STATIC_ROUTES.map((route, index) => toRouteCard(route, index));
+      usedApi.value = false;
     }
 
     if (featuredOnly) {
@@ -29,13 +31,19 @@ export function useRouteCatalog(options = {}) {
     return items;
   });
 
-  onMounted(() => {
+  onMounted(async () => {
     if (store.toursLoaded) {
       usedApi.value = store.tours.length > 0;
       return;
     }
     loading.value = true;
-    store.fetchTours();
+    try {
+      // Catalog browse: no assignment hydration; store calls agency list or search with a non-empty term.
+      await store.fetchTours({hydrate: false});
+    } finally {
+      loading.value = false;
+      usedApi.value = store.tours.length > 0;
+    }
   });
 
   watch(

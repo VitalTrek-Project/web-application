@@ -32,6 +32,8 @@ export const useIoTStore = defineStore("iot", () => {
   function pushError(error) {
     errors.value.push({
       message:
+        error?.data?.detail ??
+        error?.data?.title ??
         error?.data?.message ??
         error?.statusText ??
         error?.message ??
@@ -92,7 +94,7 @@ export const useIoTStore = defineStore("iot", () => {
     }
   }
 
-  /** Loads devices and readings for the selected device (MockAPI). */
+  /** Loads devices and readings for the selected device from VitalTrek Platform. */
   async function ensureIoTDataLoaded() {
     await fetchDevices();
     if (selectedDeviceId.value != null) {
@@ -165,8 +167,7 @@ export const useIoTStore = defineStore("iot", () => {
   }
 
   /**
-   * Publishes vital signs to Monitoring from IoT readings.
-   * IoT → vital-sign-readings integration (MockAPI).
+   * Publishes vital signs to Monitoring from IoT readings via VitalTrek Platform.
    */
   async function publishVitalSignsToMonitoring(context = {}) {
     const device = selectedDevice.value;
@@ -184,13 +185,11 @@ export const useIoTStore = defineStore("iot", () => {
     for (const sign of signs) {
       try {
         const response = await monitoringApi.createSign({
-          touristId: sign.touristId,
-          expeditionId: sign.expeditionId,
-          heartRate: sign.heartRate,
-          bloodOxygen: sign.bloodOxygen,
-          bodyTemperature: sign.bodyTemperature,
-          steps: sign.steps,
-          recordedAt: sign.recordedAt
+          touristId: Number(sign.touristId),
+          expeditionId: Number(sign.expeditionId),
+          heartRate: Number(sign.heartRate),
+          bloodOxygen: Number(sign.bloodOxygen),
+          bodyTemperature: Number(sign.bodyTemperature)
         });
         results.push(SignAssembler.toEntityFromResource(response.data));
       } catch (error) {

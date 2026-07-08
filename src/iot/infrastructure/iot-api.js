@@ -40,15 +40,7 @@ export class IoTApi extends BaseApi {
   }
 
   getReadings(deviceId) {
-    return this.#readingsEndpoint.getAll().then((response) => {
-      const records = Array.isArray(response.data) ? response.data : [];
-      return {
-        ...response,
-        data: records.filter(
-          (item) => String(item.deviceId) === String(deviceId)
-        )
-      };
-    });
+    return this.http.get(`${sensorReadingsEndpointPath}/device/${deviceId}`);
   }
 
   createReading(resource) {
@@ -59,11 +51,15 @@ export class IoTApi extends BaseApi {
    * Dispatches a command to a device via PUT /devices/{deviceId}.
    * Backend reads only { lastCommand, lastSeen } from the body.
    * @param {number|string} deviceId
-   * @param {string} command
+   * @param {string|{type?: string}|Object} command
    */
   sendCommand(deviceId, command) {
+    const lastCommand =
+      typeof command === "string"
+        ? command
+        : (command?.type ?? command?.lastCommand ?? JSON.stringify(command));
     return this.#devicesEndpoint.update(deviceId, {
-      lastCommand: command,
+      lastCommand,
       lastSeen: new Date().toISOString()
     });
   }

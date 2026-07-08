@@ -11,21 +11,33 @@ function generateUuid() {
 }
 
 const LOCAL_AGENCY_ID_KEY = "vitaltrek_local_agency_id";
+const SELECTED_AGENCY_ID_KEY = "vitaltrek_selected_agency_id";
 
 /**
- * Returns a per-browser identifier persisted in localStorage, standing in for
- * "the agency whose loyalty program a tourist is currently browsing". There
- * is no multi-agency directory or booking flow yet to derive this from, so
- * tourist-facing Loyalty views still use this placeholder even though real
- * user identity now comes from the IAM bounded context (see iam.store.js).
- * Agency-role users' own agencyId comes from their authenticated session
- * (useIamStore().currentAgencyId), not from here.
+ * Returns the agency context for loyalty/metrics views.
+ * Prefer an explicitly selected agency, then fall back to a persisted local
+ * placeholder until booking / multi-agency directory exists.
  */
 export function getLocalAgencyId() {
+    const selected = localStorage.getItem(SELECTED_AGENCY_ID_KEY);
+    if (selected) return selected;
+
     let id = localStorage.getItem(LOCAL_AGENCY_ID_KEY);
     if (!id) {
         id = generateUuid();
         localStorage.setItem(LOCAL_AGENCY_ID_KEY, id);
     }
     return id;
+}
+
+/**
+ * Persists the agency a tourist is browsing (e.g. after booking or deep-link).
+ * @param {string} agencyId
+ */
+export function setSelectedAgencyId(agencyId) {
+    if (agencyId) {
+        localStorage.setItem(SELECTED_AGENCY_ID_KEY, String(agencyId));
+    } else {
+        localStorage.removeItem(SELECTED_AGENCY_ID_KEY);
+    }
 }

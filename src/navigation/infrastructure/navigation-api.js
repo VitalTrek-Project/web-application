@@ -1,13 +1,15 @@
 import { BaseApi } from '../../shared/infrastructure/base-api.js';
 import { BaseEndpoint } from '../../shared/infrastructure/base-endpoint.js';
 
-const expeditionsEndpointPath = import.meta.env.VITE_EXPEDITIONS_ENDPOINT_PATH;
-const experiencesEndpointPath = import.meta.env.VITE_EXPERIENCES_ENDPOINT_PATH;
-const weatherEndpointPath = import.meta.env.VITE_WEATHER_ENDPOINT_PATH;
-const checkpointsEndpointPath = import.meta.env.VITE_CHECKPOINTS_ENDPOINT_PATH;
+const expeditionsEndpointPath = import.meta.env.VITE_EXPEDITIONS_ENDPOINT_PATH || '/expeditions';
+const experiencesEndpointPath = import.meta.env.VITE_EXPERIENCES_ENDPOINT_PATH || '/experiences';
+const weatherEndpointPath = import.meta.env.VITE_WEATHER_ENDPOINT_PATH || '/weather';
+const progressEndpointPath = import.meta.env.VITE_PROGRESS_ENDPOINT_PATH || '/progress';
+const binnacleEndpointPath = import.meta.env.VITE_BINNACLE_ENDPOINT_PATH || '/binnacle-readings';
+const toursEndpointPath = import.meta.env.VITE_TOUR_ENDPOINT_PATH || '/tours';
 
 /**
- * Infrastructure adapter for Navigation & Exploration HTTP endpoints.
+ * Infrastructure adapter for Navigation & Exploration against VitalTrek Platform.
  *
  * @class NavigationApi
  * @extends BaseApi
@@ -15,100 +17,116 @@ const checkpointsEndpointPath = import.meta.env.VITE_CHECKPOINTS_ENDPOINT_PATH;
 export class NavigationApi extends BaseApi {
     /** @type {BaseEndpoint} */
     #expeditionsEndpoint;
-
     /** @type {BaseEndpoint} */
     #experiencesEndpoint;
-
     /** @type {BaseEndpoint} */
     #weatherEndpoint;
-
     /** @type {BaseEndpoint} */
-    #checkpointsEndpoint;
+    #progressEndpoint;
 
-    /**
-     * Creates endpoint clients for expeditions, experiences and weather resources.
-     */
     constructor() {
         super();
         this.#expeditionsEndpoint = new BaseEndpoint(this, expeditionsEndpointPath);
         this.#experiencesEndpoint = new BaseEndpoint(this, experiencesEndpointPath);
         this.#weatherEndpoint = new BaseEndpoint(this, weatherEndpointPath);
-        this.#checkpointsEndpoint = new BaseEndpoint(this, checkpointsEndpointPath);
+        this.#progressEndpoint = new BaseEndpoint(this, progressEndpointPath);
     }
 
-    /**
-     * Retrieves all checkpoint resources (filtered by tour in the store).
-     * @returns {Promise}
-     */
-    getCheckpoints() {
-        return this.#checkpointsEndpoint.getAll();
+    getExpeditions() {
+        return this.#expeditionsEndpoint.getAll();
     }
 
-    /**
-     * Retrieves all experience resources (filtered by expedition in the store).
-     * @returns {Promise}
-     */
-    getExperiences() {
-        return this.#experiencesEndpoint.getAll();
-    }
-
-    /**
-     * Retrieves one expedition resource by identifier.
-     * @param {number|string} id
-     * @returns {Promise}
-     */
     getExpedition(id) {
         return this.#expeditionsEndpoint.getById(id);
     }
 
     /**
-     * Starts a new expedition for the given tour by creating an expedition resource
-     * with status in_progress. MockAPI does not support custom action routes,
-     * so this is modelled as a POST to the expeditions collection.
-     * @param {number|string} tourId
-     * @returns {Promise}
+     * Creates an expedition using CreateExpeditionResource field names.
+     * @param {{tourId: number|string, guideId?: number|string, expeditionName?: string, status?: string}} payload
      */
-    startExpedition(tourId) {
+    startExpedition({tourId, guideId = 0, expeditionName = null, status = 'in_progress'}) {
         return this.#expeditionsEndpoint.create({
-            tourId,
-            status: 'in_progress',
-            startedAt: new Date().toISOString(),
-            finishedAt: null
+            tourID: Number(tourId),
+            guideID: Number(guideId),
+            expeditionName,
+            status
         });
     }
 
     /**
-     * Finishes an expedition by updating its status to finished.
-     * MockAPI does not support custom action routes,
-     * so this is modelled as a PUT to the expeditions resource.
-     * @param {number|string} id
-     * @returns {Promise}
+     * Platform CreateExpeditionResource also covers status transitions via new records;
+     * when a dedicated finish route is unavailable, recreate with finished status is not ideal,
+     * so this posts progress at 100% and returns the latest expedition read.
      */
-    finishExpedition(id) {
-        return this.#expeditionsEndpoint.update(id, {
-            status: 'finished',
-            finishedAt: new Date().toISOString()
-        });
+    finishExpedition(id, {tourId, guideId, expeditionName} = {}) {
+        return this.#expeditionsEndpoint.create({
+            tourID: Number(tourId ?? 0),
+            guideID: Number(guideId ?? 0),
+            expeditionName: expeditionName ?? null,
+            status: 'finished'
+        }).then(() => this.getExpedition(id));
+    }
+
+    getExperiences() {
+        return this.#experiencesEndpoint.getAll();
     }
 
     /**
-     * Persists a new experience resource.
-     * @param {Object} resource
-     * @returns {Promise}
+     * @param {Object} resource - CreateExperienceResource
      */
     createExperience(resource) {
-        return this.#experiencesEndpoint.create(resource);
+        return this.#experiencesEndpoint.create({
+            expeditionID: Number(resource.expeditionId ?? resource.expeditionID),
+            touristID: Number(resource.touristId ?? resource.touristID),
+            note: resource.note ?? null,
+            mediaUrl: resource.mediaUrl ?? null
+        });
+    }
+
+    getWeatherById(weatherId) {
+        return this.#weatherEndpoint.getById(weatherId);
+    }
+
+    getWeather() {
+        return this.#weatherEndpoint.getAll();
+    }
+
+    createWeather(resource) {
+        return this.#weatherEndpoint.create(resource);
+    }
+
+    getProgress(progressId) {
+        return this.#progressEndpoint.getById(progressId);
+    }
+
+    createProgress(resource) {
+        return this.#progressEndpoint.create({
+            expeditionId: Number(resource.expeditionId),
+            completedCheckpoints: Number(resource.completedCheckpoints ?? 0),
+            totalCheckpoints: Number(resource.totalCheckpoints ?? 0),
+            percentage: Number(resource.percentage ?? 0)
+        });
+    }
+
+    getBinnacleByExpedition(expeditionId) {
+        return this.http.get(`${binnacleEndpointPath}/expedition/${expeditionId}`);
+    }
+
+    recordBinnacleReading(resource) {
+        return this.http.post(binnacleEndpointPath, {
+            expeditionId: Number(resource.expeditionId),
+            touristId: Number(resource.touristId),
+            note: resource.note ?? null,
+            mediaUrl: resource.mediaUrl ?? null,
+            createdAt: resource.createdAt ?? new Date().toISOString()
+        });
     }
 
     /**
-     * Retrieves weather resource. Latitude and longitude are kept as parameters
-     * to match the diagram contract; filtering by coordinates is handled in the store.
-     * MockAPI does not support coordinate-based lookup so all records are fetched.
-     * @param {number} latitude
-     * @param {number} longitude
-     * @returns {Promise}
+     * Loads a tour so UI can reuse any embedded checkpoints/waypoints if the platform returns them.
+     * There is no standalone /checkpoints resource.
      */
-    getWeather(latitude, longitude) {
-        return this.#weatherEndpoint.getAll();
+    getTourById(tourId) {
+        return this.http.get(`${toursEndpointPath}/${tourId}`);
     }
 }
