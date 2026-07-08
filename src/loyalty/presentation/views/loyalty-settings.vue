@@ -5,7 +5,7 @@ import { storeToRefs } from "pinia";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import useLoyaltyStore from "../../application/loyalty.store.js";
-import { getLocalAgencyId } from "../../../shared/infrastructure/local-identity.js";
+import useIamStore from "../../../iam/application/iam.store.js";
 import LoyaltyPanel from "../components/loyalty-panel.vue";
 
 const { t } = useI18n();
@@ -15,7 +15,7 @@ const store = useLoyaltyStore();
 const { program, programLoading, tiers, tiersLoading, errors } = storeToRefs(store);
 const { fetchProgram, updateProgram, fetchTiers, createTier, updateTier, deleteTier } = store;
 
-const agencyId = getLocalAgencyId();
+const agencyId = useIamStore().currentAgencyId;
 
 const expirationOptions = [
   { label: t("loyalty.settings.expiration-never"), value: null },

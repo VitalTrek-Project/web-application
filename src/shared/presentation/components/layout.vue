@@ -9,6 +9,7 @@ import VitalTrekLogo from "./vital-trek-logo.vue";
 import { useIncidentReport } from "../composables/use-incident-report.js";
 import { useAppModeStore } from "../../application/app-mode.store.js";
 import NotificationBell from "../../../loyalty/presentation/components/notification-bell.vue";
+import AuthenticationSection from "../../../iam/presentation/components/authentication-section.vue";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -173,9 +174,7 @@ const hero = computed(() => {
 
         <NotificationBell v-if="showNotificationBell" />
 
-        <div class="user-avatar" :aria-label="t('option.my-profile')">
-          <i class="pi pi-user" aria-hidden="true" />
-        </div>
+        <AuthenticationSection />
       </div>
     </aside>
 
@@ -301,21 +300,6 @@ const hero = computed(() => {
   filter: brightness(1.06);
 }
 
-.user-avatar {
-  width: 34px;
-  height: 34px;
-  border-radius: 999px;
-  display: grid;
-  place-items: center;
-  background: #f26a3d;
-  color: #ffffff;
-  font-size: 0.95rem;
-  box-shadow: 0 0 0 4px rgba(242, 106, 61, 0.12);
-}
-
-.user-avatar .pi-user {
-  font-size: 0.95rem;
-}
 
 .page-area {
   margin-left: 230px;

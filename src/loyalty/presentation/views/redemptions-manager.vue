@@ -4,7 +4,7 @@ import { useI18n } from "vue-i18n";
 import { storeToRefs } from "pinia";
 import { useToast } from "primevue/usetoast";
 import useLoyaltyStore from "../../application/loyalty.store.js";
-import { getLocalAgencyId } from "../../../shared/infrastructure/local-identity.js";
+import useIamStore from "../../../iam/application/iam.store.js";
 import LoyaltyPanel from "../components/loyalty-panel.vue";
 import { formatLoyaltyDate, getRedemptionStatusKey } from "../utils/loyalty-presenter.js";
 
@@ -14,7 +14,7 @@ const store = useLoyaltyStore();
 const { foundRedemption, foundRedemptionLoading, errors } = storeToRefs(store);
 const { findRedemptionByCode, markRedemptionUsed } = store;
 
-const agencyId = getLocalAgencyId();
+const agencyId = useIamStore().currentAgencyId;
 const searchCode = ref("");
 const searched = ref(false);
 

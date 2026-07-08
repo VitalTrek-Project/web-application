@@ -3,7 +3,8 @@ import { computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { storeToRefs } from "pinia";
 import useLoyaltyStore from "../../application/loyalty.store.js";
-import { getLocalUserId, getLocalAgencyId } from "../../../shared/infrastructure/local-identity.js";
+import useIamStore from "../../../iam/application/iam.store.js";
+import { getLocalAgencyId } from "../../../shared/infrastructure/local-identity.js";
 import LoyaltyPanel from "../components/loyalty-panel.vue";
 import { formatLoyaltyDate, tierProgressPercentage, transactionSign } from "../utils/loyalty-presenter.js";
 
@@ -13,7 +14,7 @@ const { profile, profileLoading, transactions, transactionsLoading, errors } = s
 const { fetchProfile, fetchTransactions } = store;
 
 const agencyId = getLocalAgencyId();
-const touristId = getLocalUserId();
+const touristId = useIamStore().currentUserId;
 
 function load() {
   fetchProfile(agencyId, touristId);

@@ -3,7 +3,7 @@ import { onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { storeToRefs } from "pinia";
 import useLoyaltyStore from "../../application/loyalty.store.js";
-import { getLocalUserId } from "../../../shared/infrastructure/local-identity.js";
+import useIamStore from "../../../iam/application/iam.store.js";
 import { formatLoyaltyDate } from "../utils/loyalty-presenter.js";
 
 const { t } = useI18n();
@@ -11,7 +11,7 @@ const store = useLoyaltyStore();
 const { notifications, unreadCount } = storeToRefs(store);
 const { fetchNotifications, markNotificationRead } = store;
 
-const touristId = getLocalUserId();
+const touristId = useIamStore().currentUserId;
 const open = ref(false);
 
 onMounted(() => {

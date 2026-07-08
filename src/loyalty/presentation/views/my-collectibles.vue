@@ -3,7 +3,8 @@ import { computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { storeToRefs } from "pinia";
 import useLoyaltyStore from "../../application/loyalty.store.js";
-import { getLocalUserId, getLocalAgencyId } from "../../../shared/infrastructure/local-identity.js";
+import useIamStore from "../../../iam/application/iam.store.js";
+import { getLocalAgencyId } from "../../../shared/infrastructure/local-identity.js";
 import LoyaltyPanel from "../components/loyalty-panel.vue";
 import { formatLoyaltyDate, getRedemptionStatusKey } from "../utils/loyalty-presenter.js";
 
@@ -13,7 +14,7 @@ const { badges, badgesLoading, myRedemptions, myRedemptionsLoading, rewards, err
 const { fetchBadges, fetchMyRedemptions, fetchRewards } = store;
 
 const agencyId = getLocalAgencyId();
-const touristId = getLocalUserId();
+const touristId = useIamStore().currentUserId;
 
 onMounted(() => {
   fetchBadges(agencyId, touristId);

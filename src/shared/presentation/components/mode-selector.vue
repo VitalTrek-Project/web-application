@@ -1,17 +1,18 @@
 <script setup>
-// TODO [IAM]: Eliminar este componente cuando se implemente autenticación real.
-// El modo activo pasará a leerse del claim `role` del JWT (via auth store),
-// y este selector manual se reemplazará por un flujo de login con
-// Account + TrekkerProfile / CompanyProfile. Ver app-mode.store.js.
+// Once authenticated, the router derives `mode` from the user's real IAM role
+// and this selector is hidden — manual switching only applies to
+// pre-authentication browsing (see app-mode.store.js and router.js).
 import { useI18n } from "vue-i18n";
 import { useAppModeStore } from "../../application/app-mode.store.js";
+import useIamStore from "../../../iam/application/iam.store.js";
 
 const { t } = useI18n();
 const modeStore = useAppModeStore();
+const iamStore = useIamStore();
 </script>
 
 <template>
-  <div class="mode-selector">
+  <div v-if="!iamStore.isSignedIn" class="mode-selector">
     <span class="mode-label">
       {{ modeStore.mode ? t('mode-selector.mode') : t('mode-selector.prompt') }}
     </span>

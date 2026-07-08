@@ -4,7 +4,8 @@ import { useI18n } from "vue-i18n";
 import { storeToRefs } from "pinia";
 import { useToast } from "primevue/usetoast";
 import useLoyaltyStore from "../../application/loyalty.store.js";
-import { getLocalUserId, getLocalAgencyId } from "../../../shared/infrastructure/local-identity.js";
+import useIamStore from "../../../iam/application/iam.store.js";
+import { getLocalAgencyId } from "../../../shared/infrastructure/local-identity.js";
 import LoyaltyPanel from "../components/loyalty-panel.vue";
 
 const { t } = useI18n();
@@ -14,7 +15,7 @@ const { referralCode, referralCodeLoading, errors } = storeToRefs(store);
 const { fetchReferralCode, redeemReferralCode } = store;
 
 const agencyId = getLocalAgencyId();
-const touristId = getLocalUserId();
+const touristId = useIamStore().currentUserId;
 const friendCode = ref("");
 
 onMounted(() => {

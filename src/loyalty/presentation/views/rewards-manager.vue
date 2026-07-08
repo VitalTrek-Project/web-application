@@ -4,7 +4,7 @@ import { useI18n } from "vue-i18n";
 import { storeToRefs } from "pinia";
 import { useConfirm } from "primevue/useconfirm";
 import useLoyaltyStore from "../../application/loyalty.store.js";
-import { getLocalAgencyId } from "../../../shared/infrastructure/local-identity.js";
+import useIamStore from "../../../iam/application/iam.store.js";
 import LoyaltyPanel from "../components/loyalty-panel.vue";
 
 const { t } = useI18n();
@@ -13,7 +13,7 @@ const store = useLoyaltyStore();
 const { rewards, rewardsLoading, errors } = storeToRefs(store);
 const { fetchRewards, createReward, updateReward, deactivateReward } = store;
 
-const agencyId = getLocalAgencyId();
+const agencyId = useIamStore().currentAgencyId;
 
 onMounted(() => fetchRewards(agencyId, false, true));
 

@@ -5,7 +5,7 @@ import { storeToRefs } from "pinia";
 import useDashboardStore from "../../application/dashboard.store.js";
 import useMonitoringStore from "../../../monitoring/application/monitoring.store.js";
 import useLoyaltyStore from "../../../loyalty/application/loyalty.store.js";
-import { getLocalAgencyId } from "../../../shared/infrastructure/local-identity.js";
+import useIamStore from "../../../iam/application/iam.store.js";
 import KpiCard from "../../../shared/presentation/components/kpi-card.vue";
 import ChartCard from "../../../shared/presentation/components/chart-card.vue";
 import LineChart from "../../../shared/presentation/components/line-chart.vue";
@@ -25,7 +25,7 @@ const store = useDashboardStore();
 const monitoringStore = useMonitoringStore();
 const loyaltyStore = useLoyaltyStore();
 const { metrics: loyaltyMetrics, metricsLoading: loyaltyMetricsLoading } = storeToRefs(loyaltyStore);
-const loyaltyAgencyId = getLocalAgencyId();
+const loyaltyAgencyId = useIamStore().currentAgencyId;
 
 const {
   dateRange,

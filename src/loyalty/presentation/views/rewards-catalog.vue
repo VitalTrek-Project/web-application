@@ -4,7 +4,8 @@ import { useI18n } from "vue-i18n";
 import { storeToRefs } from "pinia";
 import { useToast } from "primevue/usetoast";
 import useLoyaltyStore from "../../application/loyalty.store.js";
-import { getLocalUserId, getLocalAgencyId } from "../../../shared/infrastructure/local-identity.js";
+import useIamStore from "../../../iam/application/iam.store.js";
+import { getLocalAgencyId } from "../../../shared/infrastructure/local-identity.js";
 import LoyaltyPanel from "../components/loyalty-panel.vue";
 
 const { t } = useI18n();
@@ -13,8 +14,11 @@ const store = useLoyaltyStore();
 const { rewards, rewardsLoading, profile, errors } = storeToRefs(store);
 const { fetchRewards, fetchProfile, redeemReward } = store;
 
+// There is no multi-agency directory yet, so the agency whose loyalty
+// program a tourist browses is still a per-browser placeholder; the
+// tourist's own identity, however, now comes from the real IAM session.
 const agencyId = getLocalAgencyId();
-const touristId = getLocalUserId();
+const touristId = useIamStore().currentUserId;
 
 onMounted(() => {
   fetchRewards(agencyId, true);

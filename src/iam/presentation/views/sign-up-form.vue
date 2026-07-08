@@ -9,10 +9,11 @@ const router = useRouter();
 /** IAM application service store. */
 const store = useIamStore();
 const {signUp} = store;
-/** @type {{username: string, password: string}} Form state for sign-up command creation. */
+/** @type {{username: string, password: string, role: string}} Form state for sign-up command creation. */
 const form = reactive({
   username: '',
-  password: ''
+  password: '',
+  role: 'Tourist'
 })
 /**
  * Builds a SignUpCommand from form state and delegates execution
@@ -32,6 +33,9 @@ function performSignUp() {
   </div>
   <p class="p-fluid mb-5">Please enter the required information to sign in.</p>
   <div>
+    <pv-message v-if="store.errors.length" severity="error" :closable="false" class="mb-4">
+      {{ store.errors[store.errors.length - 1] }}
+    </pv-message>
     <form @submit.prevent="performSignUp">
       <div class="p-fluid">
         <div class="field mt-5">
@@ -49,7 +53,20 @@ function performSignUp() {
           </pv-float-label>
         </div>
         <div class="p-field mt-5">
-          <pv-button type="submit">Sign Up</pv-button>
+          <label id="role-label" class="block mb-2">I am signing up as</label>
+          <div class="role-options" role="radiogroup" aria-labelledby="role-label">
+            <label class="role-option">
+              <input type="radio" v-model="form.role" value="Tourist" name="role"/>
+              Tourist
+            </label>
+            <label class="role-option">
+              <input type="radio" v-model="form.role" value="Agency" name="role"/>
+              Travel agency
+            </label>
+          </div>
+        </div>
+        <div class="p-field mt-5">
+          <pv-button type="submit" :disabled="!form.username || !form.password">Sign Up</pv-button>
         </div>
       </div>
     </form>
@@ -57,5 +74,15 @@ function performSignUp() {
 </template>
 
 <style scoped>
+.role-options {
+  display: flex;
+  gap: 1.5rem;
+}
 
+.role-option {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+}
 </style>

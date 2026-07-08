@@ -6,7 +6,7 @@ import { computed, onMounted, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { Ticket } from "../../domain/model/ticket.entity.js";
 import { useAppModeStore } from "../../../shared/application/app-mode.store.js";
-import { getLocalUserId } from "../../../shared/infrastructure/local-identity.js";
+import useIamStore from "../../../iam/application/iam.store.js";
 import { mapAppModeToTicketUserMode } from "../utils/support-presenter.js";
 import SupportPanel from "../components/support-panel.vue";
 
@@ -90,7 +90,7 @@ const saveTicket = () => {
   }
 
   const ticket = new Ticket({
-    userId: getLocalUserId(),
+    userId: useIamStore().currentUserId,
     userMode: form.value.userMode,
     fullName: form.value.fullName,
     email: form.value.email,

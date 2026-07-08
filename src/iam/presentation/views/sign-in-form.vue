@@ -2,10 +2,11 @@
   import useIamStore from "../../application/iam.store.js";
   import {reactive} from "vue";
   import {SignInCommand} from "../../domain/sign-in.command.js";
-  import {useRouter} from "vue-router";
+  import {useRoute, useRouter} from "vue-router";
 
   /** Router used to redirect after IAM use-case execution. */
   const router = useRouter();
+  const route = useRoute();
   /** IAM application service store. */
   const store = useIamStore();
   const {signIn} = store;
@@ -22,8 +23,7 @@
    */
   function performSignIn() {
     let signInCommand = new SignInCommand(form);
-    console.log(signInCommand);
-    signIn(signInCommand, router);
+    signIn(signInCommand, router, route.query.redirect ?? null);
   }
 </script>
 
@@ -33,6 +33,9 @@
   </div>
   <p class="p-fluid mb-5">Please enter the required information to sign in.</p>
   <div>
+    <pv-message v-if="store.errors.length" severity="error" :closable="false" class="mb-4">
+      {{ store.errors[store.errors.length - 1] }}
+    </pv-message>
     <form @submit.prevent="performSignIn">
       <div class="p-fluid">
         <div class="field mt-5">
@@ -50,7 +53,7 @@
           </pv-float-label>
         </div>
         <div class="p-field mt-5">
-          <pv-button type="submit">Sign In</pv-button>
+          <pv-button type="submit" :disabled="!form.username || !form.password">Sign In</pv-button>
         </div>
       </div>
     </form>
