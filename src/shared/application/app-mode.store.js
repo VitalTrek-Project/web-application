@@ -1,10 +1,9 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-// TODO [IAM]: Este store es temporal. Cuando se implemente el bounded context IAM
-// en el backend (Account + TrekkerProfile / CompanyProfile con JWT), eliminar este
-// store y derivar el modo del claim `role` del token. Ver análisis en:
-// vital-trek-platform/NexumDevs.VitalTrek.Platform/Iam (pendiente de implementación).
+// Once a user is authenticated, the router derives `mode` automatically from
+// their IAM role claim (see router.js). This store still holds `mode` for
+// unauthenticated/pre-sign-in browsing via the manual mode-selector.
 export const useAppModeStore = defineStore('appMode', () => {
   // null = sin modo seleccionado; 'trekker' | 'empresa' una vez elegido
   const mode = ref(null);

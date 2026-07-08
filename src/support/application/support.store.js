@@ -3,6 +3,7 @@ import {computed, ref} from "vue";
 import {SupportApi} from "../infrastructure/support-api.js";
 import {TicketAssembler} from "../infrastructure/ticket.assembler.js";
 import {TicketReplyAssembler} from "../infrastructure/ticket-reply.assembler.js";
+import useIamStore from "../../iam/application/iam.store.js";
 
 const supportApi = new SupportApi();
 
@@ -23,7 +24,10 @@ const useSupportStore = defineStore('support', () => {
 
     function fetchTickets() {
         errors.value = [];
-        return supportApi.getTickets().then(response => {
+        // Tourists only ever see their own tickets; agency staff browse the full queue.
+        const iamStore = useIamStore();
+        const userId = iamStore.currentRole === 'Tourist' ? iamStore.currentUserId : undefined;
+        return supportApi.getTickets(userId).then(response => {
             tickets.value = TicketAssembler.toEntitiesFromResponse(response);
             ticketsLoaded.value = true;
         }).catch(error => {
