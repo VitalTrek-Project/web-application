@@ -1,6 +1,9 @@
 {
   "common": {
-    "search": "Buscar..."
+    "search": "Buscar...",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar"
   },
   "option": {
     "home": "Inicio",
@@ -825,6 +828,130 @@
     "sending-detail": "Compartiendo tu ubicación con el equipo de monitoreo.",
     "sent-summary": "Incidente reportado",
     "sent-detail": "La agencia fue notificada. Mantente en tu posición si es seguro."
+  },
+  "profile": {
+    "title": "Perfil",
+    "tabs": {
+      "profile": "Mi perfil",
+      "preferences": "Mis preferencias"
+    },
+    "my-profile": {
+      "title": "Mi perfil",
+      "subtitle": "Tu información personal, de viaje y de salud."
+    },
+    "my-preferences": {
+      "title": "Mis preferencias",
+      "subtitle": "Preferencias de expedición, notificaciones y privacidad."
+    },
+    "staff": {
+      "title": "Mi perfil",
+      "subtitle": "Tu perfil de staff de agencia y preferencias de notificación."
+    },
+    "viewer": {
+      "title": "Perfil del turista",
+      "subtitle": "Perfil completo, visible porque este turista tiene una reserva con tu agencia.",
+      "forbidden": "Este turista no tiene reservas con tu agencia.",
+      "access-log-title": "Registro de acceso a datos médicos",
+      "access-log-note": "Cada vez que un miembro del staff ve esta sección, queda registrado aquí.",
+      "access-log-empty": "Aún no hay accesos registrados."
+    },
+    "sections": {
+      "personal": "Información personal",
+      "document": "Documento de identidad",
+      "document-note": "Necesario para reservar una expedición.",
+      "emergency-contacts": "Contactos de emergencia",
+      "emergency-contacts-note": "Se requiere al menos un contacto para reservar una expedición.",
+      "medical": "Información médica (opcional)",
+      "medical-note": "Confidencial — solo visible para ti y el staff de la agencia que gestiona tus expediciones.",
+      "expedition-preferences": "Preferencias de expedición",
+      "notification-preferences": "Preferencias de notificación",
+      "privacy-preferences": "Privacidad"
+    },
+    "fields": {
+      "fullName": "Nombre completo",
+      "photoUrl": "URL de la foto",
+      "photoUrl-placeholder": "https://...",
+      "dateOfBirth": "Fecha de nacimiento",
+      "nationality": "Nacionalidad",
+      "phoneNumber": "Teléfono",
+      "preferredLanguage": "Idioma preferido",
+      "preferredLanguage-placeholder": "ej. en, es",
+      "experienceLevel": "Experiencia en trekking",
+      "documentType": "Tipo de documento",
+      "documentNumber": "Número de documento",
+      "bloodType": "Tipo de sangre",
+      "allergies": "Alergias",
+      "medicalConditions": "Condiciones médicas",
+      "medications": "Medicamentos",
+      "preferredActivityTypes": "Tipos de actividad preferidos",
+      "preferredDifficulty": "Dificultad preferida",
+      "dietaryRestrictions": "Restricciones alimentarias",
+      "list-placeholder": "Separados por coma",
+      "no-preference": "Sin preferencia",
+      "position": "Cargo",
+      "contactPhone": "Teléfono de contacto"
+    },
+    "experience-levels": {
+      "Beginner": "Principiante",
+      "Intermediate": "Intermedio",
+      "Advanced": "Avanzado"
+    },
+    "document-types": {
+      "Passport": "Pasaporte",
+      "NationalId": "Documento de identidad",
+      "DriverLicense": "Licencia de conducir"
+    },
+    "blood-types": {
+      "Unknown": "Desconocido",
+      "APositive": "A+",
+      "ANegative": "A-",
+      "BPositive": "B+",
+      "BNegative": "B-",
+      "ABPositive": "AB+",
+      "ABNegative": "AB-",
+      "OPositive": "O+",
+      "ONegative": "O-"
+    },
+    "difficulties": {
+      "Easy": "Fácil",
+      "Moderate": "Moderada",
+      "Hard": "Difícil",
+      "Expert": "Experta"
+    },
+    "completeness": {
+      "title": "Completitud del perfil",
+      "ready": "Tu perfil está completo — puedes unirte a una expedición.",
+      "missing-intro": "Aún falta para poder reservar una expedición:",
+      "fields": {
+        "emergencyContact": "Un contacto de emergencia",
+        "identityDocument": "Un documento de identidad",
+        "phoneNumber": "Un número de teléfono",
+        "dateOfBirth": "Fecha de nacimiento",
+        "nationality": "Nacionalidad"
+      }
+    },
+    "emergency-contact": {
+      "add-title": "Agregar contacto de emergencia",
+      "edit-title": "Editar contacto de emergencia",
+      "name": "Nombre",
+      "relationship": "Relación",
+      "phone": "Teléfono",
+      "add": "Agregar contacto",
+      "none": "Aún no hay contactos de emergencia.",
+      "confirm-remove": "¿Eliminar a {name} como contacto de emergencia?"
+    },
+    "notifications": {
+      "safety-always-on": "Alertas de seguridad (siempre activas)",
+      "loyalty-updates": "Novedades de loyalty",
+      "expedition-reminders": "Recordatorios de expedición",
+      "critical-always-on": "Alertas críticas de seguridad (siempre activas)",
+      "pending-redemptions": "Canjes pendientes",
+      "new-bookings": "Nuevas reservas"
+    },
+    "privacy": {
+      "visible-to-expedition-mates": "Mostrar mi nombre y foto a otros turistas de la misma expedición",
+      "note": "Los datos médicos y de contacto de emergencia nunca se comparten con otros turistas, sin importar esta configuración."
+    }
   },
   "errors": {
     "occurred": "Ocurrieron errores"

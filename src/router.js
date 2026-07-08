@@ -13,6 +13,7 @@ import supportRoutes from "./support/presentation/support-routes.js";
 import dashboardRoutes from "./dashboard/presentation/dashboard-routes.js";
 import loyaltyRoutes from "./loyalty/presentation/loyalty-routes.js";
 import iamRoutes from "./iam/presentation/iam-routes.js";
+import profilesRoutes from "./profiles/presentation/profiles-routes.js";
 
 const RoutesPage = () => import("./shared/presentation/views/routes-page.vue");
 const RouteDetailPage = () =>
@@ -77,12 +78,6 @@ const routes = [
     meta: { title: "Page 404 not found" }
   },
   {
-    path: "/profile",
-    name: "my-profile",
-    component: pageNotFound,
-    meta: { title: "Page 404 not found" }
-  },
-  {
     path: "/tours",
     name: "tour-management-tours",
     component: TourList,
@@ -140,6 +135,7 @@ const routes = [
   },
   ...dashboardRoutes,
   ...loyaltyRoutes,
+  ...profilesRoutes,
   {
     path: "/",
     redirect: "/home"
