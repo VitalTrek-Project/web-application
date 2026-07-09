@@ -24,15 +24,16 @@ export class TourManagementApi extends BaseApi {
 
     /**
      * Lists tours for an agency (platform source of truth).
+     * Backend route is `GET /tours?agencyId=...`, not a sub-path.
      * @param {string} agencyId
      */
     getToursByAgency(agencyId) {
-        return this.http.get(`${toursEndpointPath}/agency/${agencyId}`);
+        return this.http.get(toursEndpointPath, {params: {agencyId}});
     }
 
     /**
      * Searches tours by free-text term.
-     * Backend requires a non-empty `term` query parameter.
+     * Backend route is `GET /tours?term=...`, not a sub-path.
      * @param {string} term
      */
     searchTours(term) {
@@ -40,7 +41,7 @@ export class TourManagementApi extends BaseApi {
         if (!normalized) {
             return Promise.reject(new Error("Search term is required."));
         }
-        return this.http.get(`${toursEndpointPath}/search`, {params: {term: normalized}});
+        return this.http.get(toursEndpointPath, {params: {term: normalized}});
     }
 
     getTourById(id) {
@@ -67,7 +68,7 @@ export class TourManagementApi extends BaseApi {
     }
 
     duplicateTour(tourId) {
-        return this.http.post(`${toursEndpointPath}/${tourId}/duplicate`);
+        return this.http.post(`${toursEndpointPath}/${tourId}/copies`);
     }
 
     getAssignments(tourId) {

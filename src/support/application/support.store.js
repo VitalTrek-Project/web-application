@@ -78,7 +78,7 @@ const useSupportStore = defineStore('support', () => {
     }
 
     function addReply(reply) {
-        return supportApi.createTicketReply(reply).then(response => {
+        return supportApi.createTicketReply(reply.ticketId, reply).then(response => {
             const resource = response.data;
             const newReply = TicketReplyAssembler.toEntityFromResource(resource);
             replies.value.push(newReply);

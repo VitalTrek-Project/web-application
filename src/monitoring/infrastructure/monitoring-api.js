@@ -6,6 +6,7 @@ const alertsEndpointPath = import.meta.env.VITE_ALERTS_ENDPOINT_PATH || "/alerts
 const incidentsEndpointPath = import.meta.env.VITE_INCIDENTS_ENDPOINT_PATH || "/incidents";
 const locationsEndpointPath = import.meta.env.VITE_LOCATIONS_ENDPOINT_PATH || "/location-readings";
 const usersEndpointPath = import.meta.env.VITE_USERS_ENDPOINT_PATH || "/users";
+const expeditionsEndpointPath = import.meta.env.VITE_EXPEDITIONS_ENDPOINT_PATH || "/expeditions";
 
 /**
  * Infrastructure adapter for Monitoring HTTP endpoints against VitalTrek Platform.
@@ -39,7 +40,7 @@ export class MonitoringApi extends BaseApi {
      * @param {number|string} expeditionId
      */
     getSignsByExpedition(expeditionId) {
-        return this.http.get(`${signsEndpointPath}/expedition/${expeditionId}`);
+        return this.http.get(`${expeditionsEndpointPath}/${expeditionId}/vital-sign-readings`);
     }
 
     createSign(resource) {
@@ -51,7 +52,7 @@ export class MonitoringApi extends BaseApi {
      * @param {number|string} expeditionId
      */
     getAlertsByExpedition(expeditionId) {
-        return this.http.get(`${alertsEndpointPath}/expedition/${expeditionId}`);
+        return this.http.get(`${expeditionsEndpointPath}/${expeditionId}/alerts`);
     }
 
     createAlert(resource) {
@@ -59,11 +60,11 @@ export class MonitoringApi extends BaseApi {
     }
 
     acknowledgeAlert(alertId, userId) {
-        return this.http.put(`${alertsEndpointPath}/${alertId}/acknowledge`, null, {params: {userId}});
+        return this.http.patch(`${alertsEndpointPath}/${alertId}`, {status: "ACKNOWLEDGED", userId});
     }
 
     dismissAlert(alertId) {
-        return this.http.put(`${alertsEndpointPath}/${alertId}/dismiss`);
+        return this.http.patch(`${alertsEndpointPath}/${alertId}`, {status: "DISMISSED"});
     }
 
     getIncidents() {
@@ -83,7 +84,7 @@ export class MonitoringApi extends BaseApi {
      * @param {number|string} expeditionId
      */
     getLocationsByExpedition(expeditionId) {
-        return this.http.get(`${locationsEndpointPath}/expedition/${expeditionId}`);
+        return this.http.get(`${expeditionsEndpointPath}/${expeditionId}/location-readings`);
     }
 
     createLocation(resource) {

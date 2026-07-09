@@ -1,10 +1,10 @@
 import {BaseApi} from "../../shared/infrastructure/base-api.js";
 
-const adminSummaryPath = "/dashboard/admin/summary";
-const alertsDistributionPath = "/dashboard/admin/alerts/distribution";
-const expeditionsTimeSeriesPath = "/dashboard/admin/expeditions/timeseries";
-const alertsAttentionPath = "/dashboard/admin/alerts/attention";
-const activeExpeditionsPath = "/dashboard/admin/expeditions/active";
+const adminSummaryPath = "/dashboard/summary";
+const alertsDistributionPath = "/dashboard/alerts/distribution";
+const expeditionsTimeSeriesPath = "/dashboard/expeditions/timeseries";
+const alertsAttentionPath = "/dashboard/alerts/pending";
+const activeExpeditionsPath = "/dashboard/expeditions/active";
 
 /**
  * Infrastructure adapter for Dashboard HTTP endpoints.

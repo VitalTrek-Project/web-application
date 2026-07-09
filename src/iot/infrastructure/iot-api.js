@@ -40,7 +40,7 @@ export class IoTApi extends BaseApi {
   }
 
   getReadings(deviceId) {
-    return this.http.get(`${sensorReadingsEndpointPath}/device/${deviceId}`);
+    return this.http.get(`${devicesEndpointPath}/${deviceId}/sensor-readings`);
   }
 
   createReading(resource) {

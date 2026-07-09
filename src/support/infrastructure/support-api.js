@@ -13,13 +13,10 @@ const ticketRepliesEndpointPath = import.meta.env.VITE_SUPPORT_TICKET_REPLIES_EN
 export class SupportApi extends BaseApi {
     /** @type {BaseEndpoint} */
     #ticketsEndpoint;
-    /** @type {BaseEndpoint} */
-    #ticketRepliesEndpoint;
 
     constructor() {
         super();
         this.#ticketsEndpoint = new BaseEndpoint(this, ticketsEndpointPath);
-        this.#ticketRepliesEndpoint = new BaseEndpoint(this, ticketRepliesEndpointPath);
     }
 
     /**
@@ -50,14 +47,18 @@ export class SupportApi extends BaseApi {
     }
 
     /**
-     * ticketId is a required query parameter on the backend (GET /support-ticket-replies?ticketId=...),
-     * not a path segment, and requests without it are rejected with 400.
+     * Replies are a nested sub-resource under `/tickets/{ticketId}/replies` (note: "tickets",
+     * not "support-tickets" like the parent collection — that's the backend's own routing).
      */
     getTicketReplies(ticketId) {
-        return this.http.get(ticketRepliesEndpointPath, {params: {ticketId}});
+        return this.http.get(`${ticketRepliesEndpointPath}/${ticketId}/replies`);
     }
 
-    createTicketReply(resource) {
-        return this.#ticketRepliesEndpoint.create(resource);
+    /**
+     * @param {string} ticketId
+     * @param {{authorName?: string, authorMode?: string, message: string}} resource
+     */
+    createTicketReply(ticketId, resource) {
+        return this.http.post(`${ticketRepliesEndpointPath}/${ticketId}/replies`, resource);
     }
 }

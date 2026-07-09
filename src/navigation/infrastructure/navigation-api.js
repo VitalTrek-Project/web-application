@@ -109,7 +109,7 @@ export class NavigationApi extends BaseApi {
     }
 
     getBinnacleByExpedition(expeditionId) {
-        return this.http.get(`${binnacleEndpointPath}/expedition/${expeditionId}`);
+        return this.http.get(`${expeditionsEndpointPath}/${expeditionId}/binnacle-readings`);
     }
 
     recordBinnacleReading(resource) {
