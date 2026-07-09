@@ -51,7 +51,7 @@ onMounted(async () => {
 
 const navigateBack = () => router.push({ name: "monitoring-signs" });
 
-const saveSign = () => {
+const saveSign = async () => {
   const sign = new Sign({
     id: isEdit.value ? route.params.id : null,
     touristId: form.value.touristId,
@@ -62,8 +62,12 @@ const saveSign = () => {
     steps: form.value.steps,
     recordedAt: form.value.recordedAt
   });
-  isEdit.value ? updateSign(sign) : addSign(sign);
-  navigateBack();
+  try {
+    await (isEdit.value ? updateSign(sign) : addSign(sign));
+    navigateBack();
+  } catch {
+    /* stay on the form; the error is shown from the store's `errors` state */
+  }
 };
 </script>
 

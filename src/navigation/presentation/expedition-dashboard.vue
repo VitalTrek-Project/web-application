@@ -125,7 +125,7 @@ const statusLabel = computed(() => {
 });
 
 onMounted(() => {
-  ensureExpeditionLoaded(3).catch(() => {});
+  ensureExpeditionLoaded().catch(() => {});
   if (!alerts.value.length) monitoringStore.fetchAlerts();
   if (!tourists.value.length) monitoringStore.fetchTourists();
 });

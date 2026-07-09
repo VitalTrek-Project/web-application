@@ -17,8 +17,8 @@ const saving = ref(false);
 
 onMounted(async () => {
   try {
-    const expedition = await ensureExpeditionLoaded(3);
-    await fetchExperiences(expedition.id);
+    const expedition = await ensureExpeditionLoaded();
+    if (expedition) await fetchExperiences(expedition.id);
   } catch {
     /* errors shown in template */
   }

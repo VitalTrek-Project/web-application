@@ -70,7 +70,7 @@ const isNext = (checkpoint) =>
   nextCheckpoint.value != null && checkpoint.order === nextCheckpoint.value.order;
 
 onMounted(() => {
-  ensureExpeditionLoaded(3).catch(() => {});
+  ensureExpeditionLoaded().catch(() => {});
 });
 </script>
 
