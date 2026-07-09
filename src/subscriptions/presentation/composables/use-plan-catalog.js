@@ -4,22 +4,20 @@ import { useI18n } from "vue-i18n";
 const FEATURE_COUNT = 4;
 
 /**
- * NOTE: `stripePlan` is the identifier sent to POST /subscriptions/checkout.
- * The backend rejected our earlier per-tier placeholder values with:
- * "'TREKKER_ADVENTURER' is not a valid plan. Expected 'Monthly' or 'Annual'."
- * So the backend's Stripe integration is billing-period based, not tier
- * based — it cannot currently tell Adventurer/Pro apart from any other
- * paid plan. All paid tiers map to "Monthly" until the backend adds
- * per-tier price identifiers.
+ * NOTE: `stripePlan` is the tier identifier sent to POST /subscriptions/checkout and
+ * returned as `subscription.plan`. It must match a `SubscriptionPlan` enum name on the
+ * backend (Subscriptions/Domain/Model/ValueObjects/SubscriptionPlan.cs): TrekkerAdventurer,
+ * AgencyBase or AgencyPro. Explorer has no backend plan — it's the free tier, included by
+ * default with no checkout/subscription row.
  */
 const PLAN_DEFINITIONS = {
   trekker: [
     { id: "explorer", stripePlan: null, tier: "free", i18nKey: "iam.sign-up.plans.trekker.explorer" },
-    { id: "recommended", stripePlan: "Monthly", tier: "paid", recommended: true, i18nKey: "iam.sign-up.plans.trekker.recommended" }
+    { id: "recommended", stripePlan: "TrekkerAdventurer", tier: "paid", recommended: true, i18nKey: "iam.sign-up.plans.trekker.recommended" }
   ],
   agency: [
-    { id: "base", stripePlan: "Monthly", tier: "paid", i18nKey: "iam.sign-up.plans.agency.base" },
-    { id: "recommended", stripePlan: "Monthly", tier: "paid", recommended: true, i18nKey: "iam.sign-up.plans.agency.recommended" }
+    { id: "base", stripePlan: "AgencyBase", tier: "paid", i18nKey: "iam.sign-up.plans.agency.base" },
+    { id: "recommended", stripePlan: "AgencyPro", tier: "paid", recommended: true, i18nKey: "iam.sign-up.plans.agency.recommended" }
   ]
 };
 

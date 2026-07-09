@@ -56,6 +56,18 @@ const routes = [
     meta: { title: "Plans", requiresAuth: true }
   },
   {
+    // Where the backend's mock checkout page redirects after "Pagar" (see
+    // appsettings Payments:SuccessUrl). Folds back into /plans so the existing
+    // checkout=success banner handling in plans.vue covers it.
+    path: "/subscription/success",
+    redirect: { path: "/plans", query: { checkout: "success" } }
+  },
+  {
+    // Mirror of the above for "Cancelar" (Payments:CancelUrl).
+    path: "/subscription/cancel",
+    redirect: { path: "/plans", query: { checkout: "cancel" } }
+  },
+  {
     path: "/tours",
     name: "tour-management-tours",
     component: TourList,

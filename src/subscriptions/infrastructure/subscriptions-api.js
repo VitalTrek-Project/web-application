@@ -29,6 +29,6 @@ export class SubscriptionsApi extends BaseApi {
      * Cancels the current user's active subscription.
      */
     cancelMySubscription() {
-        return this.http.post(`${subscriptionsEndpointPath}/me/cancel`);
+        return this.http.patch(`${subscriptionsEndpointPath}/me`, {status: "Canceled"});
     }
 }
