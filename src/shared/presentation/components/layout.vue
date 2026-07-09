@@ -3,7 +3,6 @@ import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
 import LanguageSwitcher from "./language-switcher.vue";
-import ModeSelector from "./mode-selector.vue";
 import FooterContent from "./footer-content.vue";
 import VitalTrekLogo from "./vital-trek-logo.vue";
 import { useIncidentReport } from "../composables/use-incident-report.js";
@@ -48,7 +47,7 @@ const navSections = [
       { label: "option.loyalty", to: "/loyalty/points", icon: "pi pi-star", modes: ["trekker"] },
       { label: "option.loyalty-admin", to: "/loyalty-admin/settings", icon: "pi pi-star", modes: ["empresa"] },
       { label: "option.community", to: "/community", icon: "pi pi-users", modes: ["trekker", "empresa"] },
-      { label: "option.plans", to: "/plans", icon: "pi pi-credit-card", modes: ["empresa"] }
+      { label: "option.plans", to: "/plans", icon: "pi pi-credit-card", modes: ["trekker", "empresa"] }
     ]
   },
   {
@@ -161,7 +160,6 @@ const hero = computed(() => {
 
       <div class="sidebar-tools">
         <language-switcher />
-        <mode-selector />
       </div>
 
       <nav class="sidebar-nav" aria-label="Main">
@@ -192,11 +190,14 @@ const hero = computed(() => {
         />
 
         <NotificationBell v-if="showNotificationBell" />
-        <AuthenticationSection />
       </div>
     </aside>
 
     <section class="page-area">
+      <div class="topbar">
+        <AuthenticationSection />
+      </div>
+
       <header v-if="!hideShellHero" class="hero-header">
         <div class="hero-content">
           <span class="eyebrow">{{ hero.eyebrow }}</span>
@@ -384,6 +385,13 @@ const hero = computed(() => {
   background:
     radial-gradient(ellipse 70% 40% at 100% 0%, rgba(242, 106, 61, 0.06), transparent 55%),
     #0e1622;
+}
+
+.topbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 16px clamp(20px, 4vw, 48px) 0;
 }
 
 .hero-header {

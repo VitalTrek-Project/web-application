@@ -5,6 +5,6 @@ export default [
     path: "",
     name: "subscriptions-plans",
     component: plansView,
-    meta: { title: "Plans", requiredMode: "empresa" }
+    meta: { title: "Plans", requiresAuth: true }
   }
 ];

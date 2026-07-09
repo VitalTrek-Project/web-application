@@ -7,6 +7,8 @@ import { SignUpCommand } from "../../domain/sign-up.command.js";
 import { useAppModeStore } from "../../../shared/application/app-mode.store.js";
 import VitalTrekLogo from "../../../shared/presentation/components/vital-trek-logo.vue";
 import LanguageSwitcher from "../../../shared/presentation/components/language-switcher.vue";
+import AuthHeroPanel from "../components/auth-hero-panel.vue";
+import { usePlanCatalog } from "../../../subscriptions/presentation/composables/use-plan-catalog.js";
 
 const SIGNUP_DRAFT_KEY = "vitaltrek_signup_draft";
 
@@ -15,6 +17,7 @@ const router = useRouter();
 const store = useIamStore();
 const modeStore = useAppModeStore();
 const { signUp } = store;
+const { trekkerPlans, agencyPlans } = usePlanCatalog();
 
 const step = ref(1);
 const submitted = ref(false);
@@ -72,56 +75,6 @@ const regions = computed(() => [
   value,
   label: t(`iam.sign-up.regions.${value}`)
 })));
-
-const trekkerPlans = computed(() => [
-  {
-    id: "explorer",
-    name: t("iam.sign-up.plans.trekker.explorer.name"),
-    badge: t("iam.sign-up.plans.trekker.explorer.badge"),
-    description: t("iam.sign-up.plans.trekker.explorer.description"),
-    price: t("iam.sign-up.plans.trekker.explorer.price")
-  },
-  {
-    id: "recommended",
-    name: t("iam.sign-up.plans.trekker.recommended.name"),
-    badge: t("iam.sign-up.plans.trekker.recommended.badge"),
-    description: t("iam.sign-up.plans.trekker.recommended.description"),
-    price: t("iam.sign-up.plans.trekker.recommended.price"),
-    recommended: true
-  },
-  {
-    id: "expedition",
-    name: t("iam.sign-up.plans.trekker.expedition.name"),
-    badge: t("iam.sign-up.plans.trekker.expedition.badge"),
-    description: t("iam.sign-up.plans.trekker.expedition.description"),
-    price: t("iam.sign-up.plans.trekker.expedition.price")
-  }
-]);
-
-const agencyPlans = computed(() => [
-  {
-    id: "base",
-    name: t("iam.sign-up.plans.agency.base.name"),
-    badge: t("iam.sign-up.plans.agency.base.badge"),
-    description: t("iam.sign-up.plans.agency.base.description"),
-    price: t("iam.sign-up.plans.agency.base.price")
-  },
-  {
-    id: "recommended",
-    name: t("iam.sign-up.plans.agency.recommended.name"),
-    badge: t("iam.sign-up.plans.agency.recommended.badge"),
-    description: t("iam.sign-up.plans.agency.recommended.description"),
-    price: t("iam.sign-up.plans.agency.recommended.price"),
-    recommended: true
-  },
-  {
-    id: "enterprise",
-    name: t("iam.sign-up.plans.agency.enterprise.name"),
-    badge: t("iam.sign-up.plans.agency.enterprise.badge"),
-    description: t("iam.sign-up.plans.agency.enterprise.description"),
-    price: t("iam.sign-up.plans.agency.enterprise.price")
-  }
-]);
 
 const activePlans = computed(() =>
   form.role === "Agency" ? agencyPlans.value : trekkerPlans.value
@@ -208,9 +161,12 @@ function continueAsGuest() {
 
 <template>
   <div class="auth-screen">
-    <div class="auth-language">
-      <LanguageSwitcher />
-    </div>
+    <AuthHeroPanel />
+
+    <div class="auth-panel">
+      <div class="auth-language">
+        <LanguageSwitcher />
+      </div>
 
     <div class="auth-card" :class="{ 'auth-card--wide': step === 2 }">
       <div class="auth-brand">
@@ -441,19 +397,25 @@ function continueAsGuest() {
         </router-link>
       </p>
     </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .auth-screen {
   min-height: 100vh;
+  display: flex;
+  color: #f8fafc;
+}
+
+.auth-panel {
+  flex: 1;
   display: grid;
   place-items: center;
   padding: 2rem 1rem 3rem;
   background:
     radial-gradient(ellipse at top, rgba(242, 106, 61, 0.08), transparent 45%),
     #0b1220;
-  color: #f8fafc;
 }
 
 .auth-language {

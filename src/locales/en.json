@@ -3,7 +3,10 @@
     "search": "Search...",
     "save": "Save",
     "cancel": "Cancel",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "sign-in": "Sign in",
+    "sign-up": "Sign up",
+    "sign-out": "Sign out"
   },
   "iam": {
     "sign-up": {
@@ -63,19 +66,21 @@
             "name": "Explorer",
             "badge": "Free for everyone",
             "description": "Everything essential to join a tour with basic monitoring.",
-            "price": "Free"
+            "price": "Free",
+            "feature-1": "Basic route monitoring",
+            "feature-2": "SOS alerts",
+            "feature-3": "Community access",
+            "feature-4": "1 emergency contact"
           },
           "recommended": {
             "name": "Adventurer",
             "badge": "The full experience",
             "description": "For adventurers who want to record and relive every route.",
-            "price": "S/ 19 Monthly | 7-day free trial"
-          },
-          "expedition": {
-            "name": "Expedition",
-            "badge": "For frequent adventurers",
-            "description": "Multiple tours a year with priority support and alerts.",
-            "price": "S/ 39 Monthly"
+            "price": "S/ 19 Monthly | 7-day free trial",
+            "feature-1": "Everything in Explorer",
+            "feature-2": "Advanced biometric monitoring",
+            "feature-3": "Unlimited expedition history",
+            "feature-4": "24/7 priority support"
           }
         },
         "agency": {
@@ -83,19 +88,21 @@
             "name": "Base",
             "badge": "For agencies getting started",
             "description": "Publish tours, assign groups and manage core operations.",
-            "price": "S/ 299 Monthly"
+            "price": "S/ 299 Monthly",
+            "feature-1": "Up to 5 active tours",
+            "feature-2": "Group and tourist management",
+            "feature-3": "2 staff seats",
+            "feature-4": "Standard support"
           },
           "recommended": {
             "name": "Pro",
             "badge": "Full IoT operations",
             "description": "Monitoring, devices and advanced tools for your operation.",
-            "price": "S/ 599 Monthly"
-          },
-          "enterprise": {
-            "name": "Enterprise",
-            "badge": "For large operators",
-            "description": "Multi-agency scale with dedicated support and custom plans.",
-            "price": "Custom"
+            "price": "S/ 599 Monthly",
+            "feature-1": "Unlimited tours and staff",
+            "feature-2": "Full IoT monitoring",
+            "feature-3": "Advanced analytics dashboard",
+            "feature-4": "Dedicated priority support"
           }
         }
       }
@@ -109,8 +116,23 @@
       "password": "Password",
       "password-placeholder": "Your password",
       "submit": "Sign in",
+      "or-divider": "or",
+      "guest": "Continue as guest",
       "no-account": "Don't have an account yet?",
       "sign-up-link": "Sign up"
+    },
+    "hero": {
+      "title-line1": "Real Adventure,",
+      "title-line2": "Total Safety.",
+      "subtitle": "We simplify managing your expeditions so you can focus on what matters most: the adventure.",
+      "features": {
+        "routes": "Routes & expeditions",
+        "monitoring": "Real-time monitoring",
+        "community": "Trekker community",
+        "alerts": "Emergency alerts",
+        "support": "24/7 support"
+      },
+      "copyright": "© {year} VitalTrek · Adventure with purpose"
     }
   },
   "option": {
@@ -1076,7 +1098,7 @@
   "subscriptions": {
     "eyebrow": "BILLING",
     "title": "Plans and subscription",
-    "subtitle": "Manage your agency plan with Stripe Checkout.",
+    "subtitle": "Manage your plan and payment method with Stripe Checkout.",
     "current": "Current subscription",
     "loading": "Loading subscription...",
     "none": "No active subscription",
@@ -1084,9 +1106,14 @@
     "status": "Status",
     "start": "Start",
     "end": "End",
-    "checkout": "Change or start a plan",
-    "choose-plan": "Choose a plan",
-    "start-checkout": "Go to checkout",
-    "cancel": "Cancel subscription"
+    "choose-plan-title": "Choose your plan",
+    "most-popular": "Most popular",
+    "current-plan-badge": "Your current plan",
+    "included": "Included",
+    "subscribe": "Subscribe",
+    "processing": "Processing…",
+    "cancel": "Cancel subscription",
+    "checkout-success": "All set! Your payment was processed successfully.",
+    "checkout-cancelled": "Payment cancelled. You can try again anytime."
   }
 }

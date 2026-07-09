@@ -53,7 +53,7 @@ const routes = [
     path: "/plans",
     name: "plans",
     component: PlansPage,
-    meta: { title: "Plans", requiredMode: "empresa", requiresAuth: true }
+    meta: { title: "Plans", requiresAuth: true }
   },
   {
     path: "/tours",

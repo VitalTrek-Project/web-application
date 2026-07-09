@@ -6,6 +6,7 @@ import useIamStore from "../../application/iam.store.js";
 import { SignInCommand } from "../../domain/sign-in.command.js";
 import VitalTrekLogo from "../../../shared/presentation/components/vital-trek-logo.vue";
 import LanguageSwitcher from "../../../shared/presentation/components/language-switcher.vue";
+import AuthHeroPanel from "../components/auth-hero-panel.vue";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -30,80 +31,103 @@ function performSignIn() {
   });
   signIn(signInCommand, router, route.query.redirect ?? null);
 }
+
+function continueAsGuest() {
+  router.push(route.query.redirect ?? { name: "home" });
+}
 </script>
 
 <template>
   <div class="auth-screen">
-    <div class="auth-language">
-      <LanguageSwitcher />
-    </div>
+    <AuthHeroPanel />
 
-    <div class="auth-card">
-      <div class="auth-brand">
-        <VitalTrekLogo variant="auth" />
-        <span>VitalTrek</span>
+    <div class="auth-panel">
+      <div class="auth-language">
+        <LanguageSwitcher />
       </div>
 
-      <p class="auth-eyebrow">{{ t("iam.sign-in.eyebrow") }}</p>
-      <h1 class="auth-title">{{ t("iam.sign-in.title") }}</h1>
-      <div class="auth-title-rule" aria-hidden="true" />
-      <p class="auth-step">{{ t("iam.sign-in.subtitle") }}</p>
+      <div class="auth-card">
+        <div class="auth-brand">
+          <VitalTrekLogo variant="auth" />
+          <span>VitalTrek</span>
+        </div>
 
-      <pv-message
-          v-if="store.errors.length"
-          severity="error"
-          :closable="false"
-          class="auth-error"
-      >
-        {{ store.errors[store.errors.length - 1] }}
-      </pv-message>
+        <p class="auth-eyebrow">{{ t("iam.sign-in.eyebrow") }}</p>
+        <h1 class="auth-title">{{ t("iam.sign-in.title") }}</h1>
+        <div class="auth-title-rule" aria-hidden="true" />
+        <p class="auth-step">{{ t("iam.sign-in.subtitle") }}</p>
 
-      <form class="auth-form" @submit.prevent="performSignIn">
-        <label class="auth-field">
-          <span>{{ t("iam.sign-in.email") }}</span>
-          <input
-              v-model="form.username"
-              type="email"
-              :placeholder="t('iam.sign-in.email-placeholder')"
-              autocomplete="username"
-          />
-        </label>
+        <pv-message
+            v-if="store.errors.length"
+            severity="error"
+            :closable="false"
+            class="auth-error"
+        >
+          {{ store.errors[store.errors.length - 1] }}
+        </pv-message>
 
-        <label class="auth-field">
-          <span>{{ t("iam.sign-in.password") }}</span>
-          <input
-              v-model="form.password"
-              type="password"
-              :placeholder="t('iam.sign-in.password-placeholder')"
-              autocomplete="current-password"
-          />
-        </label>
+        <form class="auth-form" @submit.prevent="performSignIn">
+          <label class="auth-field">
+            <span>{{ t("iam.sign-in.email") }}</span>
+            <input
+                v-model="form.username"
+                type="email"
+                :placeholder="t('iam.sign-in.email-placeholder')"
+                autocomplete="username"
+            />
+          </label>
 
-        <button type="submit" class="auth-primary" :disabled="!canSubmit">
-          {{ t("iam.sign-in.submit") }}
+          <label class="auth-field">
+            <span>{{ t("iam.sign-in.password") }}</span>
+            <input
+                v-model="form.password"
+                type="password"
+                :placeholder="t('iam.sign-in.password-placeholder')"
+                autocomplete="current-password"
+            />
+          </label>
+
+          <button type="submit" class="auth-primary" :disabled="!canSubmit">
+            {{ t("iam.sign-in.submit") }}
+          </button>
+        </form>
+
+        <div class="auth-divider">
+          <span>{{ t("iam.sign-in.or-divider") }}</span>
+        </div>
+
+        <button type="button" class="auth-guest" @click="continueAsGuest">
+          {{ t("iam.sign-in.guest") }}
         </button>
-      </form>
 
-      <p class="auth-footer">
-        {{ t("iam.sign-in.no-account") }}
-        <router-link :to="{ name: 'iam-sign-up' }">
-          {{ t("iam.sign-in.sign-up-link") }}
-        </router-link>
-      </p>
+        <p class="auth-footer">
+          {{ t("iam.sign-in.no-account") }}
+          <router-link :to="{ name: 'iam-sign-up' }">
+            {{ t("iam.sign-in.sign-up-link") }}
+          </router-link>
+        </p>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
 .auth-screen {
+  position: relative;
   min-height: 100vh;
+  display: flex;
+  color: #f8fafc;
+}
+
+.auth-panel {
+  position: relative;
+  flex: 1;
   display: grid;
   place-items: center;
   padding: 2rem 1rem 3rem;
   background:
     radial-gradient(ellipse at top, rgba(242, 106, 61, 0.08), transparent 45%),
     #0b1220;
-  color: #f8fafc;
 }
 
 .auth-language {
@@ -118,6 +142,8 @@ function performSignIn() {
 }
 
 .auth-card {
+  position: relative;
+  z-index: 1;
   width: min(460px, 100%);
   background: #151d2b;
   border: 1px solid rgba(148, 163, 184, 0.12);
@@ -225,6 +251,43 @@ function performSignIn() {
 .auth-primary:disabled {
   opacity: 0.55;
   cursor: not-allowed;
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.35rem 0;
+  color: #64748b;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(148, 163, 184, 0.18);
+}
+
+.auth-guest {
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: 10px;
+  background: transparent;
+  color: #f8fafc;
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.auth-guest:hover {
+  border-color: #f26a3d;
+  background: rgba(242, 106, 61, 0.08);
 }
 
 .auth-footer {
